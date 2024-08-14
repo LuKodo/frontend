@@ -5,7 +5,7 @@ import { Sede } from "../interfaces/interfaces"
 export const HeadquarterSelect = ({ headquarter, setHeadquarter }: { headquarter: string, setHeadquarter: Function }) => {
     const [headquarters, setHeadquarters] = useState([] as Sede[])
     const getHeadquarters = async () => {
-        const response = await fetch('/api/sede')
+        const response = await fetch('https://market-backend-duaw.onrender.com/sede')
         const data = await response.json()
         setHeadquarters(data)
     }

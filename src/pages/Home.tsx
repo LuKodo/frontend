@@ -32,7 +32,7 @@ export const Home = () => {
   const handleCloseCart = () => setCartShow(false)
 
   const getProducts = async () => {
-    const response = await fetch('/api/productofinal/' + page + '/20/' + headquarter + '/' + category.categoria)
+    const response = await fetch('https://market-backend-duaw.onrender.com/productofinal/' + page + '/20/' + headquarter + '/' + category.categoria)
     const data = await response.json()
     setProducts(data)
   }

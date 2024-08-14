@@ -6,7 +6,7 @@ export const Sidebar = ({ setCategory, categoryactive }: { setCategory: Function
     const [categories, setCategories] = useState([] as Category[])
 
     const getCategories = async () => {
-        const response = await fetch('/api/productofinal/category')
+        const response = await fetch('https://market-backend-duaw.onrender.com/productofinal/category')
         const data = await response.json()
         setCategories(data)
     }

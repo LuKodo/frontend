@@ -7,12 +7,5 @@ export default defineConfig({
   server: {
     port: 5173,
 		host: true,
-		proxy: {
-			"/api": {
-        target: "https://market-backend-duaw.onrender.com",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-		}
   }
 })
