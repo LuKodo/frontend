@@ -14,7 +14,8 @@
     "bootstrap-icons": "^1.11.3",
     "preact": "^10.22.1",
     "react-bootstrap": "^2.10.4",
-    "sweetalert2": "^11.12.3"
+    "sweetalert2": "^11.12.3",
+    "wouter": "^3.3.1"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.8.3",

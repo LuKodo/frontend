@@ -1,8 +1,11 @@
-import { Modal } from "react-bootstrap"
+import { Button, FormControl, InputGroup, Modal } from "react-bootstrap"
 import { useEffect, useState } from "preact/hooks";
 import { formatPrice } from "../utils/formatPrice";
 import { Product, Productofinal } from "../interfaces/interfaces";
 import { getCart, setCart } from "../utils/cart";
+import ImageCart from "./ImageCart";
+import Swal from "sweetalert2";
+import { Link } from "wouter";
 
 export const CheckCart = ({ show, handleClose }: { show: boolean, handleClose: Function }) => {
     const [products, setProducts] = useState<Product[]>(getCart());
@@ -18,6 +21,14 @@ export const CheckCart = ({ show, handleClose }: { show: boolean, handleClose: F
         let newProducts = [];
 
         if (existingProduct) {
+            if (existingProduct.quantity + quantity > product.nuevo) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'No hay suficientes productos',
+                })
+                return
+            }
             const newQuantity = existingProduct.quantity + quantity;
             newProducts = products.map((p: Product) => p.product.codigo === product.codigo ? { ...p, quantity: newQuantity } : p)
         } else {
@@ -41,7 +52,7 @@ export const CheckCart = ({ show, handleClose }: { show: boolean, handleClose: F
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="shoping__cart__table" style={{ height: '210px', overflow: 'auto' }}>
+                            <div class="shoping__cart__table" style={{ height: '250px', overflow: 'auto' }}>
                                 <table className="table table-sm">
                                     <thead>
                                         <tr>
@@ -63,26 +74,27 @@ export const CheckCart = ({ show, handleClose }: { show: boolean, handleClose: F
                                             ) : (
                                                 products.map((product: Product) => (
                                                     <tr key={product.product.codigo}>
-                                                        <td class="shoping__cart__item">
-                                                            <h5>{product.product.nombre}</h5>
+                                                        <td class="d-flex align-items-center gap-2">
+                                                            <ImageCart imageName={product.product.codigo} />
+                                                            <h5 class="small">{product.product.nombre}</h5>
                                                         </td>
                                                         <td class="shoping__cart__price">
                                                             {formatPrice(product.product.precioventageneral)}
                                                         </td>
-                                                        <td class="shoping__cart__quantity">
-                                                            <div class="quantity">
-                                                                <div class="pro-qty">
-                                                                    <span class="dec qtybtn" onClick={() => addProduct(product.product, -1)}>-</span>
-                                                                    <input type="text" value={product.quantity} />
-                                                                    <span class="inc qtybtn" onClick={() => addProduct(product.product, 1)}>+</span>
-                                                                </div>
-                                                            </div>
+                                                        <td class="w-25">
+                                                            <InputGroup>
+                                                                <InputGroup.Text class="btn btn-success" role="button" onClick={() => addProduct(product.product, -1)}>-</InputGroup.Text>
+                                                                <FormControl value={product.quantity} />
+                                                                <InputGroup.Text class="btn btn-success" role="button" onClick={() => addProduct(product.product, 1)}>+</InputGroup.Text>
+                                                            </InputGroup>
                                                         </td>
                                                         <td class="shoping__cart__total">
                                                             {formatPrice(product.product.precioventageneral * product.quantity)}
                                                         </td>
-                                                        <td class="shoping__cart__item__close">
-                                                            <span class="bi bi-trash" onClick={() => deleteProduct(product)}></span>
+                                                        <td>
+                                                            <Button variant="danger" size="sm">
+                                                                <i class="bi bi-trash" onClick={() => deleteProduct(product)}></i>
+                                                            </Button>
                                                         </td>
                                                     </tr>
                                                 ))
@@ -95,14 +107,12 @@ export const CheckCart = ({ show, handleClose }: { show: boolean, handleClose: F
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="shoping__checkout">
-                                <h5>Cart Total</h5>
-                                <ul>
-                                    <li>Total <span>{formatPrice(products.reduce((total: number, product: Product) => total + product.product.precioventageneral * product.quantity, 0))}</span></li>
-                                </ul>
+                            <div class="">
+                                <h6 class="text-end mb-3 fw-bold bg-light p-2">Total <span>{formatPrice(products.reduce((total: number, product: Product) => total + product.product.precioventageneral * product.quantity, 0))}</span></h6>
+
                                 <div className="d-flex justify-content-between align-items-center gap-2">
-                                    <a href="#" class="btn btn-success w-50">PROCEED TO CHECKOUT</a>
-                                    <a href="#" class="btn btn-success w-50">PROCEED TO CHECKOUT</a>
+                                    <Link href="/bill" class="btn btn-success w-50">Realizar pedido</Link>
+                                    <span onClick={() => handleClose()} class="btn btn-danger w-50">Cancelar</span>
                                 </div>
                             </div>
                         </div>

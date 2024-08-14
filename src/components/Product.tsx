@@ -17,9 +17,9 @@ export const ProductCard = ({ product, show }: { product: Productofinal, show: F
     }, [product]);
 
     return (
-        <div class="col-lg-4 col-md-6 col-sm-6" onClick={() => show(product)}>
+        <div class="col-lg-3 col-md-6 col-sm-6" onClick={() => show(product)}>
             <div class="card p-3 mb-3" style={{ height: '400px' }}>
-                <div class="product__item__pic set-bg" style={`background-image: url("${imagePath}");`} />
+                <img class="card-img-top" src={`${imagePath}`} />
                 <div class="card-body">
                     <h6 class="card-title fw-bold small" style={{ height: '60px' }}>{product.nombre}</h6>
                     <h5 class="card-text fw-bold small">SKU: {product.codigo}</h5>

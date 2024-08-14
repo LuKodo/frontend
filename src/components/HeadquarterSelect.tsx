@@ -1,5 +1,5 @@
 import { useMemo, useState } from "preact/hooks"
-import { FormSelect } from "react-bootstrap"
+import { FormControl, FormSelect, InputGroup } from "react-bootstrap"
 import { Sede } from "../interfaces/interfaces"
 
 export const HeadquarterSelect = ({ headquarter, setHeadquarter }: { headquarter: string, setHeadquarter: Function }) => {
@@ -12,12 +12,25 @@ export const HeadquarterSelect = ({ headquarter, setHeadquarter }: { headquarter
     useMemo(() => getHeadquarters(), [])
 
     return (
-        <FormSelect name="sede" className="border-0 p-0 m-0" value={headquarter} onChange={(e) => setHeadquarter(e.target?.value ?? 'SB')}>
-            {headquarters.map((sede: Sede) => {
-                return (
-                    <option key={sede.prefijo} value={sede.prefijo}>{sede.nombre}</option>
-                )
-            })}
-        </FormSelect>
+        <InputGroup>
+            <InputGroup.Text id="basic-addon1" className="bg-warning border-0">
+                <FormSelect
+                    name="sede"
+                    className="border-0 p-0 text-white bg-transparent"
+                    value={headquarter}
+                    onChange={(e) => setHeadquarter(e.target?.value ?? 'SB')}
+                >
+                    {headquarters.map((sede: Sede) => {
+                        return (
+                            <option key={sede.prefijo} className={"bg-warning text-white"} value={sede.prefijo}>{sede.nombre}</option>
+                        )
+                    })}
+                </FormSelect>
+            </InputGroup.Text>
+            <FormControl type="text" placeholder="¿Qué quieres buscar?" className="bg-white border-0" />
+            <InputGroup.Text id="basic-addon1" className="bg-warning border-0">
+                <i className="bi bi-search text-white"></i>
+            </InputGroup.Text>
+        </InputGroup>
     )
 }

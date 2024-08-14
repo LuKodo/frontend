@@ -3,8 +3,9 @@ import { Productofinal } from "../interfaces/interfaces"
 import { formatPrice } from "../utils/formatPrice"
 import { checkImageExists } from "../utils/checkImage";
 import { Fragment } from "preact/jsx-runtime";
-import { Modal } from "react-bootstrap";
+import { FormControl, InputGroup, Modal } from "react-bootstrap";
 import { addToCart } from "../utils/cart";
+import Swal from "sweetalert2";
 
 export const ModalProduct = ({ product, handleClose, show }: { product: Productofinal, handleClose: Function, show: boolean }) => {
     const extensions = ['webp', 'png'];
@@ -20,6 +21,13 @@ export const ModalProduct = ({ product, handleClose, show }: { product: Producto
     const add = () => {
         if (quantity < product.nuevo) {
             setQuantity(quantity + 1)
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'No hay suficientes productos',
+            })
+            return
         }
     }
 
@@ -45,28 +53,21 @@ export const ModalProduct = ({ product, handleClose, show }: { product: Producto
                 <Modal.Body>
                     <div class="container">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6">
-                                <div class="product__details__pic">
-                                    <div class="product__details__pic__item">
-                                        <img class="product__details__pic__item--large" src={imagePath} alt="" />
-                                    </div>
-                                </div>
+                            <div class="col-7">
+                                <img class="img-fluid" src={imagePath} alt="" />
                             </div>
-                            <div class="col-lg-6 col-md-6">
-                                <div class="product__details__text">
-                                    <h3 class="fs-4">{product.nombre}</h3>
-                                    <div class="product__details__price fw-bold">{formatPrice(product.precioventageneral)}</div>
-                                    <div class="product__details__quantity">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <span class="dec qtybtn" onClick={() => sub()}>-</span>
-                                                <input type="text" value={quantity} />
-                                                <span class="inc qtybtn" onClick={() => add()}>+</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="primary-btn px-3" onClick={() => handleAddToCart()}>
-                                        <i class="bi bi-cart-fill" />
+                            <div class="col-5">
+                                <div class="d-flex flex-column gap-2">
+                                    <h5>{product.nombre}</h5>
+                                    <h4>{formatPrice(product.precioventageneral)}</h4>
+                                    <InputGroup>
+                                        <InputGroup.Text role="button" className="btn btn-success" onClick={() => sub()}>-</InputGroup.Text>
+                                        <FormControl type="text" value={quantity} />
+                                        <InputGroup.Text role="button" className="btn btn-success" onClick={() => add()}>+</InputGroup.Text>
+                                    </InputGroup>
+                                    <a href="#" class="btn btn-success" onClick={() => handleAddToCart()}>
+                                        <i class="bi bi-cart-fill me-2" />
+                                        Añadir
                                     </a>
                                 </div>
                             </div>

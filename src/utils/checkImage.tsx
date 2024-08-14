@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const checkImageExists = async (extensions: string[], imageName: string): Promise<string> => {
+export const checkImageExists = async (extensions: string[], imageName: string) => {
     let path = '/picture/default.jpg'
     for (const ext of extensions) {
         try {
