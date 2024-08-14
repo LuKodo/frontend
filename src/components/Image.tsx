@@ -21,7 +21,7 @@ const ImageDisplay = ({ imageName }: { imageName: string }) => {
   return (
     <Fragment>
       {error ? (
-        <div class="product__item__pic set-bg" style={`background-image: url("/picture/default.jpg");`}>
+        <div class="product__item__pic set-bg" style={`background-image: url("https://raw.githubusercontent.com/LuKodo/market_frontend/main/public/picture/default.jpg");`}>
           <ul class="product__item__pic__hover">
             <li><a href="#"><i class="bi bi-cart-fill"></i></a></li>
           </ul>

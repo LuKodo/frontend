@@ -11,7 +11,7 @@ const ImageCart = ({ imageName }: { imageName: string }) => {
       if (path) {
         setImagePath(path);
       } else {
-        setImagePath('/picture/default.jpg');
+        setImagePath('https://raw.githubusercontent.com/LuKodo/market_frontend/main/public/picture/default.jpg');
       }
     }
 
