@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "preact/hooks";
 import { Fragment } from "preact/jsx-runtime";
 import { checkImageExists } from "../utils/checkImage";

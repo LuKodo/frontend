@@ -18,7 +18,10 @@ export const HeadquarterSelect = ({ headquarter, setHeadquarter }: { headquarter
                     name="sede"
                     className="border-0 p-0 text-white bg-transparent"
                     value={headquarter}
-                    onChange={(e) => setHeadquarter(e.target?.value ?? 'SB')}
+                    onChange={(e) => {
+                        const target = e.target as HTMLSelectElement
+                        setHeadquarter(target.value ?? 'SB')
+                    }}
                 >
                     {headquarters.map((sede: Sede) => {
                         return (

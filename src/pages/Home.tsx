@@ -1,14 +1,13 @@
 import { useEffect, useState } from "preact/hooks"
 import { Category, Productofinal } from "../interfaces/interfaces"
 import { Fragment } from "preact/jsx-runtime"
-import { Loader } from "../components/Loader"
 import { ModalProduct } from "../components/ModalProduct"
 import { CheckCart } from "../components/CheckCart"
 import { HeadquarterSelect } from "../components/HeadquarterSelect"
 import { getCartQuantity } from "../utils/cart"
 import { Sidebar } from "../components/Sidebar"
 import { ProductCard } from "../components/Product"
-import { Button, Container, Form, Navbar, Pagination } from "react-bootstrap"
+import { Button, Container, Navbar, Pagination } from "react-bootstrap"
 import { CarouselComponent } from "../components/Carousel"
 
 export const Home = () => {

@@ -4,7 +4,6 @@ import { checkImageExists } from "../utils/checkImage";
 const ImageCart = ({ imageName }: { imageName: string }) => {
   const extensions = ['webp', 'png'];
   const [imagePath, setImagePath] = useState('');
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     const get = async () => {
