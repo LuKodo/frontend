@@ -19,7 +19,7 @@ export const ModalProduct = ({ product, handleClose, show }: { product: Producto
     }
 
     const add = () => {
-        if (quantity < product.nuevo) {
+        if (quantity < (product.nuevo ?? 0)) {
             setQuantity(quantity + 1)
         } else {
             Swal.fire({
@@ -59,7 +59,7 @@ export const ModalProduct = ({ product, handleClose, show }: { product: Producto
                             <div class="col-5">
                                 <div class="d-flex flex-column gap-2">
                                     <h5>{product.nombre}</h5>
-                                    <h4>{formatPrice(product.precioventageneral)}</h4>
+                                    <h4>{formatPrice((product.precioventageneral ?? 0))}</h4>
                                     <InputGroup>
                                         <InputGroup.Text role="button" className="btn btn-success" onClick={() => sub()}>-</InputGroup.Text>
                                         <FormControl type="text" value={quantity} />

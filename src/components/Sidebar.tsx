@@ -24,9 +24,9 @@ export const Sidebar = ({ setCategory, categoryactive }: { setCategory: Function
                             className="list-group-item d-flex justify-content-between align-items-center py-1"
                         >
                             <span href="#"
-                                className={`px-2 ${category.categoria === categoryactive.categoria ? 'fw-bold text-bg-success ' : ''}`}
+                                className={`px-2 ${category.descripcion === categoryactive.descripcion ? 'fw-bold text-bg-success ' : ''}`}
                             >
-                                {category.categoria}
+                                {category.descripcion}
                             </span>
                         </li>
                     )

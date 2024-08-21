@@ -1,7 +1,7 @@
-import { useEffect, useState } from "preact/hooks";
-import { Productofinal } from "../interfaces/interfaces"
-import { formatPrice } from "../utils/formatPrice"
+import { useEffect, useState } from "react";
 import { checkImageExists } from "../utils/checkImage";
+import { formatPrice } from "../utils/formatPrice";
+import { Productofinal } from "../interfaces/interfaces";
 
 export const ProductCard = ({ product, show }: { product: Productofinal, show: Function }) => {
     const extensions = ['webp', 'png'];
@@ -17,13 +17,19 @@ export const ProductCard = ({ product, show }: { product: Productofinal, show: F
     }, [product]);
 
     return (
-        <div class="col-lg-3 col-md-6 col-sm-6" onClick={() => show(product)}>
-            <div class="card p-3 mb-3" style={{ height: '400px' }}>
-                <img class="card-img-top" src={`${imagePath}`} />
-                <div class="card-body">
-                    <h6 class="card-title fw-bold small" style={{ height: '60px' }}>{product.nombre}</h6>
-                    <h5 class="card-text fw-bold small">SKU: {product.codigo}</h5>
-                    <h5 class="card-text fw-bold">{formatPrice(product.precioventageneral)}</h5>
+        <div className="card overflow-hidden rounded-2 border" style={{ height: '400px' }} onClick={() => show(product)}>
+            <div className="position-relative">
+                <a href="#" className="hover-img d-block overflow-hidden">
+                    <img src={`${imagePath}`} className="card-img-top rounded-0" alt="materialm-img" />
+                </a>
+                <a href="#" className="text-bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
+                    <i className="bi bi-basket fs-4"></i>
+                </a>
+            </div>
+            <div className="card-body pt-3 p-4">
+                <h6 className="fw-semibold fs-4">{product.nombre}</h6>
+                <div className="d-flex align-items-center justify-content-between">
+                    <h6 className="fw-semibold fs-4 mb-0">{formatPrice(product.precioventageneral ?? 0)}</h6>
                 </div>
             </div>
         </div>

@@ -21,7 +21,7 @@ export const CheckCart = ({ show, handleClose }: { show: boolean, handleClose: F
         let newProducts = [];
 
         if (existingProduct) {
-            if (existingProduct.quantity + quantity > product.nuevo) {
+            if (existingProduct.quantity + quantity > (product.nuevo ?? 0)) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
@@ -79,7 +79,7 @@ export const CheckCart = ({ show, handleClose }: { show: boolean, handleClose: F
                                                             <h5 class="small">{product.product.nombre}</h5>
                                                         </td>
                                                         <td class="shoping__cart__price">
-                                                            {formatPrice(product.product.precioventageneral)}
+                                                            {formatPrice((product.product.precioventageneral ?? 0))}
                                                         </td>
                                                         <td class="w-25">
                                                             <InputGroup>
@@ -89,7 +89,7 @@ export const CheckCart = ({ show, handleClose }: { show: boolean, handleClose: F
                                                             </InputGroup>
                                                         </td>
                                                         <td class="shoping__cart__total">
-                                                            {formatPrice(product.product.precioventageneral * product.quantity)}
+                                                            {formatPrice((product.product.precioventageneral ?? 0) * product.quantity)}
                                                         </td>
                                                         <td>
                                                             <Button variant="danger" size="sm">
@@ -108,7 +108,7 @@ export const CheckCart = ({ show, handleClose }: { show: boolean, handleClose: F
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="">
-                                <h6 class="text-end mb-3 fw-bold bg-light p-2">Total <span>{formatPrice(products.reduce((total: number, product: Product) => total + product.product.precioventageneral * product.quantity, 0))}</span></h6>
+                                <h6 class="text-end mb-3 fw-bold bg-light p-2">Total <span>{formatPrice(products.reduce((total: number, product: Product) => total + (product.product.precioventageneral ?? 0) * product.quantity, 0))}</span></h6>
 
                                 <div className="d-flex justify-content-between align-items-center gap-2">
                                     <Link href="/bill" class="btn btn-success w-50">Realizar pedido</Link>

@@ -9,7 +9,7 @@ interface CartProps {
 }
 
 const Cart: React.FC<CartProps> = ({ cart, handleClose, show }) => {
-  const totalPrice = cart.reduce((total, product) => total + product.precioventageneral, 0);
+  const totalPrice = cart.reduce((total, product) => total + (product.precioventageneral ?? 0), 0);
 
   return (
     <Modal show={show} onHide={handleClose}>

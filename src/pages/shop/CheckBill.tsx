@@ -1,9 +1,9 @@
 import { useState } from "preact/hooks";
-import { Product } from "../interfaces/interfaces";
-import { getCart, setCart } from "../utils/cart";
-import { formatPrice } from "../utils/formatPrice";
+import { Product } from "../../interfaces/interfaces";
+import { getCart, setCart } from "../../utils/cart";
+import { formatPrice } from "../../utils/formatPrice";
 import { Button, Container, InputGroup, Navbar } from "react-bootstrap";
-import ImageCart from "../components/ImageCart";
+import ImageCart from "../../components/ImageCart";
 import { Fragment } from "preact/jsx-runtime";
 import { Link } from "wouter";
 
