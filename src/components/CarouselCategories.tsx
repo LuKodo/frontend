@@ -1,5 +1,5 @@
 import { Carousel, Col, Container, Row } from "react-bootstrap"
-import { Category as CategoryComponent } from "./CategoryCard"
+import { CategoryCard } from "./CategoryCard"
 import { Category } from "../interfaces/interfaces"
 import { Dispatch, StateUpdater } from "preact/hooks"
 
@@ -18,7 +18,7 @@ export const CarouselCategories: preact.FunctionalComponent<Props> = ({ categori
               <Row>
                 {group.map((category: { incremento: any; descripcion: string }) => (
                   <Col key={category.incremento} md={2} sm={4} xs={6}>
-                    <CategoryComponent category={category.descripcion} setCategory={setCategory} />
+                    <CategoryCard category={category.descripcion} setCategory={setCategory} />
                   </Col>
                 ))}
               </Row>

@@ -7,7 +7,13 @@ import { FormControl, InputGroup, Modal } from "react-bootstrap";
 import { addToCart } from "../utils/cart";
 import Swal from "sweetalert2";
 
-export const ModalProduct = ({ product, handleClose, show }: { product: Productofinal, handleClose: Function, show: boolean }) => {
+interface Props {
+    product: Productofinal
+    handleClose: Function
+    show: boolean
+}
+
+export const ModalProduct: preact.FunctionalComponent<Props> = ({ product, handleClose, show }) => {
     const extensions = ['webp', 'png'];
     const [imagePath, setImagePath] = useState('');
     const [quantity, setQuantity] = useState(1);

@@ -9,7 +9,6 @@ export const Home = () => {
   const [headquarter, setHeadquarter] = useState('SB')
   const [cartShow, setCartShow] = useState(false)
   const [cartQuantity, _setCartQuantity] = useState(0)
-
   const handleCloseCart = () => setCartShow(false)
 
   return (
@@ -34,6 +33,8 @@ export const Home = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
+
 
       <Container>
         <Row>
