@@ -2,7 +2,7 @@ import { Category } from '@/interfaces/Categoria';
 import { getCategoryImage } from '@/utils/checkImage';
 import { useEffect, useState } from 'preact/hooks';
 
-const CategoryImage: preact.FunctionalComponent<{ category: Category }> = ({ category }) => {
+const CategoryImage: preact.FunctionalComponent<{ category: Category, reload?: boolean }> = ({ category, reload }) => {
     const extensions = ['webp', 'png', 'jpg'];
     const [imageSrc, setImageSrc] = useState('');
 
@@ -17,7 +17,7 @@ const CategoryImage: preact.FunctionalComponent<{ category: Category }> = ({ cat
         };
 
         fetchImage();
-    }, [category.descripcion]);
+    }, [category.descripcion, reload]);
 
     return (
         <img
@@ -25,7 +25,7 @@ const CategoryImage: preact.FunctionalComponent<{ category: Category }> = ({ cat
             alt={category.descripcion}
             width="100"
             height="100"
-            onError={() => setImageSrc('/path/to/default/image.jpg')} // Ruta a una imagen por defecto
+            onError={() => setImageSrc('/path/to/default/image.jpg')}
         />
     );
 };

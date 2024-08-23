@@ -11,6 +11,7 @@ import { Sedes } from "@/components/Page/Headquarter"
 import { Key } from "preact"
 import { CarouselCategories } from "@/components/Page/CarouselCategories"
 import { Category } from "@/interfaces/Categoria"
+import { CarouselComponent } from "@/components/Page/Carousel"
 
 function dividirEnGrupos(array: Category[]) {
   const gruposCompletos = Math.floor(array.length / 6);
@@ -108,6 +109,8 @@ export const Shop = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
+      <CarouselComponent />
 
       <CarouselCategories categories={categories} category={category} setCategory={setCategory} />
 

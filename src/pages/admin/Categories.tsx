@@ -16,20 +16,31 @@ const fetchCategories = async (page: number, limit: number): Promise<result> => 
     return await response.json()
 }
 
+
+
+
 export const Categories = () => {
     const [categories, setCategories] = useState<result>({} as result)
     const [category, setCategory] = useState<Category>({} as Category)
     const [showEditModal, setShowEditModal] = useState(false)
     const [page, setPage] = useState(1)
-    const [limit, _setLimit] = useState(10)
+    const [limit, _setLimit] = useState(5)
+
+    const fetchData = async () => {
+        const data = await fetchCategories(page, limit)
+        setCategories(data)
+    }
 
     useMemo(() => {
-        const fetchData = async () => {
-            const data = await fetchCategories(page, limit)
-            setCategories(data)
+        if (!showEditModal) {
+            setCategory({} as Category);
+            fetchData()
         }
-        fetchData()
-    }, [page, limit])
+
+        if (page) {
+            fetchData()
+        }
+    }, [page, showEditModal])
 
     const hideCategory = (id: string, categoria: Category) => {
         const fetchData = async () => {
@@ -51,7 +62,7 @@ export const Categories = () => {
 
     return (
         <Template>
-            <ModalCategory category={category.descripcion} show={showEditModal} onHide={() => {setCategory({} as Category); setShowEditModal(false)}} />
+            <ModalCategory category={category.descripcion} show={showEditModal} onHide={() => setShowEditModal(false)} />
             <Card>
                 <Card.Header>
                     <Card.Title>Categorías</Card.Title>
@@ -79,7 +90,9 @@ export const Categories = () => {
                                     <td>{category.incremento}</td>
                                     <td>{category.descripcion}</td>
                                     <td>
-                                        <CategoryImage category={category} />
+                                        {
+                                            category && <CategoryImage category={category} reload={showEditModal} />
+                                        }
                                     </td>
                                     <td>
                                         <ButtonGroup>

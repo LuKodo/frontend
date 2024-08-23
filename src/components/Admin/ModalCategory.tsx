@@ -18,6 +18,7 @@ export const ModalCategory: preact.FunctionalComponent<EditCategoryProps> = ({ c
         description: category,
         image: null
     })
+    const [localCategory, setLocalCategory] = useState<File | null>()
 
     useEffect(() => {
         setFormData({
@@ -46,6 +47,8 @@ export const ModalCategory: preact.FunctionalComponent<EditCategoryProps> = ({ c
             })
         } catch (error) {
             console.error(error)
+        } finally {
+            onHide()
         }
     }
 
@@ -54,6 +57,7 @@ export const ModalCategory: preact.FunctionalComponent<EditCategoryProps> = ({ c
         const { name, type, value, files } = target;
 
         if (type === 'file' && files) {
+            setLocalCategory(files[0])
             setFormData({ ...formData, [name]: files[0] });
         } else {
             setFormData({ ...formData, [name]: value });
@@ -69,7 +73,17 @@ export const ModalCategory: preact.FunctionalComponent<EditCategoryProps> = ({ c
             <Modal.Body>
                 <form onSubmit={handleSubmit} className="form">
                     <div className="d-flex justify-content-between gap-2 align-items-center">
-                        <CategoryImage category={{ descripcion: category, imagen: '', incremento: '', estado: true }} />
+                        {
+                            !localCategory ? (
+                                <CategoryImage category={{ descripcion: category, incremento: '', estado: true }} />
+                            ) : (
+                                <img
+                                    src={localCategory ? URL.createObjectURL(localCategory) : ''}
+                                    width="100"
+                                    height="100"
+                                />
+                            )
+                        }
                         <div className="d-flex justify-content-center flex-column">
                             <div className="mb-3">
                                 <label htmlFor="category" className={"form-label"}>Categoría:</label>

@@ -10,8 +10,8 @@ interface result {
 }
 
 export const Carousel = () => {
-    const [categories, setCategories] = useState<result>({} as result)
-    const [page, setPage] = useState(1)
+    const [_categories, setCategories] = useState<result>({} as result)
+    const [page, _setPage] = useState(1)
     const [limit, _setLimit] = useState(10)
 
     useMemo(() => {

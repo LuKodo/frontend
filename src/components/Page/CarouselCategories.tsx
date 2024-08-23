@@ -11,7 +11,7 @@ interface Props {
 
 export const CarouselCategories: preact.FunctionalComponent<Props> = ({ categories, setCategory }) => {
   return (
-    <Container className="mt-3">
+    <Container className="mt-3 mb-4">
       <Carousel slide={false}>
         {categories.map((group: any[], index: any) => (
           <Carousel.Item key={index}>

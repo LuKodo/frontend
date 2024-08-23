@@ -67,18 +67,19 @@ export const Promotion = () => {
     const addRow = () => {
         const newRow = {
             id: 0,
-            rowIndex: (data.length + 1),
+            rowIndex: Math.max(...rows)+1,
             columnIndex: 0,
             imageName: "default",
         };
-        setData([...data, newRow]);
         handleSubmit({
             id: "0",
-            rowIndex: (data.length + 1).toString(),
+            rowIndex: (Math.max(...rows)+1).toString(),
             columnIndex: "0",
             imageName: "default",
             image: null
         })
+        setData([...data, newRow]);
+        setReload(true)
     };
 
     const addColumn = (rowIndex: number) => {
@@ -182,9 +183,6 @@ export const Promotion = () => {
                         onClick={addRow}
                     >
                         <i className="bi bi-arrow-bar-down" /> Añadir Fila
-                    </button>
-                    <button className="btn btn-sm btn-warning">
-                        <i className="bi bi-floppy" /> Guardar
                     </button>
                 </Col>
             </Row>

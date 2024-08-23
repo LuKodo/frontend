@@ -23,7 +23,7 @@ export const CategoryCard = (props: CategoryProps) => {
                       d-flex
                       justify-content-center
                     ">
-                    <CategoryImage category={{descripcion: props.category, imagen: '', incremento: '', estado: true}} />
+                    <CategoryImage category={{descripcion: props.category, incremento: '', estado: true}} />
                 </div>
                 <div class="el-card-content text-center">
                     <p class="mb-0 small">{props.category}</p>
