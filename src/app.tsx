@@ -1,12 +1,13 @@
-import { Home } from "./pages/Home";
-import { Router, Route } from "wouter";
-import { CheckBill } from "./pages/shop/CheckBill";
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import './assets/css/main.css'
-import { EditCategory } from "./pages/admin/Categorias/EditCategory";
-import { Admin } from "./pages/admin";
-import { Categories } from "./pages/admin/Categorias/Categories";
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import { Router, Route } from "wouter";
+
+import { Home } from "./pages/shop/Home";
+import { CheckBill } from "./pages/shop/CheckBill";
+import { Categories } from "./pages/admin/Categories";
 import { Shop } from "./pages/shop/Shop";
+import { Carousel } from './pages/admin/Carousel';
+import { Promotion } from './pages/admin/Promotion';
 
 
 export function App() {
@@ -15,9 +16,10 @@ export function App() {
       <Route path="/" component={Home} />
       <Route path="/shop" component={Shop} />
       <Route path="/bill" component={CheckBill} />
-      <Route path="/admin" component={Admin} />
-      <Route path="/admin" component={EditCategory} />
-      <Route path="/admin" component={Categories} />
+      
+      <Route path="/admin/categories" component={Categories} />
+      <Route path="/admin/carousel" component={Carousel} />
+      <Route path="/admin/promo" component={Promotion} />
     </Router>
   )
 }

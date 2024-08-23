@@ -1,0 +1,37 @@
+import { Fragment } from "preact/jsx-runtime"
+import { Button, Col, Container, Row } from "react-bootstrap"
+import { useLocation } from "wouter";
+
+interface Props {
+    children: any;
+}
+
+export const Template: preact.FunctionComponent<Props> = ({ children }) => {
+    const [_location, setLocation] = useLocation();
+
+    return (
+        <Fragment>
+            <Container>
+                <div className="mx-3 my-3 d-flex align-items-center justify-content-start gap-3">
+                    <Button variant="warning" className="" onClick={() => setLocation('/admin/categories')}>
+                        <i className="bi bi-list ms-2" /> Categorias
+                    </Button>
+                    <Button variant="warning" className="" onClick={() => setLocation('/admin/promo')}>
+                        <i className="bi bi-bag-fill ms-2" /> Promociones
+                    </Button>
+                    <Button variant="warning" className="" onClick={() => setLocation('/admin/carousel')}>
+                        <i className="bi bi-images ms-2" /> Carrusel
+                    </Button>
+                </div>
+            </Container>
+
+            <Container>
+                <Row>
+                    <Col md={12}>
+                        {children}
+                    </Col>
+                </Row>
+            </Container>
+        </Fragment>
+    )
+}

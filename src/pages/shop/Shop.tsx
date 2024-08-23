@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState } from "preact/hooks"
-import { Category, Productofinal } from "../../interfaces/interfaces"
+import { Productofinal } from "@/interfaces/ProductoFinal"
 import { Fragment } from "preact/jsx-runtime"
-import { ModalProduct } from "../../components/ModalProduct"
-import { CheckCart } from "../../components/CheckCart"
-import { getCartQuantity } from "../../utils/cart"
-import { ProductCard } from "../../components/Product"
+import { ModalProduct } from "@/components/Page/ModalProduct"
+import { CheckCart } from "@/components/Page/CheckCart"
+import { getCartQuantity } from "@/utils/cart"
+import { ProductCard } from "@/components/Page/Product"
 import { Button, Container, Navbar, Pagination } from "react-bootstrap"
-import { SearchInput } from "../../components/SearchInput"
-import { Sedes } from "../../components/Headquarter"
+import { SearchInput } from "@/components/Page/SearchInput"
+import { Sedes } from "@/components/Page/Headquarter"
 import { Key } from "preact"
-import { CarouselCategories } from "../../components/CarouselCategories"
+import { CarouselCategories } from "@/components/Page/CarouselCategories"
+import { Category } from "@/interfaces/Categoria"
 
 function dividirEnGrupos(array: Category[]) {
   const gruposCompletos = Math.floor(array.length / 6);
@@ -24,7 +25,7 @@ function dividirEnGrupos(array: Category[]) {
 
 export const Shop = () => {
   const [page, _setPage] = useState(1)
-  const [headquarter, setHeadquarter] = useState('SB')
+  const [headquarter, _setHeadquarter] = useState('SB')
   const [category, setCategory] = useState<Category>({ descripcion: 'all' } as Category)
 
   useMemo(() => {
@@ -64,6 +65,7 @@ export const Shop = () => {
   const [products, setProducts] = useState([] as Productofinal[])
   const [product, setProduct] = useState({} as Productofinal)
   const [showModal, setShowModal] = useState(false)
+  const [_showHeadquarterModal, setShowHeadquarterModal] = useState(false)
   const [cartShow, setCartShow] = useState(false)
   const [cartQuantity, setCartQuantity] = useState(0)
 
@@ -95,7 +97,7 @@ export const Shop = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <SearchInput />
           <Navbar.Collapse id="basic-navbar-nav" className="d-flex align-items-center justify-content-between">
-            <Sedes headquarter={headquarter} setHeadquarter={setHeadquarter} />
+            <Sedes headquarter={headquarter} setHeadquarterShow={setShowHeadquarterModal} />
             <Button variant="white" className="d-flex align-items-center" onClick={() => setCartShow(true)}>
               <i className="bi bi-cart-fill text-warning fs-8 mt-0" />
               <span className="badge px-2 py-1 fw-bold bg-warning text-white mb-0">

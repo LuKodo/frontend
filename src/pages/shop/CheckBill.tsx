@@ -1,9 +1,9 @@
 import { useState } from "preact/hooks";
-import { Product } from "../../interfaces/interfaces";
-import { getCart, setCart } from "../../utils/cart";
-import { formatPrice } from "../../utils/formatPrice";
+import { Product } from "@/interfaces/ProductoFinal";
+import { getCart, setCart } from "@/utils/cart";
+import { formatPrice } from "@/utils/formatPrice";
 import { Button, Container, InputGroup, Navbar } from "react-bootstrap";
-import ImageCart from "../../components/ImageCart";
+import ImageCart from "@/components/Page/ImageCart";
 import { Fragment } from "preact/jsx-runtime";
 import { Link } from "wouter";
 
@@ -94,13 +94,13 @@ export const CheckBill = () => {
                                                                                 <h5 class="small">{product.product.nombre}</h5>
                                                                             </td>
                                                                             <td class="shoping__cart__price">
-                                                                                {formatPrice(product.product.precioventageneral)}
+                                                                                {formatPrice(product.product.precioventageneral ?? 0)}
                                                                             </td>
                                                                             <td class="w-25">
                                                                                 <InputGroup>{product.quantity}</InputGroup>
                                                                             </td>
                                                                             <td class="shoping__cart__total">
-                                                                                {formatPrice(product.product.precioventageneral * product.quantity)}
+                                                                                {formatPrice((product.product.precioventageneral ?? 0) * product.quantity)}
                                                                             </td>
                                                                             <td>
                                                                                 <Button variant="danger" size="sm">
