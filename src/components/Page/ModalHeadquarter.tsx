@@ -1,6 +1,7 @@
 import { useMemo, useState } from "preact/hooks"
 import { Col, Container, FormSelect, Modal, Row } from "react-bootstrap"
 import { Sede } from "@/interfaces/Sede"
+import { getHeadquarter, setHeadquarterLocal } from "@/utils/cart"
 
 interface Props {
     handleClose: Function
@@ -15,10 +16,21 @@ export const ModalHeadquarter: preact.FunctionalComponent<Props> = ({ show, hand
             const response = await fetch(`${import.meta.env.VITE_API_URL}/sede`)
             const data = await response.json()
 
+            const headquarter = getHeadquarter()
+            if (headquarter) {
+                setHeadquarter(headquarter)
+            }
+
             setCategories(data)
         }
         fetchCategories()
     }, [])
+
+    const setHeadquarterL = (hq: string) => {
+        setHeadquarter(hq)
+        setHeadquarterLocal(hq)
+    }
+
 
     return (
         <Modal show={show} onHide={() => handleClose()}>
@@ -37,7 +49,7 @@ export const ModalHeadquarter: preact.FunctionalComponent<Props> = ({ show, hand
                         <Col xs={12} className="mt-3">
                             <FormSelect onChange={(e) => {
                                 const target = e.target as HTMLSelectElement
-                                setHeadquarter(target.value ?? 'SB')
+                                setHeadquarterL(target.value ?? 'SB')
                                 handleClose()
                             }}>
                                 <option disabled selected>Seleccionar</option>

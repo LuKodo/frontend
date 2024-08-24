@@ -2,12 +2,12 @@ import { Button, FormControl, InputGroup, Modal } from "react-bootstrap"
 import { useEffect, useState } from "preact/hooks";
 import { formatPrice } from "@/utils/formatPrice";
 import { Product, Productofinal } from "@/interfaces/ProductoFinal";
-import { getCart, setCart } from "@/utils/cart";
+import { getCart, getCartQuantity, setCart } from "@/utils/cart";
 import Swal from "sweetalert2";
 import { Link } from "wouter";
 import ImageCart from "@/components/Page/ImageCart";
 
-export const CheckCart = ({ show, handleClose }: { show: boolean, handleClose: Function }) => {
+export const CheckCart = ({ show, handleClose, setQty }: { show: boolean, handleClose: Function, setQty: Function }) => {
     const [products, setProducts] = useState<Product[]>(getCart());
 
     useEffect(() => {
@@ -41,8 +41,10 @@ export const CheckCart = ({ show, handleClose }: { show: boolean, handleClose: F
     }
 
     const deleteProduct = (product: Product) => {
-        setProducts(products.filter((p: Product) => p.product.codigo !== product.product.codigo));
-        setCart(products.filter((p: Product) => p.product.codigo !== product.product.codigo));
+        const newData = products.filter((p: Product) => p.product.codigo !== product.product.codigo);
+        setProducts(newData);
+        setCart(newData);
+        setQty(getCartQuantity());
     }
 
     return (
@@ -92,8 +94,8 @@ export const CheckCart = ({ show, handleClose }: { show: boolean, handleClose: F
                                                             {formatPrice((product.product.precioventageneral ?? 0) * product.quantity)}
                                                         </td>
                                                         <td>
-                                                            <Button variant="danger" size="sm">
-                                                                <i class="bi bi-trash" onClick={() => deleteProduct(product)}></i>
+                                                            <Button variant="danger" size="sm" onClick={() => deleteProduct(product)}>
+                                                                <i class="bi bi-trash"></i>
                                                             </Button>
                                                         </td>
                                                     </tr>

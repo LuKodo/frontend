@@ -8,6 +8,7 @@ import { ModalHeadquarter } from "@/components/Page/ModalHeadquarter"
 import { MasonryPromo } from "@/components/Page/MasonryPromo"
 import { CarouselCategories } from "@/components/Page/CarouselCategories"
 import { Category } from "@/interfaces/Categoria"
+import { getCartQuantity, getHeadquarter } from "@/utils/cart"
 
 function dividirEnGrupos(array: Category[]) {
   const gruposCompletos = Math.floor(array.length / 6);
@@ -24,7 +25,7 @@ export const Home = () => {
   const [headquarter, setHeadquarter] = useState('SB')
   const [cartShow, setCartShow] = useState(false)
   const [headquarterShow, setHeadquarterShow] = useState(false)
-  const [cartQuantity, _setCartQuantity] = useState(0)
+  const [cartQuantity, setCartQuantity] = useState(0)
   const [categories, setCategories] = useState([] as Category[][])
   const [category, setCategory] = useState<Category>({ descripcion: 'all' } as Category)
 
@@ -33,6 +34,14 @@ export const Home = () => {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/categoria`)
       const data = await response.json()
       const newData = dividirEnGrupos(data)
+
+      const getQty = getCartQuantity()
+      setCartQuantity(getQty)
+
+      const headquarter = getHeadquarter()
+      if (headquarter) {
+        setHeadquarter(headquarter)
+      }
 
       setCategories(newData)
     }
@@ -43,7 +52,7 @@ export const Home = () => {
 
   return (
     <Fragment>
-      <CheckCart show={cartShow} handleClose={handleCloseCart} />
+      <CheckCart show={cartShow} handleClose={handleCloseCart} setQty={setCartQuantity} />
       <ModalHeadquarter show={headquarterShow} handleClose={() => setHeadquarterShow(false)} setHeadquarter={setHeadquarter} />
       <Navbar expand='lg' className={'bg-white'} sticky="top">
         <Container className="d-flex align-items-center">

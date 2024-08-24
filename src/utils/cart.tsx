@@ -25,6 +25,18 @@ export const setCart = (cart: Product[]) => {
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
+export const setHeadquarterLocal = (headquarter: string) => {
+    localStorage.setItem('headquarter', headquarter);
+}
+
+export const getHeadquarter = () => {
+    const headquarter = localStorage.getItem('headquarter');
+    if (headquarter) {
+        return headquarter;
+    }
+    return false
+}
+
 export const removeFromCart = (product: Productofinal) => {
     const index = cart.findIndex((item) => item.product.codigo === product.codigo);
     if (index !== -1) {

@@ -11,7 +11,8 @@ import { Sedes } from "@/components/Page/Headquarter"
 import { Key } from "preact"
 import { CarouselCategories } from "@/components/Page/CarouselCategories"
 import { Category } from "@/interfaces/Categoria"
-import { CarouselComponent } from "@/components/Page/Carousel"
+import { useParams } from "wouter"
+import { ModalHeadquarter } from "@/components/Page/ModalHeadquarter"
 
 function dividirEnGrupos(array: Category[]) {
   const gruposCompletos = Math.floor(array.length / 6);
@@ -25,13 +26,21 @@ function dividirEnGrupos(array: Category[]) {
 }
 
 export const Shop = () => {
-  const [page, _setPage] = useState(1)
-  const [headquarter, _setHeadquarter] = useState('SB')
-  const [category, setCategory] = useState<Category>({ descripcion: 'all' } as Category)
+  const params = useParams();
+  const [page, setPage] = useState(1)
+  const [headquarter, setHeadquarter] = useState('SB')
+  const [categories, setCategories] = useState([] as Category[][])
+  const [category, setCategory] = useState<Category>({ descripcion: params.category || 'all' } as Category)
+  const [products, setProducts] = useState([] as Productofinal[])
+  const [product, setProduct] = useState({} as Productofinal)
+  const [showModalProduct, setShowModal] = useState(false)
+  const [cartShow, setCartShow] = useState(false)
+  const [cartQuantity, setCartQuantity] = useState(0)
+  const [headquarterShow, setHeadquarterShow] = useState(false)
 
   useMemo(() => {
     const fetchProductos = async () => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/productofinal?page=${page}&limit=20&sede=${headquarter}&categoria=${category.descripcion}`)
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/productofinal?page=${page}&limit=20&sede=${headquarter}&categoria=${params.category}`)
 
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -41,12 +50,7 @@ export const Shop = () => {
       setProducts(data)
     }
     fetchProductos()
-  }, [page])
-
-
-  useEffect(() => {
-    setCartQuantity(getCartQuantity())
-  }, [category])
+  }, [page, params.category])
 
   useMemo(() => {
     const fetchCategories = async () => {
@@ -60,45 +64,36 @@ export const Shop = () => {
   }, [])
 
   useEffect(() => {
-    _setPage(1)
-  }, [category])
+    setCartQuantity(getCartQuantity())
+    setPage(1)
+  }, [params.category, product])
 
-  const [products, setProducts] = useState([] as Productofinal[])
-  const [product, setProduct] = useState({} as Productofinal)
-  const [showModal, setShowModal] = useState(false)
-  const [_showHeadquarterModal, setShowHeadquarterModal] = useState(false)
-  const [cartShow, setCartShow] = useState(false)
-  const [cartQuantity, setCartQuantity] = useState(0)
-
-  const [categories, setCategories] = useState([] as Category[][])
-
-  const handleClose = () => setShowModal(false)
+  const handleClose = () => {
+    setShowModal(false)
+    setProduct({} as Productofinal)
+  }
   const handleShow = (product: Productofinal) => {
     setProduct(product)
     setShowModal(true)
   }
 
-  useEffect(() => {
-    setCartQuantity(getCartQuantity())
-    _setPage(1)
-  }, [category])
-
   const handleCloseCart = () => setCartShow(false)
 
   return (
     <Fragment>
-      <ModalProduct product={product} handleClose={handleClose} show={showModal} />
-      <CheckCart show={cartShow} handleClose={handleCloseCart} />
+      <ModalProduct product={product} handleClose={handleClose} show={showModalProduct} />
+      <CheckCart show={cartShow} handleClose={handleCloseCart} setQty={setCartQuantity} />
+      <ModalHeadquarter show={headquarterShow} handleClose={() => setHeadquarterShow(false)} setHeadquarter={setHeadquarter} />
 
       <Navbar expand='lg' className={'bg-white'} sticky="top">
         <Container className="d-flex align-items-center">
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="/">
             <img src="/logo.png" alt="" className="img-fluid" width={200} />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <SearchInput />
           <Navbar.Collapse id="basic-navbar-nav" className="d-flex align-items-center justify-content-between">
-            <Sedes headquarter={headquarter} setHeadquarterShow={setShowHeadquarterModal} />
+            <Sedes headquarter={headquarter} setHeadquarterShow={setHeadquarterShow} />
             <Button variant="white" className="d-flex align-items-center" onClick={() => setCartShow(true)}>
               <i className="bi bi-cart-fill text-warning fs-8 mt-0" />
               <span className="badge px-2 py-1 fw-bold bg-warning text-white mb-0">
@@ -109,8 +104,6 @@ export const Shop = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-
-      <CarouselComponent />
 
       <CarouselCategories categories={categories} category={category} setCategory={setCategory} />
 
@@ -132,9 +125,9 @@ export const Shop = () => {
 
               <div className="text-center mt-0 mb-5">
                 <Pagination>
-                  {page > 1 && <Pagination.Item onClick={() => _setPage(page - 1)}>{page - 1}</Pagination.Item>}
+                  {page > 1 && <Pagination.Item onClick={() => setPage(page - 1)}>{page - 1}</Pagination.Item>}
                   <Pagination.Item active>{page}</Pagination.Item>
-                  <Pagination.Item onClick={() => _setPage(page + 1)}>{page + 1}</Pagination.Item>
+                  <Pagination.Item onClick={() => setPage(page + 1)}>{page + 1}</Pagination.Item>
                 </Pagination>
               </div>
             </div>

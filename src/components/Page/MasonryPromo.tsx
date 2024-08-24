@@ -1,6 +1,8 @@
-import { getPromoImage } from "@/utils/checkImage"
+import { TipoImagen } from "@/interfaces/TipoImagenEnum"
+import { getImage } from "@/utils/checkImage"
 import { useEffect, useMemo, useState } from "preact/hooks"
 import { Col, Container, Row } from "react-bootstrap"
+import { getDefaultImage } from "../Admin/PromoImage"
 
 interface Item {
     id: number
@@ -43,8 +45,19 @@ export const MasonryPromo = () => {
             {images?.map((row, index) => (
                 <Row key={index}>
                     {row.map((col, index) => (
-                        <Col key={index}>
-                            <PromoImage image={col} />
+                        <Col key={index} className="mb-4">
+                            {
+                                col === 'default' ? (
+                                    <img
+                                        src={getDefaultImage(row.length)}
+                                        alt=""
+                                        srcset=""
+                                        className='w-100 h-100 img-fluid'
+                                    />
+                                ) : (
+                                    <PromoImage image={col} />
+                                )
+                            }
                         </Col>
                     ))}
                 </Row>
@@ -60,7 +73,7 @@ const PromoImage: preact.FunctionalComponent<{ image: string }> = ({ image }) =>
     useEffect(() => {
         const fetchImage = async () => {
             try {
-                const imagePath = await getPromoImage(extensions, image);
+                const imagePath = await getImage(extensions, image, TipoImagen.PROMO);
                 setImageSrc(imagePath);
             } catch (error) {
                 console.error('Error fetching image:', error);

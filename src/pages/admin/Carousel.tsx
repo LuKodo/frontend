@@ -1,34 +1,64 @@
 import { useMemo, useState } from "preact/hooks"
-import { Category } from "@/interfaces/Categoria"
-import { Card } from "react-bootstrap"
-import { Template } from "./Template"
-
-interface result {
-    results: Category[]
-    total: number
-    totalPages: number
-}
+import { Button, Card, Form } from "react-bootstrap"
+import { Template } from "@/pages/admin/Template"
+import { Carrusel } from "@/interfaces/Carrusel"
+import CarruselImage from "@/components/Admin/CarruselImage"
 
 export const Carousel = () => {
-    const [_categories, setCategories] = useState<result>({} as result)
-    const [page, _setPage] = useState(1)
-    const [limit, _setLimit] = useState(10)
+    const [items, setItems] = useState<Carrusel[]>([] as Carrusel[])
+    const [reload, setReload] = useState(false)
+
+    const fetchItems = async () => {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/carousel`)
+        const data = await response.json()
+
+        setItems(data)
+    }
 
     useMemo(() => {
-        const fetchCategories = async () => {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/categoria/${page}/${limit}`)
-            const data = await response.json()
-
-            setCategories(data)
+        fetchItems()
+        if (reload) {
+            setReload(false)
         }
-        fetchCategories()
-    }, [page, limit])
+    }, [reload])
+
+    const addSlide = () => {
+        const newSlide: Carrusel = {
+            id: 0,
+            order: items?.length ? items[items.length - 1].order + 1 : 1,
+            imageName: 'default'
+        }
+
+        setItems([...items, newSlide])
+    }
 
     return (
         <Template>
-            <Card>
-                a
-            </Card>
+            {
+                items.length > 0 ? items?.map((item) => {
+                    return (
+                        <Card key={item.id} className={'mb-3'}>
+                            <Card.Body>
+                                <CarruselImage nombre={item.imageName} reload={reload} />
+                            </Card.Body>
+                            <Card.Footer>
+                                <Button onClick={addSlide} size="sm" variant="warning">
+                                    <i className="bi bi-plus" /> Agregar slide
+                                </Button>
+
+
+                                <Form.Control type="file" size="sm" accept={'.png, .jpg, .jpeg'} />
+                            </Card.Footer>
+                        </Card>
+                    )
+                }) : (
+                    <Button onClick={addSlide} size="sm" variant="warning">
+                        <i className="bi bi-plus" /> Agregar slide
+                    </Button>
+                )
+            }
+
+
         </Template>
     )
 }

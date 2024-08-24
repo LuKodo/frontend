@@ -1,17 +1,18 @@
 import { useEffect, useState } from "preact/hooks";
-import { checkImageExists } from "@/utils/checkImage";
+import { getImage } from "@/utils/checkImage";
+import { TipoImagen } from "@/interfaces/TipoImagenEnum";
 
 const ImageCart = ({ imageName }: { imageName: string }) => {
-  const extensions = ['webp', 'png'];
+  const extensions = ['webp', 'png', 'jpg', 'jpeg'];
   const [imagePath, setImagePath] = useState('');
 
   useEffect(() => {
     const get = async () => {
-      const path = await checkImageExists(extensions, imageName);
+      const path = await getImage(extensions, imageName, TipoImagen.PRODUCT);
       if (path) {
         setImagePath(path);
       } else {
-        setImagePath('https://raw.githubusercontent.com/LuKodo/market_frontend/main/public/picture/default.jpg');
+        setImagePath('https://placehold.co/50x50/png');
       }
     }
 

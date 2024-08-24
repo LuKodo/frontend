@@ -16,9 +16,6 @@ const fetchCategories = async (page: number, limit: number): Promise<result> => 
     return await response.json()
 }
 
-
-
-
 export const Categories = () => {
     const [categories, setCategories] = useState<result>({} as result)
     const [category, setCategory] = useState<Category>({} as Category)
@@ -68,7 +65,7 @@ export const Categories = () => {
                     <Card.Title>Categorías</Card.Title>
                 </Card.Header>
                 <Card.Body>
-                    <table className="table table-sm table-striped">
+                    <table className="table table-sm">
                         <thead>
                             <tr>
                                 <th>ID</th>

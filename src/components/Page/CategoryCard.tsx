@@ -1,7 +1,9 @@
 import { Category } from "@/interfaces/Categoria"
-import { getCategoryImage } from "@/utils/checkImage"
+import { TipoImagen } from "@/interfaces/TipoImagenEnum"
+import { getImage } from "@/utils/checkImage"
 import { useEffect, useState } from "preact/hooks"
 import { Card } from "react-bootstrap"
+import { useLocation } from "wouter"
 
 interface CategoryProps {
     category: string
@@ -9,8 +11,19 @@ interface CategoryProps {
 }
 
 export const CategoryCard = (props: CategoryProps) => {
+    const [_location, navigate] = useLocation();
+
+    const goToShop = (category: string) => {
+        navigate(`/shop/${category}`, { replace: true })
+    }
+
+    const setCategory = (category: string) => {
+        props.setCategory(category)
+        goToShop(category)
+    }
+
     return (
-        <Card class="overflow-hidden" onClick={() => props.setCategory(props.category)} style={{ cursor: 'pointer', height: '100px'}}>
+        <Card class="overflow-hidden" onClick={() => setCategory(props.category)} style={{ cursor: 'pointer', height: '100px' }}>
             <div class="el-card-item pb-3">
                 <div class="
                       el-card-avatar
@@ -23,7 +36,7 @@ export const CategoryCard = (props: CategoryProps) => {
                       d-flex
                       justify-content-center
                     ">
-                    <CategoryImage category={{descripcion: props.category, incremento: '', estado: true}} />
+                    <CategoryImage category={{ descripcion: props.category, incremento: '', estado: true }} />
                 </div>
                 <div class="el-card-content text-center">
                     <p class="mb-0 small">{props.category}</p>
@@ -40,7 +53,7 @@ const CategoryImage: preact.FunctionalComponent<{ category: Category }> = ({ cat
     useEffect(() => {
         const fetchImage = async () => {
             try {
-                const imagePath = await getCategoryImage(extensions, category.descripcion);
+                const imagePath = await getImage(extensions, category.descripcion, TipoImagen.CATEGORY)
                 setImageSrc(imagePath);
             } catch (error) {
                 console.error('Error fetching image:', error);
@@ -57,7 +70,7 @@ const CategoryImage: preact.FunctionalComponent<{ category: Category }> = ({ cat
             loading="lazy"
             height='100px'
             class="d-block position-relative rounded img-responsive"
-            onError={() => setImageSrc('/path/to/default/image.jpg')} // Ruta a una imagen por defecto
+            onError={() => setImageSrc('https://placehold.co/100x100/png')} // Ruta a una imagen por defecto
         />
     );
 };

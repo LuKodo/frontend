@@ -3,7 +3,7 @@ import { Fragment } from "preact/jsx-runtime";
 import { checkImageExists } from "@/utils/checkImage";
 
 const ImageDisplay = ({ imageName }: { imageName: string }) => {
-  const extensions = ['webp', 'png'];
+  const extensions = ['webp', 'png', 'jpg', 'jpeg'];
   const [imagePath, setImagePath] = useState('');
   const [error, setError] = useState(false);
 

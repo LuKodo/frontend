@@ -1,11 +1,12 @@
 import { useEffect, useState } from "preact/hooks";
 import { Productofinal } from "@/interfaces/ProductoFinal"
 import { formatPrice } from "@/utils/formatPrice"
-import { checkImageExists } from "@/utils/checkImage";
+import { getImage } from "@/utils/checkImage";
 import { Fragment } from "preact/jsx-runtime";
 import { FormControl, InputGroup, Modal } from "react-bootstrap";
 import { addToCart } from "@/utils/cart";
 import Swal from "sweetalert2";
+import { TipoImagen } from "@/interfaces/TipoImagenEnum";
 
 interface Props {
     product: Productofinal
@@ -44,7 +45,7 @@ export const ModalProduct: preact.FunctionalComponent<Props> = ({ product, handl
     }
 
     const imagePathget = async () => {
-        const path = await checkImageExists(extensions, product.codigo);
+        const path = await getImage(extensions, product.codigo, TipoImagen.PRODUCT);
         setImagePath(path)
     }
 
@@ -60,7 +61,7 @@ export const ModalProduct: preact.FunctionalComponent<Props> = ({ product, handl
                     <div class="container">
                         <div class="row">
                             <div class="col-7">
-                                <img class="img-fluid" src={imagePath} alt="" />
+                                <img class="img-fluid" src={!imagePath ? 'https://placehold.co/273x209/png' : imagePath} alt="" />
                             </div>
                             <div class="col-5">
                                 <div class="d-flex flex-column gap-2">

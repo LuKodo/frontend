@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap"
 import { Sede } from "@/interfaces/Sede"
 import { useMemo, useState } from "react"
+import { getHeadquarter } from "@/utils/cart"
 
 interface Props {
     headquarter: string,
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export const Sedes: preact.FunctionalComponent<Props> = ({ headquarter, setHeadquarterShow }) => {
+    const [show, setShow] = useState(false);
     const [data, setData] = useState([] as Sede[])
     useMemo(() => {
         const fetchSedes = async () => {
@@ -17,13 +19,19 @@ export const Sedes: preact.FunctionalComponent<Props> = ({ headquarter, setHeadq
                 throw new Error(response.statusText);
             }
 
+            const headquarter = getHeadquarter()
+            if (headquarter) {
+                setShow(false)
+            } else {
+                setShow(true)
+            }
+
             const data = await response.json()
             setData(data)
         }
         fetchSedes()
     }, [])
 
-    const [show, setShow] = useState(true);
 
     return (
         <div className="position-relative">

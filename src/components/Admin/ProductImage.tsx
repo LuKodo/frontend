@@ -1,30 +1,28 @@
-import { Category } from '@/interfaces/Categoria';
 import { TipoImagen } from '@/interfaces/TipoImagenEnum';
 import { getImage } from '@/utils/checkImage';
 import { useEffect, useState } from 'preact/hooks';
 
-const CategoryImage: preact.FunctionalComponent<{ category: Category, reload?: boolean }> = ({ category, reload }) => {
-    const extensions = ['webp', 'png', 'jpg'];
+const ProductImage: preact.FunctionalComponent<{ nombre: string, reload?: boolean }> = ({ nombre, reload }) => {
+    const extensions = ['webp', 'png', 'jpg', 'jpeg'];
     const [imageSrc, setImageSrc] = useState('');
 
     useEffect(() => {
         const fetchImage = async () => {
             try {
-                const imagePath = await getImage(extensions, category.descripcion, TipoImagen.CATEGORY);
+                const imagePath = await getImage(extensions, nombre, TipoImagen.PRODUCT);
                 setImageSrc(imagePath);
             } catch (error) {
                 console.error('Error fetching image:', error);
-                setImageSrc('https://placehold.co/100x100/png')
             }
         };
 
         fetchImage();
-    }, [category.descripcion, reload]);
+    }, [nombre, reload]);
 
     return (
         <img
             src={imageSrc}
-            alt={category.descripcion}
+            alt={nombre || 'Product Image'}
             width="50"
             height="50"
             onError={() => setImageSrc('https://placehold.co/100x100/png')}
@@ -32,4 +30,4 @@ const CategoryImage: preact.FunctionalComponent<{ category: Category, reload?: b
     );
 };
 
-export default CategoryImage;
+export default ProductImage;

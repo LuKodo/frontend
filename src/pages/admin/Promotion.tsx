@@ -1,7 +1,7 @@
 import { useMemo, useState } from "preact/hooks"
-import { Col, Row } from "react-bootstrap"
+import { Col, Container, Row } from "react-bootstrap"
 import { Template } from "./Template"
-import PromoImage from "@/components/Admin/PromoImage"
+import PromoImage, { getDefaultImage } from "@/components/Admin/PromoImage"
 
 interface Item {
     id: number
@@ -67,13 +67,13 @@ export const Promotion = () => {
     const addRow = () => {
         const newRow = {
             id: 0,
-            rowIndex: Math.max(...rows)+1,
+            rowIndex: Math.max(...rows) + 1,
             columnIndex: 0,
             imageName: "default",
         };
         handleSubmit({
             id: "0",
-            rowIndex: (Math.max(...rows)+1).toString(),
+            rowIndex: (Math.max(...rows) + 1).toString(),
             columnIndex: "0",
             imageName: "default",
             image: null
@@ -137,45 +137,64 @@ export const Promotion = () => {
 
     return (
         <Template>
-            {
-                rows.map((row) => (
-                    <Row className={"mb-3"} key={row.toString()}>
-                        {data.map((column, columnIndex) => (
-                            row === column.rowIndex && (
-                                <Col key={columnIndex} md={data.filter((row) => row.rowIndex === column.rowIndex).length === 6 ? 2 : data.filter((row) => row.rowIndex === column.rowIndex).length === 5 ? 2 : data.filter((row) => row.rowIndex === column.rowIndex).length === 4 ? 3 : data.filter((row) => row.rowIndex === column.rowIndex).length === 3 ? 4 : data.filter((row) => row.rowIndex === column.rowIndex).length === 2 ? 6 : 12}>
-                                    <div className="border p-4 gap-1 d-flex flex-column justify-content-center align-items-center" style={{ height: "100%", maxHeight: "400px" }}>
-                                        <PromoImage image={column.imageName} />
+            <Container>
+                {
+                    rows.map((row) => (
+                        <Row key={row.toString()}>
+                            {data.map((column, columnIndex) => (
+                                row === column.rowIndex && (
+                                    <Col
+                                        className="mb-4"
+                                        key={columnIndex}
+                                        md={data.filter((row) => row.rowIndex === column.rowIndex).length === 6 ? 2 : data.filter((row) => row.rowIndex === column.rowIndex).length === 5 ? 2 : data.filter((row) => row.rowIndex === column.rowIndex).length === 4 ? 3 : data.filter((row) => row.rowIndex === column.rowIndex).length === 3 ? 4 : data.filter((row) => row.rowIndex === column.rowIndex).length === 2 ? 6 : 12}
+                                    >
+                                        <div className="border p-4 gap-1 d-flex flex-column justify-content-center align-items-center" style={{ height: "100%", maxHeight: "400px" }}>
+                                            {
+                                                column.imageName === 'default' ? (
+                                                    <img
+                                                        src={getDefaultImage(data.filter((row) => row.rowIndex === column.rowIndex).length)}
+                                                        alt=""
+                                                        srcset=""
+                                                        className='w-100 h-75 img-fluid'
+                                                    />
+                                                ) : (
+                                                    <PromoImage image={column.imageName} />
+                                                )
+                                            }
 
-                                        <div className="d-flex gap-2">
-                                            <input
-                                                type="file"
-                                                accept="image/*"
-                                                onChange={(event) => handleImageChange(column.rowIndex, column.columnIndex, event)}
-                                                id={`image-${column.rowIndex}-${column.columnIndex}`}
-                                            />
+                                            <div className="d-flex flex-column gap-2 w-50">
+                                                <input
+                                                    type="file"
+                                                    className="form-control form-control-sm bg-warning text-white"
+                                                    accept="image/*"
+                                                    onChange={(event) => handleImageChange(column.rowIndex, column.columnIndex, event)}
+                                                    id={`image-${column.rowIndex}-${column.columnIndex}`}
+                                                />
 
-                                            <button
-                                                className="btn btn-sm btn-warning"
-                                                onClick={() => addColumn(column.rowIndex)}
-                                            >
-                                                <i className="bi bi-layout-sidebar-inset-reverse" />
-                                            </button>
+                                                <button
+                                                    className="btn btn-sm btn-warning"
+                                                    onClick={() => addColumn(column.rowIndex)}
+                                                >
+                                                    <i className="bi bi-layout-sidebar-inset-reverse" /> Nueva Columna
+                                                </button>
 
-                                            <button
-                                                className="btn btn-sm btn-warning"
-                                                onClick={() => removeColumn(column.rowIndex, column.columnIndex)}
-                                            >
-                                                <i className="bi bi-trash-fill" />
-                                            </button>
+                                                <button
+                                                    className="btn btn-sm btn-warning"
+                                                    onClick={() => removeColumn(column.rowIndex, column.columnIndex)}
+                                                >
+                                                    <i className="bi bi-trash-fill" /> Eliminar Columna
+                                                </button>
+                                            </div>
+
                                         </div>
+                                    </Col>
+                                )
+                            ))}
+                        </Row>
+                    ))
+                }
+            </Container>
 
-                                    </div>
-                                </Col>
-                            )
-                        ))}
-                    </Row>
-                ))
-            }
             <Row className={"mb-3"}>
                 <Col className="d-flex justify-content-center gap-2 align-items-center">
                     <button
