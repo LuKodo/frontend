@@ -25,7 +25,7 @@ const CarruselImage: preact.FunctionalComponent<{ nombre: string, reload?: boole
             alt={nombre || 'Product Image'}
             width="100%"
             height="250px"
-            onError={() => setImageSrc('/path/to/default/image.jpg')}
+            onError={() => setImageSrc('https://placehold.co/1427x250/png')}
         />
     );
 };

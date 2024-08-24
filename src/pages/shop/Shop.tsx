@@ -13,6 +13,7 @@ import { CarouselCategories } from "@/components/Page/CarouselCategories"
 import { Category } from "@/interfaces/Categoria"
 import { useParams } from "wouter"
 import { ModalHeadquarter } from "@/components/Page/ModalHeadquarter"
+import { CarouselComponent } from "@/components/Page/Carousel"
 
 function dividirEnGrupos(array: Category[]) {
   const gruposCompletos = Math.floor(array.length / 6);
@@ -104,6 +105,8 @@ export const Shop = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
+      <CarouselComponent />
 
       <CarouselCategories categories={categories} category={category} setCategory={setCategory} />
 

@@ -22,14 +22,66 @@ export const Carousel = () => {
         }
     }, [reload])
 
-    const addSlide = () => {
+    const addSlide = async () => {
         const newSlide: Carrusel = {
             id: 0,
             order: items?.length ? items[items.length - 1].order + 1 : 1,
             imageName: 'default'
         }
 
+        await fetch(`${import.meta.env.VITE_API_URL}/carousel`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newSlide)
+        })
+
         setItems([...items, newSlide])
+    }
+
+    const handleSubmit = async (e: Event, filename: string, id: number) => {
+        e.preventDefault()
+        const newSlide = {
+            id: id,
+            imageName: filename
+        }
+
+        const target = e.target as HTMLInputElement
+        try {
+            const data = new FormData()
+
+            if (target && target.files && target.files[0]) {
+                data.append('image', target.files[0])
+            }
+
+            await fetch(`${import.meta.env.VITE_API_URL}/files/${filename.trim()}/carousel`, {
+                method: 'POST',
+                body: data,
+            }).then(res => res.json()).then(res => console.log(res))
+
+            await fetch(`${import.meta.env.VITE_API_URL}/carousel`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newSlide)
+            })
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setReload(true)
+        }
+    }
+
+    const removeSlide = async (id: number) => {
+        try {
+            await fetch(`${import.meta.env.VITE_API_URL}/carousel/delete/${id}`).then(res => res.json()).then(res => console.log(res))
+            const newData = items.filter((row) => !(row.id === id))
+            setItems(newData);
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     return (
@@ -41,13 +93,21 @@ export const Carousel = () => {
                             <Card.Body>
                                 <CarruselImage nombre={item.imageName} reload={reload} />
                             </Card.Body>
-                            <Card.Footer>
+                            <Card.Footer className="d-flex justify-content-center gap-2">
                                 <Button onClick={addSlide} size="sm" variant="warning">
                                     <i className="bi bi-plus" /> Agregar slide
                                 </Button>
+                                <Button onClick={() => removeSlide(item.id)} size="sm" variant="warning">
+                                    <i className="bi bi-trash" /> Eliminar slide
+                                </Button>
 
-
-                                <Form.Control type="file" size="sm" accept={'.png, .jpg, .jpeg'} />
+                                <Form.Control
+                                    type="file"
+                                    onChange={(e) => handleSubmit(e, `${item.imageName}-${item.id}`, item.id)}
+                                    size="sm"
+                                    className="w-25"
+                                    accept={'.png, .jpg, .jpeg'}
+                                />
                             </Card.Footer>
                         </Card>
                     )
