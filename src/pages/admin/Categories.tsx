@@ -1,18 +1,24 @@
 import { useMemo, useState } from "preact/hooks"
-import { Category } from "@/interfaces/Categoria"
+import { Category } from "@interfaces/Categoria"
 import { Button, ButtonGroup, Card, Pagination } from "react-bootstrap"
 import { Template } from "./Template"
-import { ModalCategory } from "@/components/Admin/ModalCategory"
-import CategoryImage from "@/components/Admin/CategoryImage"
+import { ModalCategory } from "@components/Admin/ModalCategory"
+import CategoryImage from "@components/Admin/CategoryImage"
 
 interface result {
     results: Category[]
     total: number
-    totalPages: number
+    pages: number
 }
 
 const fetchCategories = async (page: number, limit: number): Promise<result> => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/categoria/${page}/${limit}`)
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/category`, {
+        method: "POST",
+        body: JSON.stringify({
+            "limit": limit,
+            "offset": page
+        })
+    })
     return await response.json()
 }
 
@@ -41,13 +47,12 @@ export const Categories = () => {
 
     const hideCategory = (id: string, categoria: Category) => {
         const fetchData = async () => {
-            await fetch(`${import.meta.env.VITE_API_URL}/categoria/${id}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+            await fetch(`${import.meta.env.VITE_API_URL}/category/upsert`, {
+                method: "POST",
                 body: JSON.stringify({
                     estado: !categoria.estado,
+                    id: id,
+                    descripcion: categoria.descripcion
                 })
             })
 
@@ -122,7 +127,7 @@ export const Categories = () => {
                         }
                         <Pagination.Item>{page}</Pagination.Item>
                         {
-                            page < categories.totalPages && <Pagination.Next onClick={() => setPage(page + 1)} />
+                            page < categories.pages && <Pagination.Next onClick={() => setPage(page + 1)} />
                         }
                     </Pagination>
                 </Card.Footer>

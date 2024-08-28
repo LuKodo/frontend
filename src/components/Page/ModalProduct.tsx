@@ -1,12 +1,12 @@
 import { useEffect, useState } from "preact/hooks";
-import { Productofinal } from "@/interfaces/ProductoFinal"
-import { formatPrice } from "@/utils/formatPrice"
-import { getImage } from "@/utils/checkImage";
+import { Productofinal } from "@interfaces/ProductoFinal"
+import { formatPrice } from "@utils/formatPrice"
+import { getImage } from "@utils/checkImage";
 import { Fragment } from "preact/jsx-runtime";
 import { FormControl, InputGroup, Modal } from "react-bootstrap";
-import { addToCart } from "@/utils/cart";
+import { addToCart } from "@utils/cart";
 import Swal from "sweetalert2";
-import { TipoImagen } from "@/interfaces/TipoImagenEnum";
+import { TipoImagen } from "@interfaces/TipoImagenEnum";
 
 interface Props {
     product: Productofinal
@@ -45,7 +45,7 @@ export const ModalProduct: preact.FunctionalComponent<Props> = ({ product, handl
     }
 
     const imagePathget = async () => {
-        const path = await getImage(extensions, product.codigo, TipoImagen.PRODUCT);
+        const path = await getImage(product.codigo, TipoImagen.PRODUCT);
         setImagePath(path)
     }
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "preact/hooks";
-import { getImage } from "@/utils/checkImage";
-import { TipoImagen } from "@/interfaces/TipoImagenEnum";
+import { getImage } from "@utils/checkImage";
+import { TipoImagen } from "@interfaces/TipoImagenEnum";
 
 const ImageCart = ({ imageName }: { imageName: string }) => {
   const extensions = ['webp', 'png', 'jpg', 'jpeg'];
@@ -8,7 +8,7 @@ const ImageCart = ({ imageName }: { imageName: string }) => {
 
   useEffect(() => {
     const get = async () => {
-      const path = await getImage(extensions, imageName, TipoImagen.PRODUCT);
+      const path = await getImage(imageName, TipoImagen.PRODUCT);
       if (path) {
         setImagePath(path);
       } else {

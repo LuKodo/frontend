@@ -1,5 +1,5 @@
-import { TipoImagen } from "@/interfaces/TipoImagenEnum"
-import { getImage } from "@/utils/checkImage"
+import { TipoImagen } from "@interfaces/TipoImagenEnum"
+import { getImage } from "@utils/checkImage"
 import { useEffect, useMemo, useState } from "preact/hooks"
 import { Col, Container, Row } from "react-bootstrap"
 import { getDefaultImage } from "../Admin/PromoImage"
@@ -29,7 +29,15 @@ export const MasonryPromo = () => {
     const [images, setImages] = useState<string[][]>()
 
     const fetchImages = async () => {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/promotion/1/100000`)
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/promotion`,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    "limit": 10,
+                    "offset": 1
+                })
+            }
+        )
         const data = await response.json()
 
         const groupedData = groupByRow(data.results);
@@ -52,7 +60,7 @@ export const MasonryPromo = () => {
                                         src={getDefaultImage(row.length)}
                                         alt=""
                                         srcset=""
-                                        className='w-100 h-100 img-fluid'
+                                        width={"100%"}
                                     />
                                 ) : (
                                     <PromoImage image={col} />
@@ -67,13 +75,12 @@ export const MasonryPromo = () => {
 }
 
 const PromoImage: preact.FunctionalComponent<{ image: string }> = ({ image }) => {
-    const extensions = ['webp', 'png', 'jpg'];
     const [imageSrc, setImageSrc] = useState('');
 
     useEffect(() => {
         const fetchImage = async () => {
             try {
-                const imagePath = await getImage(extensions, image, TipoImagen.PROMO);
+                const imagePath = await getImage(image, TipoImagen.PROMO);
                 setImageSrc(imagePath);
             } catch (error) {
                 console.error('Error fetching image:', error);
@@ -87,7 +94,7 @@ const PromoImage: preact.FunctionalComponent<{ image: string }> = ({ image }) =>
         <img
             src={imageSrc}
             alt={image}
-            className="img-fluid"
+            className="img-fluid w-100"
         />
     );
 };

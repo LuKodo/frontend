@@ -1,4 +1,4 @@
-import { Carrusel } from "@/interfaces/Carrusel"
+import { Carrusel } from "@interfaces/Carrusel"
 import { useMemo, useState } from "preact/hooks"
 import { Carousel } from "react-bootstrap"
 import CarruselImage from "../Admin/CarruselImage"

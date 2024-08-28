@@ -1,7 +1,7 @@
 import { useMemo, useState } from "preact/hooks"
 import { Col, Container, FormSelect, Modal, Row } from "react-bootstrap"
-import { Sede } from "@/interfaces/Sede"
-import { getHeadquarter, setHeadquarterLocal } from "@/utils/cart"
+import { Sede } from "@interfaces/Sede"
+import { getHeadquarter, setHeadquarterLocal } from "@utils/cart"
 
 interface Props {
     handleClose: Function
@@ -13,7 +13,7 @@ export const ModalHeadquarter: preact.FunctionalComponent<Props> = ({ show, hand
 
     useMemo(() => {
         const fetchCategories = async () => {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/sede`)
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/headquarters`)
             const data = await response.json()
 
             const headquarter = getHeadquarter()

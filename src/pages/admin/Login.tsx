@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@contexts/AuthContext';
 import { useLocation } from 'wouter';
 import { Container, Form } from 'react-bootstrap';
 import Swal from 'sweetalert2';
@@ -21,6 +21,7 @@ const Login = () => {
         }
 
         const logged = await login(username, password);
+
         if (!logged) {
             Swal.fire({
                 icon: 'error',

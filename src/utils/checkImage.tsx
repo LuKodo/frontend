@@ -1,16 +1,11 @@
-export const getImage = async (extensions: string[], imageName: string, type: string) => {
-    let imgUrl = ''
+export const getImage = async (imageName: string, type: string) => {
     try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/files/${type}/${imageName}/${extensions}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/getFile/${imageName}/${type}`);
 
-        if (response.ok) {
-            const blob = await response.blob();
-            const url = URL.createObjectURL(blob);
-            imgUrl = url
+        if (response.ok && response.status === 200) {
+            const data = await response.json();
+            return data.url;
         }
     } catch (err) {
     }
-
-
-    return imgUrl
 };

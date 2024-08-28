@@ -31,12 +31,12 @@ export const ModalCategory: preact.FunctionalComponent<EditCategoryProps> = ({ c
         event.preventDefault()
         try {
             const data = new FormData()
-            data.append('descripcion', formData.description)
+
             if (formData.image) {
-                data.append('image', formData.image)
+                data.append('file', formData.image)
             }
 
-            await fetch(`${import.meta.env.VITE_API_URL}/categoria`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/upload/${formData.description}/categories`, {
                 method: 'POST',
                 body: data,
             }).then(res => res.json()).then(res => console.log(res))

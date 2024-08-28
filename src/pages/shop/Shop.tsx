@@ -1,19 +1,19 @@
 import { useEffect, useMemo, useState } from "preact/hooks"
-import { Productofinal } from "@/interfaces/ProductoFinal"
+import { Productofinal } from "@interfaces/ProductoFinal"
 import { Fragment } from "preact/jsx-runtime"
-import { ModalProduct } from "@/components/Page/ModalProduct"
-import { CheckCart } from "@/components/Page/CheckCart"
-import { getCartQuantity } from "@/utils/cart"
-import { ProductCard } from "@/components/Page/Product"
+import { ModalProduct } from "@components/Page/ModalProduct"
+import { CheckCart } from "@components/Page/CheckCart"
+import { getCartQuantity } from "@utils/cart"
+import { ProductCard } from "@components/Page/Product"
 import { Button, Container, Navbar, Pagination } from "react-bootstrap"
-import { SearchInput } from "@/components/Page/SearchInput"
-import { Sedes } from "@/components/Page/Headquarter"
+import { SearchInput } from "@components/Page/SearchInput"
+import { Sedes } from "@components/Page/Headquarter"
 import { Key } from "preact"
-import { CarouselCategories } from "@/components/Page/CarouselCategories"
-import { Category } from "@/interfaces/Categoria"
-import { useParams } from "wouter"
-import { ModalHeadquarter } from "@/components/Page/ModalHeadquarter"
-import { CarouselComponent } from "@/components/Page/Carousel"
+import { CarouselCategories } from "@components/Page/CarouselCategories"
+import { Category } from "@interfaces/Categoria"
+import { useParams, useSearch } from "wouter"
+import { ModalHeadquarter } from "@components/Page/ModalHeadquarter"
+import { CarouselComponent } from "@components/Page/Carousel"
 
 function dividirEnGrupos(array: Category[]) {
   const gruposCompletos = Math.floor(array.length / 6);
@@ -28,6 +28,7 @@ function dividirEnGrupos(array: Category[]) {
 
 export const Shop = () => {
   const params = useParams();
+  const query = useSearch();
   const [page, setPage] = useState(1)
   const [headquarter, setHeadquarter] = useState('SB')
   const [categories, setCategories] = useState([] as Category[][])
@@ -41,7 +42,33 @@ export const Shop = () => {
 
   useMemo(() => {
     const fetchProductos = async () => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/productofinal?page=${page}&limit=20&sede=${headquarter}&categoria=${params.category}`)
+      let response
+      if (query.split('=')[1] !== undefined) {
+        response = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
+          method: 'POST',
+          body: JSON.stringify(
+            {
+              "limit": 20,
+              "offset": page,
+              "sede": headquarter,
+              "categoria": params.category,
+              "query": query.split('=')[1]
+            }
+          )
+        })
+      } else {
+        response = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
+          method: 'POST',
+          body: JSON.stringify(
+            {
+              "limit": 20,
+              "offset": page,
+              "sede": headquarter,
+              "categoria": params.category,
+            }
+          )
+        })
+      }
 
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -51,11 +78,11 @@ export const Shop = () => {
       setProducts(data)
     }
     fetchProductos()
-  }, [page, params.category])
+  }, [page, params.category, query])
 
   useMemo(() => {
     const fetchCategories = async () => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/categoria`)
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/category`)
       const data = await response.json()
       const newData = dividirEnGrupos(data)
 
@@ -112,7 +139,7 @@ export const Shop = () => {
 
       <div className="container px-5 mt-4">
         <div className='position-relative overflow-hidden'>
-          <div className="shop-part d-flex w-100">
+          <div className="shop-part">
             <div className="row">
               {
                 products.length === 0 ? <div className="text-center">No hay resultados</div>

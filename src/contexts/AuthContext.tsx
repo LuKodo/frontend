@@ -22,17 +22,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const login = async (username: string, password: string) => {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/user`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name: username, password }),
+            body: JSON.stringify({ username, password }),
         })
 
-        if (response.ok && response.status === 201) {
+        if (response.ok && response.status === 200) {
             const data = await response.json()
-            const userData = data;
+
+            const userData = data[0];
             setIsAuthenticated(true);
             setUser(userData);
             localStorage.setItem('user', JSON.stringify(userData));

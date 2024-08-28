@@ -1,8 +1,8 @@
 import { useMemo, useState } from "preact/hooks"
 import { Button, Card, Form } from "react-bootstrap"
-import { Template } from "@/pages/admin/Template"
-import { Carrusel } from "@/interfaces/Carrusel"
-import CarruselImage from "@/components/Admin/CarruselImage"
+import { Template } from "@pages/admin/Template"
+import { Carrusel } from "@interfaces/Carrusel"
+import CarruselImage from "@components/Admin/CarruselImage"
 
 export const Carousel = () => {
     const [items, setItems] = useState<Carrusel[]>([] as Carrusel[])
@@ -23,7 +23,7 @@ export const Carousel = () => {
     }, [reload])
 
     const addSlide = async () => {
-        const newSlide: Carrusel = {
+        const newSlide = {
             id: 0,
             order: items?.length ? items[items.length - 1].order + 1 : 1,
             imageName: 'default'
@@ -31,9 +31,6 @@ export const Carousel = () => {
 
         await fetch(`${import.meta.env.VITE_API_URL}/carousel`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
             body: JSON.stringify(newSlide)
         })
 
@@ -42,30 +39,29 @@ export const Carousel = () => {
 
     const handleSubmit = async (e: Event, filename: string, id: number) => {
         e.preventDefault()
-        const newSlide = {
-            id: id,
-            imageName: filename
-        }
 
+        const categoria = items.filter((row) => row.id === id)[0]
         const target = e.target as HTMLInputElement
+
         try {
             const data = new FormData()
 
             if (target && target.files && target.files[0]) {
-                data.append('image', target.files[0])
+                data.append('file', target.files[0])
             }
 
-            await fetch(`${import.meta.env.VITE_API_URL}/files/${filename.trim()}/carousel`, {
-                method: 'POST',
-                body: data,
-            }).then(res => res.json()).then(res => console.log(res))
-
             await fetch(`${import.meta.env.VITE_API_URL}/carousel`, {
+                method: "POST",
+                body: JSON.stringify({
+                    order: categoria.order,
+                    id: id,
+                    imageName: filename
+                })
+            })
+
+            await fetch(`${import.meta.env.VITE_API_URL}/upload/${filename.trim()}/carousel`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newSlide)
+                body: data
             })
         } catch (error) {
             console.error(error)
@@ -103,7 +99,7 @@ export const Carousel = () => {
 
                                 <Form.Control
                                     type="file"
-                                    onChange={(e) => handleSubmit(e, `${item.imageName}-${item.id}`, item.id)}
+                                    onChange={(e) => handleSubmit(e, `${item.imageName}`, item.id)}
                                     size="sm"
                                     className="w-25"
                                     accept={'.png, .jpg, .jpeg'}

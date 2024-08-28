@@ -1,7 +1,7 @@
 import { useMemo, useState } from "preact/hooks"
 import { Col, Container, Row } from "react-bootstrap"
 import { Template } from "./Template"
-import PromoImage, { getDefaultImage } from "@/components/Admin/PromoImage"
+import PromoImage, { getDefaultImage } from "@components/Admin/PromoImage"
 
 interface Item {
     id: number
@@ -26,39 +26,45 @@ export const Promotion = () => {
 
     useMemo(() => {
         const fetchPromos = async () => {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/promotion/1/100000`)
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/promotion`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    "limit": 1000,
+                    "offset": 1
+                })
+            })
             const data = await response.json()
-            setRows(Array.from(new Set(data.results.map((item: Item) => item.rowIndex))))
-            setData(data.results)
-            setReload(false)
+
+            if (data && data.results) {
+                setRows(Array.from(new Set(data.results.map((item: Item) => item.rowIndex))))
+                setData(data.results)
+                setReload(false)
+            }
         }
         fetchPromos()
     }, [reload])
 
     const handleSubmit = async (formData: ItemFormData) => {
         try {
-            const data = new FormData()
-            data.append('id', formData.id)
-            data.append('rowIndex', formData.rowIndex)
-            data.append('columnIndex', formData.columnIndex)
-            data.append('imageName', formData.imageName)
-
-            if (formData.image) {
-                data.append('image', formData.image)
-            }
-
-            await fetch(`${import.meta.env.VITE_API_URL}/promotion`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/promotion/upsert`, {
                 method: 'POST',
-                body: data,
-            }).then(res => res.json()).then(res => console.log(res))
+                body: JSON.stringify({
+                    "id": formData.id,
+                    "rowIndex": formData.rowIndex,
+                    "columnIndex": formData.columnIndex,
+                    "imageName": formData.imageName
+                }),
+            })
+
+            setReload(true)
         } catch (error) {
             console.error(error)
         }
     }
 
-    const deletePromotion = async (formData: ItemFormData) => {
+    const deletePromotion = async (id: number) => {
         try {
-            await fetch(`${import.meta.env.VITE_API_URL}/promotion/delete/${formData.rowIndex}/${formData.columnIndex}`).then(res => res.json()).then(res => console.log(res))
+            await fetch(`${import.meta.env.VITE_API_URL}/promotion/delete/${id}`).then(res => res.json()).then(res => console.log(res))
         } catch (error) {
             console.error(error)
         }
@@ -67,19 +73,18 @@ export const Promotion = () => {
     const addRow = () => {
         const newRow = {
             id: 0,
-            rowIndex: Math.max(...rows) + 1,
+            rowIndex: rows.length === 0 ? 0 : Math.max(...rows) + 1,
             columnIndex: 0,
             imageName: "default",
         };
         handleSubmit({
             id: "0",
-            rowIndex: (Math.max(...rows) + 1).toString(),
+            rowIndex: rows.length === 0 ? "0" : (Math.max(...rows) + 1).toString(),
             columnIndex: "0",
             imageName: "default",
             image: null
         })
         setData([...data, newRow]);
-        setReload(true)
     };
 
     const addColumn = (rowIndex: number) => {
@@ -107,26 +112,31 @@ export const Promotion = () => {
         });
     };
 
-    const removeColumn = (rowIndex: number, colIndex: number) => {
-        const newData = data.filter((row) => !(row.rowIndex === rowIndex && row.columnIndex === colIndex))
+    const removeColumn = (id: number) => {
+        const newData = data.filter((row) => !(row.id === id))
         setData(newData);
-        deletePromotion({
-            id: "0",
-            rowIndex: (rowIndex).toString(),
-            columnIndex: (colIndex).toString(),
-            imageName: "default",
-            image: null
-        })
+        deletePromotion(id)
     };
 
-    const handleImageChange = (rowIndex: number, colIndex: number, event: Event) => {
+    const handleImageChange = async (item: Item, event: Event) => {
         const target = event.target as HTMLInputElement;
         if (target.files) {
             const name = target.files[0].name
+            const data = new FormData()
+
+            if (target && target.files && target.files[0]) {
+                data.append('file', target.files[0])
+            }
+
+            await fetch(`${import.meta.env.VITE_API_URL}/upload/${name.trim()}/promotion`, {
+                method: 'POST',
+                body: data
+            })
+
             handleSubmit({
-                id: "0",
-                rowIndex: (rowIndex).toString(),
-                columnIndex: (colIndex).toString(),
+                id: String(item.id),
+                rowIndex: (item.rowIndex).toString(),
+                columnIndex: (item.columnIndex).toString(),
                 imageName: name,
                 image: target.files[0]
             })
@@ -167,7 +177,7 @@ export const Promotion = () => {
                                                     type="file"
                                                     className="form-control form-control-sm bg-warning text-white"
                                                     accept="image/*"
-                                                    onChange={(event) => handleImageChange(column.rowIndex, column.columnIndex, event)}
+                                                    onChange={(event) => handleImageChange(column, event)}
                                                     id={`image-${column.rowIndex}-${column.columnIndex}`}
                                                 />
 
@@ -180,7 +190,7 @@ export const Promotion = () => {
 
                                                 <button
                                                     className="btn btn-sm btn-warning"
-                                                    onClick={() => removeColumn(column.rowIndex, column.columnIndex)}
+                                                    onClick={() => removeColumn(column.id)}
                                                 >
                                                     <i className="bi bi-trash-fill" /> Eliminar Columna
                                                 </button>

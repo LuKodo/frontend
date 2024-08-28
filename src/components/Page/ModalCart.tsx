@@ -1,5 +1,5 @@
 import React from 'react';
-import { Productofinal } from '@/interfaces/ProductoFinal';
+import { Productofinal } from '@interfaces/ProductoFinal';
 import { Modal } from 'react-bootstrap';
 
 interface CartProps {

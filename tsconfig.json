@@ -9,9 +9,14 @@
     }
   ],
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "@/*": ["src/*"],
+      "@assets/*" : ["./assets/*"],
+      "@components/*": ["./components/*"],
+      "@interfaces/*" : ["./interfaces/*"],
+      "@contexts/*" : ["./contexts/*"],
+      "@pages/*" : ["./pages/*"],
+      "@utils/*" : ["./utils/*"]
     }
   }
 }

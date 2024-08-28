@@ -1,5 +1,5 @@
-import { TipoImagen } from "@/interfaces/TipoImagenEnum";
-import { getImage } from "@/utils/checkImage";
+import { TipoImagen } from "@interfaces/TipoImagenEnum";
+import { getImage } from "@utils/checkImage";
 import { useEffect, useState } from "preact/hooks";
 
 const PromoImage: preact.FunctionalComponent<{ image: string }> = ({ image }) => {
@@ -9,7 +9,7 @@ const PromoImage: preact.FunctionalComponent<{ image: string }> = ({ image }) =>
     useEffect(() => {
         const fetchImage = async () => {
             try {
-                const imagePath = await getImage(extensions, image, TipoImagen.PROMO);
+                const imagePath = await getImage(image, TipoImagen.PROMO);
                 setImageSrc(imagePath);
             } catch (error) {
                 console.error('Error fetching image:', error);

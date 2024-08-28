@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap"
-import { Sede } from "@/interfaces/Sede"
+import { Sede } from "@interfaces/Sede"
 import { useMemo, useState } from "react"
-import { getHeadquarter } from "@/utils/cart"
+import { getHeadquarter } from "@utils/cart"
 
 interface Props {
     headquarter: string,
@@ -13,7 +13,7 @@ export const Sedes: preact.FunctionalComponent<Props> = ({ headquarter, setHeadq
     const [data, setData] = useState([] as Sede[])
     useMemo(() => {
         const fetchSedes = async () => {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/sede`)
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/headquarters`)
 
             if (!response.ok) {
                 throw new Error(response.statusText);

@@ -1,4 +1,4 @@
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@contexts/AuthContext";
 import { Fragment } from "preact/jsx-runtime"
 import { Button, Col, Container, Row } from "react-bootstrap"
 import { useLocation } from "wouter";

@@ -1,16 +1,43 @@
 import { useMemo, useState } from "preact/hooks"
 import { Card, Col, FormLabel, FormSelect, Pagination, Row } from "react-bootstrap"
 import { Template } from "./Template"
-import { Productofinal } from "@/interfaces/ProductoFinal"
-import { Sede } from "@/interfaces/Sede"
-import ProductImage from "@/components/Admin/ProductImage"
+import { Productofinal } from "@interfaces/ProductoFinal"
+import { Sede } from "@interfaces/Sede"
+import ProductImage from "@components/Admin/ProductImage"
+import { SearchInputAdmin } from "@components/Page/SearchInput"
+import { useSearch } from "wouter"
 
-const fetchDataProducts = async (page: number, limit: number, headquarter: string): Promise<Productofinal[]> => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/productofinal?page=${page}&limit=${limit}&sede=${headquarter}&categoria=all`)
+const fetchDataProducts = async (page: number, limit: number, headquarter: string, query: string): Promise<Productofinal[]> => {
+    let response
+    if (query !== '') {
+        response = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
+            method: 'POST',
+            body: JSON.stringify(
+                {
+                    "limit": limit,
+                    "offset": page,
+                    "sede": headquarter,
+                    "query": query
+                }
+            )
+        })
+    } else {
+        response = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
+            method: 'POST',
+            body: JSON.stringify(
+                {
+                    "limit": limit,
+                    "offset": page,
+                    "sede": headquarter,
+                }
+            )
+        })
+    }
     return await response.json()
 }
 
 export const Products = () => {
+    const query = useSearch()
     const [dataProducts, setDataProducts] = useState<Productofinal[]>([] as Productofinal[])
     const [reload, setReload] = useState(false)
     const [page, setPage] = useState(1)
@@ -20,7 +47,7 @@ export const Products = () => {
 
     useMemo(() => {
         const fetSedes = async () => {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/sede`)
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/headquarters`)
             const data = await response.json()
 
             setHeadquarters(data)
@@ -30,7 +57,12 @@ export const Products = () => {
 
     const fetchData = async () => {
         setDataProducts([] as Productofinal[])
-        const data = await fetchDataProducts(page, limit, headquarter)
+        let data
+        if (query.split('=')[1] !== undefined) {
+            data = await fetchDataProducts(page, limit, headquarter, query.split('=')[1])
+        } else {
+            data = await fetchDataProducts(page, limit, headquarter, '')
+        }
         setDataProducts(data)
     }
 
@@ -39,7 +71,7 @@ export const Products = () => {
         if (reload) {
             setReload(false)
         }
-    }, [headquarter, page, reload])
+    }, [headquarter, page, reload, query])
 
     const handleSubmit = async (e: Event, filename: string) => {
         e.preventDefault()
@@ -48,10 +80,10 @@ export const Products = () => {
             const data = new FormData()
 
             if (target && target.files && target.files[0]) {
-                data.append('image', target.files[0])
+                data.append('file', target.files[0])
             }
 
-            await fetch(`${import.meta.env.VITE_API_URL}/files/${filename.trim()}`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/upload/${filename.trim()}/products`, {
                 method: 'POST',
                 body: data,
             }).then(res => res.json()).then(res => console.log(res))
@@ -65,7 +97,7 @@ export const Products = () => {
     return (
         <Template>
             <Row className="mb-4">
-                <Col md={{ offset: 9, span: 3 }}>
+                <Col md={{ offset: 6, span: 3 }}>
                     <FormLabel>Sede</FormLabel>
                     <FormSelect onChange={(e) => {
                         const target = e.target as HTMLSelectElement
@@ -79,6 +111,10 @@ export const Products = () => {
                             ))
                         }
                     </FormSelect>
+                </Col>
+                <Col>
+                    <FormLabel>Buscar</FormLabel>
+                    <SearchInputAdmin />
                 </Col>
             </Row>
 

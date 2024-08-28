@@ -1,6 +1,6 @@
-import { Category } from "@/interfaces/Categoria"
-import { TipoImagen } from "@/interfaces/TipoImagenEnum"
-import { getImage } from "@/utils/checkImage"
+import { Category } from "@interfaces/Categoria"
+import { TipoImagen } from "@interfaces/TipoImagenEnum"
+import { getImage } from "@utils/checkImage"
 import { useEffect, useState } from "preact/hooks"
 import { Card } from "react-bootstrap"
 import { useLocation } from "wouter"
@@ -47,13 +47,12 @@ export const CategoryCard = (props: CategoryProps) => {
 }
 
 const CategoryImage: preact.FunctionalComponent<{ category: Category }> = ({ category }) => {
-    const extensions = ['webp', 'png', 'jpg'];
     const [imageSrc, setImageSrc] = useState('');
 
     useEffect(() => {
         const fetchImage = async () => {
             try {
-                const imagePath = await getImage(extensions, category.descripcion, TipoImagen.CATEGORY)
+                const imagePath = await getImage(category.descripcion, TipoImagen.CATEGORY)
                 setImageSrc(imagePath);
             } catch (error) {
                 console.error('Error fetching image:', error);
