@@ -7,7 +7,7 @@ export const SelectCategories = () => {
 
     useMemo(() => {
         const fetchCategories = async () => {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/categoria`)
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/category`)
             const data = await response.json()
 
             setCategories(data)
