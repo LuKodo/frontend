@@ -1,17 +1,17 @@
-import './assets/css/main.css'
+import '@/assets/css/main.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Router, Route } from "wouter";
 
-import { Home } from "./pages/shop/Home";
-import { CheckBill } from "./pages/shop/CheckBill";
-import { Categories } from "./pages/admin/Categories";
-import { Shop } from "./pages/shop/Shop";
-import { Carousel } from './pages/admin/Carousel';
-import { Promotion } from './pages/admin/Promotion';
-import { Products } from './pages/admin/Products';
-import Login from './pages/admin/Login';
-import ProtectedRoute from './components/ProtectedRoute';
-import { AuthProvider } from './contexts/AuthContext';
+import { Home } from "@/pages/shop/Home";
+import { CheckBill } from "@/pages/shop/CheckBill";
+import { Categories } from "@/pages/admin/Categories";
+import { Shop } from "@/pages/shop/Shop";
+import { Carousel } from '@/pages/admin/Carousel';
+import { Promotion } from '@/pages/admin/Promotion';
+import { Products } from '@/pages/admin/Products';
+import Login from '@/pages/admin/Login';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 
 export function App() {

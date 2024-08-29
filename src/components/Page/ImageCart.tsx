@@ -1,9 +1,8 @@
 import { useEffect, useState } from "preact/hooks";
-import { getImage } from "@utils/checkImage";
-import { TipoImagen } from "@interfaces/TipoImagenEnum";
+import { getImage } from "@/utils/checkImage";
+import { TipoImagen } from "@/interfaces/TipoImagenEnum";
 
 const ImageCart = ({ imageName }: { imageName: string }) => {
-  const extensions = ['webp', 'png', 'jpg', 'jpeg'];
   const [imagePath, setImagePath] = useState('');
 
   useEffect(() => {

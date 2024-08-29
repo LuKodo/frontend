@@ -1,6 +1,6 @@
-import { Category } from '@interfaces/Categoria';
-import { TipoImagen } from '@interfaces/TipoImagenEnum';
-import { getImage } from '@utils/checkImage';
+import { Category } from '@/interfaces/Categoria';
+import { TipoImagen } from '@/interfaces/TipoImagenEnum';
+import { getImage } from '@/utils/checkImage';
 import { useEffect, useState } from 'preact/hooks';
 
 const CategoryImage: preact.FunctionalComponent<{ category: Category, reload?: boolean }> = ({ category, reload }) => {

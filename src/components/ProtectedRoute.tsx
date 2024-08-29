@@ -1,4 +1,4 @@
-import { useAuth } from '@contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Route, Redirect } from 'wouter';
 
 interface ProtectedRouteProps {

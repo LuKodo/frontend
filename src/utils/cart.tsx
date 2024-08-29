@@ -1,4 +1,4 @@
-import { Product, Productofinal } from "@interfaces/ProductoFinal";
+import { Product, Productofinal } from "@/interfaces/ProductoFinal";
 
 const cart: Product[] = [];
 

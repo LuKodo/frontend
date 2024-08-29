@@ -1,7 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap"
 import { Dispatch, StateUpdater } from "preact/hooks"
-import { CategoryCard } from "@components/Page/CategoryCard"
-import { Category } from "@interfaces/Categoria"
+import { CategoryCard } from "@/components/Page/CategoryCard"
+import { Category } from "@/interfaces/Categoria"
 
 interface Props {
   category: Category

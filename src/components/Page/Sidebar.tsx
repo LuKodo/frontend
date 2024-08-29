@@ -1,6 +1,6 @@
 import { useMemo, useState } from "preact/hooks"
 import { Fragment } from "preact"
-import { Category } from "@interfaces/Categoria"
+import { Category } from "@/interfaces/Categoria"
 
 export const Sidebar = ({ setCategory, categoryactive }: { setCategory: Function, categoryactive: Category }) => {
     const [categories, setCategories] = useState([] as Category[])

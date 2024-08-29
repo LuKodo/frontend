@@ -1,5 +1,5 @@
-import { TipoImagen } from '@interfaces/TipoImagenEnum';
-import { getImage } from '@utils/checkImage';
+import { TipoImagen } from '@/interfaces/TipoImagenEnum';
+import { getImage } from '@/utils/checkImage';
 import { useEffect, useState } from 'preact/hooks';
 
 const ProductImage: preact.FunctionalComponent<{ nombre: string, reload?: boolean }> = ({ nombre, reload }) => {
@@ -22,13 +22,13 @@ const ProductImage: preact.FunctionalComponent<{ nombre: string, reload?: boolea
 
     return (
         <>
-        <img
-            src={imageSrc !== 'undefined' ? imageSrc : 'https://placehold.co/100x100/png'}
-            alt={nombre || 'Product Image'}
-            width="50"
-            height="50"
-            onError={() => setImageSrc('https://placehold.co/100x100/png')}
-        />
+            <img
+                src={imageSrc !== 'undefined' ? imageSrc : 'https://placehold.co/100x100/png'}
+                alt={nombre || 'Product Image'}
+                width="50"
+                height="50"
+                onError={() => setImageSrc('https://placehold.co/100x100/png')}
+            />
         </>
     );
 };

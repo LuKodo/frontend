@@ -1,5 +1,5 @@
-import { TipoImagen } from "@interfaces/TipoImagenEnum"
-import { getImage } from "@utils/checkImage"
+import { TipoImagen } from "@/interfaces/TipoImagenEnum"
+import { getImage } from "@/utils/checkImage"
 import { useEffect, useMemo, useState } from "preact/hooks"
 import { Col, Container, Row } from "react-bootstrap"
 import { getDefaultImage } from "../Admin/PromoImage"

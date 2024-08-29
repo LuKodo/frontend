@@ -1,7 +1,7 @@
 import { useMemo, useState } from "preact/hooks"
 import { Col, Container, Row } from "react-bootstrap"
 import { Template } from "./Template"
-import PromoImage, { getDefaultImage } from "@components/Admin/PromoImage"
+import PromoImage, { getDefaultImage } from "@/components/Admin/PromoImage"
 
 interface Item {
     id: number

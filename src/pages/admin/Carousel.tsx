@@ -1,8 +1,8 @@
 import { useMemo, useState } from "preact/hooks"
 import { Button, Card, Form } from "react-bootstrap"
-import { Template } from "@pages/admin/Template"
-import { Carrusel } from "@interfaces/Carrusel"
-import CarruselImage from "@components/Admin/CarruselImage"
+import { Template } from "@/pages/admin/Template"
+import { Carrusel } from "@/interfaces/Carrusel"
+import CarruselImage from "@/components/Admin/CarruselImage"
 
 export const Carousel = () => {
     const [items, setItems] = useState<Carrusel[]>([] as Carrusel[])

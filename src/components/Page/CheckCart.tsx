@@ -1,11 +1,11 @@
 import { Button, FormControl, InputGroup, Modal } from "react-bootstrap"
 import { useEffect, useState } from "preact/hooks";
-import { formatPrice } from "@utils/formatPrice";
-import { Product, Productofinal } from "@interfaces/ProductoFinal";
-import { getCart, getCartQuantity, setCart } from "@utils/cart";
+import { formatPrice } from "@/utils/formatPrice";
+import { Product, Productofinal } from "@/interfaces/ProductoFinal";
+import { getCart, getCartQuantity, setCart } from "@/utils/cart";
 import Swal from "sweetalert2";
 import { Link } from "wouter";
-import ImageCart from "@components/Page/ImageCart";
+import ImageCart from "@/components/Page/ImageCart";
 
 export const CheckCart = ({ show, handleClose, setQty }: { show: boolean, handleClose: Function, setQty: Function }) => {
     const [products, setProducts] = useState<Product[]>(getCart());

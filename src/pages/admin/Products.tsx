@@ -1,10 +1,10 @@
 import { useMemo, useState } from "preact/hooks"
 import { Card, Col, FormLabel, FormSelect, Pagination, Row } from "react-bootstrap"
 import { Template } from "./Template"
-import { Productofinal } from "@interfaces/ProductoFinal"
-import { Sede } from "@interfaces/Sede"
-import ProductImage from "@components/Admin/ProductImage"
-import { SearchInputAdmin } from "@components/Page/SearchInput"
+import { Productofinal } from "@/interfaces/ProductoFinal"
+import { Sede } from "@/interfaces/Sede"
+import ProductImage from "@/components/Admin/ProductImage"
+import { SearchInputAdmin } from "@/components/Page/SearchInput"
 import { useSearch } from "wouter"
 
 const fetchDataProducts = async (page: number, limit: number, headquarter: string, query: string): Promise<Productofinal[]> => {

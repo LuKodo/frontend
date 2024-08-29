@@ -1,9 +1,9 @@
 import { useMemo, useState } from "preact/hooks"
-import { Category } from "@interfaces/Categoria"
+import { Category } from "@/interfaces/Categoria"
 import { Button, ButtonGroup, Card, Pagination } from "react-bootstrap"
 import { Template } from "./Template"
-import { ModalCategory } from "@components/Admin/ModalCategory"
-import CategoryImage from "@components/Admin/CategoryImage"
+import { ModalCategory } from "@/components/Admin/ModalCategory"
+import CategoryImage from "@/components/Admin/CategoryImage"
 
 interface result {
     results: Category[]

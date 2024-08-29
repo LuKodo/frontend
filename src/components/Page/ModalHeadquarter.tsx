@@ -1,7 +1,7 @@
 import { useMemo, useState } from "preact/hooks"
 import { Col, Container, FormSelect, Modal, Row } from "react-bootstrap"
-import { Sede } from "@interfaces/Sede"
-import { getHeadquarter, setHeadquarterLocal } from "@utils/cart"
+import { Sede } from "@/interfaces/Sede"
+import { getHeadquarter, setHeadquarterLocal } from "@/utils/cart"
 
 interface Props {
     handleClose: Function

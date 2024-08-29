@@ -1,12 +1,12 @@
 import { useEffect, useState } from "preact/hooks";
-import { Productofinal } from "@interfaces/ProductoFinal"
-import { formatPrice } from "@utils/formatPrice"
-import { getImage } from "@utils/checkImage";
+import { Productofinal } from "@/interfaces/ProductoFinal"
+import { formatPrice } from "@/utils/formatPrice"
+import { getImage } from "@/utils/checkImage";
 import { Fragment } from "preact/jsx-runtime";
 import { FormControl, InputGroup, Modal } from "react-bootstrap";
-import { addToCart } from "@utils/cart";
+import { addToCart } from "@/utils/cart";
 import Swal from "sweetalert2";
-import { TipoImagen } from "@interfaces/TipoImagenEnum";
+import { TipoImagen } from "@/interfaces/TipoImagenEnum";
 
 interface Props {
     product: Productofinal
@@ -15,7 +15,6 @@ interface Props {
 }
 
 export const ModalProduct: preact.FunctionalComponent<Props> = ({ product, handleClose, show }) => {
-    const extensions = ['webp', 'png'];
     const [imagePath, setImagePath] = useState('');
     const [quantity, setQuantity] = useState(1);
 

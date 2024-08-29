@@ -1,14 +1,14 @@
 import { useMemo, useState } from "preact/hooks"
 import { Fragment } from "preact/jsx-runtime"
-import { CheckCart } from "@components/Page/CheckCart"
+import { CheckCart } from "@/components/Page/CheckCart"
 import { Button, Container, Navbar } from "react-bootstrap"
-import { SearchInput } from "@components/Page/SearchInput"
-import { Sedes } from "@components/Page/Headquarter"
-import { ModalHeadquarter } from "@components/Page/ModalHeadquarter"
-import { MasonryPromo } from "@components/Page/MasonryPromo"
-import { CarouselCategories } from "@components/Page/CarouselCategories"
-import { Category } from "@interfaces/Categoria"
-import { getCartQuantity, getHeadquarter } from "@utils/cart"
+import { SearchInput } from "@/components/Page/SearchInput"
+import { Sedes } from "@/components/Page/Headquarter"
+import { ModalHeadquarter } from "@/components/Page/ModalHeadquarter"
+import { MasonryPromo } from "@/components/Page/MasonryPromo"
+import { CarouselCategories } from "@/components/Page/CarouselCategories"
+import { Category } from "@/interfaces/Categoria"
+import { getCartQuantity, getHeadquarter } from "@/utils/cart"
 
 function dividirEnGrupos(array: Category[]) {
   const gruposCompletos = Math.floor(array.length / 6);

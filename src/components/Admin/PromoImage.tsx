@@ -1,9 +1,8 @@
-import { TipoImagen } from "@interfaces/TipoImagenEnum";
-import { getImage } from "@utils/checkImage";
+import { TipoImagen } from "@/interfaces/TipoImagenEnum";
+import { getImage } from "@/utils/checkImage";
 import { useEffect, useState } from "preact/hooks";
 
 const PromoImage: preact.FunctionalComponent<{ image: string }> = ({ image }) => {
-    const extensions = ['webp', 'png', 'jpg', 'jpeg'];
     const [imageSrc, setImageSrc] = useState('');
 
     useEffect(() => {

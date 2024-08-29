@@ -1,4 +1,4 @@
-import { Category } from "@interfaces/Categoria"
+import { Category } from "@/interfaces/Categoria"
 import { useMemo, useState } from "preact/hooks"
 import { FormSelect } from "react-bootstrap"
 

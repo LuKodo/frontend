@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { getImage } from "@utils/checkImage";
-import { formatPrice } from "@utils/formatPrice";
-import { Productofinal } from "@interfaces/ProductoFinal";
-import { TipoImagen } from "@interfaces/TipoImagenEnum";
+import { getImage } from "@/utils/checkImage";
+import { formatPrice } from "@/utils/formatPrice";
+import { Productofinal } from "@/interfaces/ProductoFinal";
+import { TipoImagen } from "@/interfaces/TipoImagenEnum";
 import { getDefaultImage } from "../Admin/PromoImage";
 
 export const ProductCard = ({ product, show }: { product: Productofinal, show: Function }) => {
-    const extensions = ['webp', 'png', 'jpg', 'jpeg'];
     const [imagePath, setImagePath] = useState('');
 
     const imagePathget = async () => {
