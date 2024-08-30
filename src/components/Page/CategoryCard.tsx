@@ -3,6 +3,7 @@ import { TipoImagen } from "@/interfaces/TipoImagenEnum"
 import { getImage } from "@/utils/checkImage"
 import { useEffect, useState } from "preact/hooks"
 import { Card } from "react-bootstrap"
+import { LazyLoadImage } from "react-lazy-load-image-component"
 import { useLocation } from "wouter"
 
 interface CategoryProps {
@@ -36,7 +37,7 @@ export const CategoryCard = (props: CategoryProps) => {
                       d-flex
                       justify-content-center
                     ">
-                    <CategoryImage category={{ descripcion: props.category, incremento: '', estado: true }} />
+                    <CategoryImage category={{ descripcion: props.category, id: '', estado: true }} />
                 </div>
                 <div class="el-card-content text-center">
                     <p class="mb-0 small">{props.category}</p>
@@ -63,13 +64,16 @@ const CategoryImage: preact.FunctionalComponent<{ category: Category }> = ({ cat
     }, [category.descripcion]);
 
     return (
-        <img
+        <LazyLoadImage
+            alt={category.descripcion || 'Product Image'}
+            height="100px"
             src={imageSrc}
-            alt={category.descripcion}
-            loading="lazy"
-            height='100px'
-            class="d-block position-relative rounded img-responsive"
-            onError={() => setImageSrc('https://placehold.co/100x100/png')} // Ruta a una imagen por defecto
+            effect="opacity"
+            wrapperProps={{
+                // If you need to, you can tweak the effect transition using the wrapper style.
+                style: { transitionDelay: "1s" },
+            }}
+            className={"img-fluid"}
         />
     );
 };

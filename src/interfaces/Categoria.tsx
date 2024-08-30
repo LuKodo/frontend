@@ -1,5 +1,5 @@
 export interface Category {
-  incremento: string
+  id: string
   descripcion: string
   estado: boolean
 }

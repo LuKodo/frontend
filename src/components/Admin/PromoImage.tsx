@@ -1,6 +1,7 @@
 import { TipoImagen } from "@/interfaces/TipoImagenEnum";
 import { getImage } from "@/utils/checkImage";
 import { useEffect, useState } from "preact/hooks";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const PromoImage: preact.FunctionalComponent<{ image: string }> = ({ image }) => {
     const [imageSrc, setImageSrc] = useState('');
@@ -19,11 +20,15 @@ const PromoImage: preact.FunctionalComponent<{ image: string }> = ({ image }) =>
     }, [image]);
 
     return (
-        <img
-            src={imageSrc}
-            alt={image}
+        <LazyLoadImage
+            alt={image || 'Product Image'}
             className='w-75 h-75 img-fluid'
-            onError={() => setImageSrc(getDefaultImage(1))}
+            src={imageSrc}
+            effect="opacity"
+            wrapperProps={{
+                // If you need to, you can tweak the effect transition using the wrapper style.
+                style: { transitionDelay: "1s" },
+            }}
         />
     );
 };

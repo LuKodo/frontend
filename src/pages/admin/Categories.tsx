@@ -22,7 +22,7 @@ const fetchCategories = async (page: number, limit: number): Promise<result> => 
     return await response.json()
 }
 
-export const Categories = () => {
+const Categories = () => {
     const [categories, setCategories] = useState<result>({} as result)
     const [category, setCategory] = useState<Category>({} as Category)
     const [showEditModal, setShowEditModal] = useState(false)
@@ -89,7 +89,7 @@ export const Categories = () => {
                             }
                             {categories.total > 0 && categories.results.map((category) => (
                                 <tr>
-                                    <td>{category.incremento}</td>
+                                    <td>{category.id}</td>
                                     <td>{category.descripcion}</td>
                                     <td>
                                         {
@@ -104,7 +104,7 @@ export const Categories = () => {
                                             }}>
                                                 <i className="bi bi-pencil-fill"></i>
                                             </Button>
-                                            <Button variant="danger" size="sm" onClick={() => hideCategory(category.incremento, category)}>
+                                            <Button variant="danger" size="sm" onClick={() => hideCategory(category.id, category)}>
                                                 {
                                                     category.estado ? (
                                                         <i className="bi bi-eye-fill"></i>
@@ -135,3 +135,5 @@ export const Categories = () => {
         </Template>
     )
 }
+
+export default Categories

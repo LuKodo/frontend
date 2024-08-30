@@ -2,6 +2,7 @@ import { Category } from '@/interfaces/Categoria';
 import { TipoImagen } from '@/interfaces/TipoImagenEnum';
 import { getImage } from '@/utils/checkImage';
 import { useEffect, useState } from 'preact/hooks';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const CategoryImage: preact.FunctionalComponent<{ category: Category, reload?: boolean }> = ({ category, reload }) => {
     const [imageSrc, setImageSrc] = useState('');
@@ -21,12 +22,16 @@ const CategoryImage: preact.FunctionalComponent<{ category: Category, reload?: b
     }, [category.descripcion, reload]);
 
     return (
-        <img
+        <LazyLoadImage
+            alt={category.descripcion || 'Product Image'}
+            height="250px"
             src={imageSrc}
-            alt={category.descripcion}
-            width="50"
-            height="50"
-            onError={() => setImageSrc('https://placehold.co/100x100/png')}
+            effect="opacity"
+            wrapperProps={{
+                // If you need to, you can tweak the effect transition using the wrapper style.
+                style: { transitionDelay: "1s" },
+            }}
+            className={"img-fluid rounded shadow-sm"}
         />
     );
 };

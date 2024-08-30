@@ -19,7 +19,7 @@ export const SelectCategories = () => {
         <FormSelect>
             <option value="" disabled selected>Seleccione una categoría</option>
             {categories.map((category) => (
-                <option value={category.incremento}>{category.descripcion}</option>
+                <option value={category.id}>{category.descripcion}</option>
             ))}
         </FormSelect>
     )

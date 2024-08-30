@@ -1,11 +1,11 @@
-import { Button, FormControl, InputGroup, Modal } from "react-bootstrap"
+import { Button, Modal } from "react-bootstrap"
 import { useEffect, useState } from "preact/hooks";
 import { formatPrice } from "@/utils/formatPrice";
 import { Product, Productofinal } from "@/interfaces/ProductoFinal";
 import { getCart, getCartQuantity, setCart } from "@/utils/cart";
-import Swal from "sweetalert2";
 import { Link } from "wouter";
 import ImageCart from "@/components/Page/ImageCart";
+import { NumberInput } from "../NumberInput";
 
 export const CheckCart = ({ show, handleClose, setQty }: { show: boolean, handleClose: Function, setQty: Function }) => {
     const [products, setProducts] = useState<Product[]>(getCart());
@@ -21,16 +21,7 @@ export const CheckCart = ({ show, handleClose, setQty }: { show: boolean, handle
         let newProducts = [];
 
         if (existingProduct) {
-            if (existingProduct.quantity + quantity > (product.nuevo ?? 0)) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'No hay suficientes productos',
-                })
-                return
-            }
-            const newQuantity = existingProduct.quantity + quantity;
-            newProducts = products.map((p: Product) => p.product.codigo === product.codigo ? { ...p, quantity: newQuantity } : p)
+            newProducts = products.map((p: Product) => p.product.codigo === product.codigo ? { ...p, quantity: quantity } : p)
         } else {
             products.push({ product, quantity });
             newProducts = [...products, { product, quantity }];
@@ -84,11 +75,7 @@ export const CheckCart = ({ show, handleClose, setQty }: { show: boolean, handle
                                                             {formatPrice((product.product.precioventageneral ?? 0))}
                                                         </td>
                                                         <td class="w-25">
-                                                            <InputGroup>
-                                                                <InputGroup.Text class="btn btn-success" role="button" onClick={() => addProduct(product.product, -1)}>-</InputGroup.Text>
-                                                                <FormControl value={product.quantity} />
-                                                                <InputGroup.Text class="btn btn-success" role="button" onClick={() => addProduct(product.product, 1)}>+</InputGroup.Text>
-                                                            </InputGroup>
+                                                            <NumberInput initialValue={product.quantity ?? 0} max={(product.product.nuevo ?? 0)} min={1} onChange={(value: number) => addProduct(product.product, value)} />
                                                         </td>
                                                         <td class="shoping__cart__total">
                                                             {formatPrice((product.product.precioventageneral ?? 0) * product.quantity)}
@@ -113,7 +100,7 @@ export const CheckCart = ({ show, handleClose, setQty }: { show: boolean, handle
                                 <h6 class="text-end mb-3 fw-bold bg-light p-2">Total <span>{formatPrice(products.reduce((total: number, product: Product) => total + (product.product.precioventageneral ?? 0) * product.quantity, 0))}</span></h6>
 
                                 <div className="d-flex justify-content-between align-items-center gap-2">
-                                    <Link href="/bill" class="btn btn-success w-50">Realizar pedido</Link>
+                                    <Link href="/bill" class="btn btn-warning w-50">Realizar pedido</Link>
                                     <span onClick={() => handleClose()} class="btn btn-danger w-50">Cancelar</span>
                                 </div>
                             </div>

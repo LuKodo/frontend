@@ -1,6 +1,7 @@
 import { TipoImagen } from '@/interfaces/TipoImagenEnum';
 import { getImage } from '@/utils/checkImage';
 import { useEffect, useState } from 'preact/hooks';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const ProductImage: preact.FunctionalComponent<{ nombre: string, reload?: boolean }> = ({ nombre, reload }) => {
     const [imageSrc, setImageSrc] = useState('');
@@ -22,12 +23,16 @@ const ProductImage: preact.FunctionalComponent<{ nombre: string, reload?: boolea
 
     return (
         <>
-            <img
-                src={imageSrc !== 'undefined' ? imageSrc : 'https://placehold.co/100x100/png'}
+            <LazyLoadImage
                 alt={nombre || 'Product Image'}
                 width="50"
                 height="50"
-                onError={() => setImageSrc('https://placehold.co/100x100/png')}
+                src={imageSrc !== 'undefined' ? imageSrc : 'https://placehold.co/100x100/png'}
+                effect="opacity"
+                wrapperProps={{
+                    // If you need to, you can tweak the effect transition using the wrapper style.
+                    style: { transitionDelay: "1s" },
+                }}
             />
         </>
     );

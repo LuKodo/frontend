@@ -4,7 +4,7 @@ import { Template } from "@/pages/admin/Template"
 import { Carrusel } from "@/interfaces/Carrusel"
 import CarruselImage from "@/components/Admin/CarruselImage"
 
-export const Carousel = () => {
+const Carousel = () => {
     const [items, setItems] = useState<Carrusel[]>([] as Carrusel[])
     const [reload, setReload] = useState(false)
 
@@ -118,3 +118,5 @@ export const Carousel = () => {
         </Template>
     )
 }
+
+export default Carousel

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "preact/hooks"
 import { Modal } from "react-bootstrap"
 import CategoryImage from "./CategoryImage"
+import { LazyLoadImage } from "react-lazy-load-image-component"
 
 interface FormData {
     description: string
@@ -75,12 +76,18 @@ export const ModalCategory: preact.FunctionalComponent<EditCategoryProps> = ({ c
                     <div className="d-flex justify-content-between gap-2 align-items-center">
                         {
                             !localCategory ? (
-                                <CategoryImage category={{ descripcion: category, incremento: '', estado: true }} />
+                                <CategoryImage category={{ descripcion: category, id: '', estado: true }} />
                             ) : (
-                                <img
-                                    src={localCategory ? URL.createObjectURL(localCategory) : ''}
+                                <LazyLoadImage
                                     width="100"
                                     height="100"
+                                    src={localCategory ? URL.createObjectURL(localCategory) : ''}
+                                    effect="opacity"
+                                    wrapperProps={{
+                                        // If you need to, you can tweak the effect transition using the wrapper style.
+                                        style: { transitionDelay: "1s" },
+                                    }}
+                                    className={"img-fluid rounded shadow-sm"}
                                 />
                             )
                         }

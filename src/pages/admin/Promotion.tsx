@@ -2,6 +2,7 @@ import { useMemo, useState } from "preact/hooks"
 import { Col, Container, Row } from "react-bootstrap"
 import { Template } from "./Template"
 import PromoImage, { getDefaultImage } from "@/components/Admin/PromoImage"
+import { LazyLoadImage } from "react-lazy-load-image-component"
 
 interface Item {
     id: number
@@ -18,7 +19,7 @@ interface ItemFormData {
     image: null | File
 }
 
-export const Promotion = () => {
+const Promotion = () => {
     const maxColumns: number = 6
     const [data, setData] = useState<Item[]>([])
     const [rows, setRows] = useState<number[]>([])
@@ -64,7 +65,7 @@ export const Promotion = () => {
 
     const deletePromotion = async (id: number) => {
         try {
-            await fetch(`${import.meta.env.VITE_API_URL}/promotion/delete/${id}`).then(res => res.json()).then(res => console.log(res))
+            await fetch(`${import.meta.env.VITE_API_URL}/promotion/${id}`, { method: 'DELETE' }).then(res => res.json()).then(res => console.log(res))
         } catch (error) {
             console.error(error)
         }
@@ -121,14 +122,14 @@ export const Promotion = () => {
     const handleImageChange = async (item: Item, event: Event) => {
         const target = event.target as HTMLInputElement;
         if (target.files) {
-            const name = target.files[0].name
+            const name = target.files[0].name.split('.')[0]
             const data = new FormData()
 
             if (target && target.files && target.files[0]) {
                 data.append('file', target.files[0])
             }
 
-            await fetch(`${import.meta.env.VITE_API_URL}/upload/${name.trim()}/promotion`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/upload/${name.trim()}/promotions`, {
                 method: 'POST',
                 body: data
             })
@@ -137,7 +138,7 @@ export const Promotion = () => {
                 id: String(item.id),
                 rowIndex: (item.rowIndex).toString(),
                 columnIndex: (item.columnIndex).toString(),
-                imageName: name,
+                imageName: name.trim(),
                 image: target.files[0]
             })
         }
@@ -161,11 +162,14 @@ export const Promotion = () => {
                                         <div className="border p-4 gap-1 d-flex flex-column justify-content-center align-items-center" style={{ height: "100%", maxHeight: "400px" }}>
                                             {
                                                 column.imageName === 'default' ? (
-                                                    <img
+                                                    <LazyLoadImage
                                                         src={getDefaultImage(data.filter((row) => row.rowIndex === column.rowIndex).length)}
-                                                        alt=""
-                                                        srcset=""
                                                         className='w-100 h-75 img-fluid'
+                                                        effect="opacity"
+                                                        wrapperProps={{
+                                                            // If you need to, you can tweak the effect transition using the wrapper style.
+                                                            style: { transitionDelay: "1s" },
+                                                        }}
                                                     />
                                                 ) : (
                                                     <PromoImage image={column.imageName} />
@@ -218,3 +222,5 @@ export const Promotion = () => {
         </Template>
     )
 }
+
+export default Promotion

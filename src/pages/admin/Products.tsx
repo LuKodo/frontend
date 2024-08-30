@@ -36,7 +36,7 @@ const fetchDataProducts = async (page: number, limit: number, headquarter: strin
     return await response.json()
 }
 
-export const Products = () => {
+const Products = () => {
     const query = useSearch()
     const [dataProducts, setDataProducts] = useState<Productofinal[]>([] as Productofinal[])
     const [reload, setReload] = useState(false)
@@ -166,3 +166,5 @@ export const Products = () => {
         </Template>
     )
 }
+
+export default Products

@@ -3,6 +3,7 @@ import { getImage } from "@/utils/checkImage"
 import { useEffect, useMemo, useState } from "preact/hooks"
 import { Col, Container, Row } from "react-bootstrap"
 import { getDefaultImage } from "../Admin/PromoImage"
+import { LazyLoadImage } from "react-lazy-load-image-component"
 
 interface Item {
     id: number
@@ -56,11 +57,14 @@ export const MasonryPromo = () => {
                         <Col key={index} className="mb-4">
                             {
                                 col === 'default' ? (
-                                    <img
+                                    <LazyLoadImage
+                                        width="100%"
                                         src={getDefaultImage(row.length)}
-                                        alt=""
-                                        srcset=""
-                                        width={"100%"}
+                                        effect="opacity"
+                                        wrapperProps={{
+                                            // If you need to, you can tweak the effect transition using the wrapper style.
+                                            style: { transitionDelay: "1s" },
+                                        }}
                                     />
                                 ) : (
                                     <PromoImage image={col} />
@@ -91,10 +95,15 @@ const PromoImage: preact.FunctionalComponent<{ image: string }> = ({ image }) =>
     }, [image]);
 
     return (
-        <img
+        <LazyLoadImage
+            alt={image || 'Product Image'}
+            className='w-100 img-fluid'
             src={imageSrc}
-            alt={image}
-            className="img-fluid w-100"
+            effect="opacity"
+            wrapperProps={{
+                // If you need to, you can tweak the effect transition using the wrapper style.
+                style: { transitionDelay: "1s" },
+            }}
         />
     );
 };

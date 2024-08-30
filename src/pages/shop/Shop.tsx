@@ -5,15 +5,14 @@ import { ModalProduct } from "@/components/Page/ModalProduct"
 import { CheckCart } from "@/components/Page/CheckCart"
 import { getCartQuantity } from "@/utils/cart"
 import { ProductCard } from "@/components/Page/Product"
-import { Button, Container, Navbar, Pagination } from "react-bootstrap"
-import { SearchInput } from "@/components/Page/SearchInput"
-import { Sedes } from "@/components/Page/Headquarter"
+import { Pagination } from "react-bootstrap"
 import { Key } from "preact"
 import { CarouselCategories } from "@/components/Page/CarouselCategories"
 import { Category } from "@/interfaces/Categoria"
 import { useParams, useSearch } from "wouter"
 import { ModalHeadquarter } from "@/components/Page/ModalHeadquarter"
 import { CarouselComponent } from "@/components/Page/Carousel"
+import { NavBarPro } from "@/components/NavBar"
 
 function dividirEnGrupos(array: Category[]) {
   const gruposCompletos = Math.floor(array.length / 6);
@@ -26,7 +25,7 @@ function dividirEnGrupos(array: Category[]) {
   return resultado;
 }
 
-export const Shop = () => {
+const Shop = () => {
   const params = useParams();
   const query = useSearch();
   const [page, setPage] = useState(1)
@@ -82,9 +81,16 @@ export const Shop = () => {
 
   useMemo(() => {
     const fetchCategories = async () => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/category`)
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/category`, {
+        method: 'POST',
+        body: JSON.stringify({
+          'limit': 1000,
+          'offset': 1,
+          'estado': 1
+        })
+      })
       const data = await response.json()
-      const newData = dividirEnGrupos(data)
+      const newData = dividirEnGrupos(data.results)
 
       setCategories(newData)
     }
@@ -112,26 +118,7 @@ export const Shop = () => {
       <ModalProduct product={product} handleClose={handleClose} show={showModalProduct} />
       <CheckCart show={cartShow} handleClose={handleCloseCart} setQty={setCartQuantity} />
       <ModalHeadquarter show={headquarterShow} handleClose={() => setHeadquarterShow(false)} setHeadquarter={setHeadquarter} />
-
-      <Navbar expand='lg' className={'bg-white'} sticky="top">
-        <Container className="d-flex align-items-center">
-          <Navbar.Brand href="/">
-            <img src="/logo.png" alt="" className="img-fluid" width={200} />
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <SearchInput />
-          <Navbar.Collapse id="basic-navbar-nav" className="d-flex align-items-center justify-content-between">
-            <Sedes headquarter={headquarter} setHeadquarterShow={setHeadquarterShow} />
-            <Button variant="white" className="d-flex align-items-center" onClick={() => setCartShow(true)}>
-              <i className="bi bi-cart-fill text-warning fs-8 mt-0" />
-              <span className="badge px-2 py-1 fw-bold bg-warning text-white mb-0">
-                {cartQuantity}
-              </span>
-            </Button>
-            <i className='bi bi-whatsapp fs-8 text-warning' />
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <NavBarPro headquarter={headquarter} setHeadquarterShow={setHeadquarterShow} cartQuantity={cartQuantity} setCartShow={setCartShow} />
 
       <CarouselComponent />
 
@@ -167,3 +154,5 @@ export const Shop = () => {
     </Fragment>
   )
 }
+
+export default Shop

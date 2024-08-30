@@ -3,10 +3,11 @@ import { Productofinal } from "@/interfaces/ProductoFinal"
 import { formatPrice } from "@/utils/formatPrice"
 import { getImage } from "@/utils/checkImage";
 import { Fragment } from "preact/jsx-runtime";
-import { FormControl, InputGroup, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { addToCart } from "@/utils/cart";
-import Swal from "sweetalert2";
 import { TipoImagen } from "@/interfaces/TipoImagenEnum";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import { NumberInput } from "../NumberInput";
 
 interface Props {
     product: Productofinal
@@ -16,31 +17,12 @@ interface Props {
 
 export const ModalProduct: preact.FunctionalComponent<Props> = ({ product, handleClose, show }) => {
     const [imagePath, setImagePath] = useState('');
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(0);
 
     const handleAddToCart = () => {
         addToCart(product, quantity)
         setQuantity(1)
         handleClose()
-    }
-
-    const add = () => {
-        if (quantity < (product.nuevo ?? 0)) {
-            setQuantity(quantity + 1)
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'No hay suficientes productos',
-            })
-            return
-        }
-    }
-
-    const sub = () => {
-        if (quantity > 1) {
-            setQuantity(quantity - 1)
-        }
     }
 
     const imagePathget = async () => {
@@ -60,18 +42,23 @@ export const ModalProduct: preact.FunctionalComponent<Props> = ({ product, handl
                     <div class="container">
                         <div class="row">
                             <div class="col-7">
-                                <img class="img-fluid" src={!imagePath ? 'https://placehold.co/273x209/png' : imagePath} alt="" />
+                                <LazyLoadImage
+                                    alt={product.codigo || 'Product Image'}
+                                    className='img-fluid'
+                                    src={!imagePath ? 'https://placehold.co/273x209/png' : imagePath}
+                                    effect="opacity"
+                                    wrapperProps={{
+                                        // If you need to, you can tweak the effect transition using the wrapper style.
+                                        style: { transitionDelay: "1s" },
+                                    }}
+                                />
                             </div>
                             <div class="col-5">
                                 <div class="d-flex flex-column gap-2">
                                     <h5>{product.nombre}</h5>
                                     <h4>{formatPrice((product.precioventageneral ?? 0))}</h4>
-                                    <InputGroup>
-                                        <InputGroup.Text role="button" className="btn btn-success" onClick={() => sub()}>-</InputGroup.Text>
-                                        <FormControl type="text" value={quantity} />
-                                        <InputGroup.Text role="button" className="btn btn-success" onClick={() => add()}>+</InputGroup.Text>
-                                    </InputGroup>
-                                    <a href="#" class="btn btn-success" onClick={() => handleAddToCart()}>
+                                    <NumberInput initialValue={quantity ?? 0} max={(product.nuevo ?? 0)} min={1} onChange={(value: number) => setQuantity(value)} />
+                                    <a href="#" class="btn btn-warning" onClick={() => handleAddToCart()}>
                                         <i class="bi bi-cart-fill me-2" />
                                         Añadir
                                     </a>
