@@ -64,6 +64,8 @@ const Promotion = () => {
     }
 
     const deletePromotion = async (id: number) => {
+        console.log(id);
+
         try {
             await fetch(`${import.meta.env.VITE_API_URL}/promotion/${id}`, { method: 'DELETE' }).then(res => res.json()).then(res => console.log(res))
         } catch (error) {

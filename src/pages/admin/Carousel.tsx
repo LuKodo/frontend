@@ -35,6 +35,7 @@ const Carousel = () => {
         })
 
         setItems([...items, newSlide])
+        setReload(true)
     }
 
     const handleSubmit = async (e: Event, filename: string, id: number) => {
@@ -71,8 +72,11 @@ const Carousel = () => {
     }
 
     const removeSlide = async (id: number) => {
+
         try {
-            await fetch(`${import.meta.env.VITE_API_URL}/carousel/delete/${id}`).then(res => res.json()).then(res => console.log(res))
+            await fetch(`${import.meta.env.VITE_API_URL}/carousel/${id}`, {
+                method: 'DELETE'
+            }).then(res => res.json()).then(res => console.log(res))
             const newData = items.filter((row) => !(row.id === id))
             setItems(newData);
         } catch (error) {
