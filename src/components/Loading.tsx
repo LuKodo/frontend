@@ -7,6 +7,6 @@ export const Loading = () => (
     >
       <span className="visually-hidden">Loading...</span>
     </div>
-    <img src='/logo.png' className="mt-5" alt="Logo" />
+    <img src='/market/logo.png' className="mt-5" alt="Logo" />
   </div>
 );
