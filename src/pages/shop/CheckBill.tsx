@@ -5,13 +5,13 @@ import { formatPrice } from "@/utils/formatPrice";
 import { Button, Card, InputGroup } from "react-bootstrap";
 import ImageCart from "@/components/Page/ImageCart";
 import { Fragment } from "preact/jsx-runtime";
-import { Link, useLocation } from "wouter";
 import { ModalHeadquarter } from "@/components/Page/ModalHeadquarter";
 import { CheckCart } from "@/components/Page/CheckCart";
 import { EstadoPedido } from "@/utils/estadosPedidos.enum";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
 import { NavBarPro } from "@/components/NavBar";
+import { Link, useNavigate } from "react-router-dom";
 
 interface iDelivery {
     fecha_pedido: string
@@ -50,7 +50,7 @@ const CheckBill = () => {
     const [products, setProducts] = useState<Product[]>(getCart());
     const [cartQuantity, setCartQuantity] = useState(0)
     const [client, setClient] = useState<Client>({} as Client)
-    const [_location, setLocation] = useLocation()
+    const navigate = useNavigate()
 
     const handleChangeClient = (event: Event) => {
         event.preventDefault()
@@ -165,7 +165,7 @@ const CheckBill = () => {
                 setProducts([])
                 setCart([])
                 setClient({} as Client)
-                setLocation('/')
+                navigate('/market/')
             })
         }
     }
@@ -179,7 +179,7 @@ const CheckBill = () => {
         <Fragment>
             <CheckCart show={cartShow} handleClose={handleCloseCart} setQty={setCartQuantity} />
             <ModalHeadquarter show={headquarterShow} handleClose={() => setHeadquarterShow(false)} setHeadquarter={setHeadquarter} />
-      <NavBarPro headquarter={headquarter} setHeadquarterShow={setHeadquarterShow} cartQuantity={cartQuantity} setCartShow={setCartShow} />
+            <NavBarPro headquarter={headquarter} setHeadquarterShow={setHeadquarterShow} cartQuantity={cartQuantity} setCartShow={setCartShow} />
 
             <div className="container py-5">
                 <div className="row">

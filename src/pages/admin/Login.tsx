@@ -1,14 +1,14 @@
 import { useState } from 'preact/hooks';
 import { useAuth } from '@/contexts/AuthContext';
-import { useLocation } from 'wouter';
 import { Container, Form } from 'react-bootstrap';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const { login } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [, setLocation] = useLocation();
+    const navigate = useNavigate()
 
     const handleSubmit = async () => {
         if (!username || !password) {
@@ -34,7 +34,7 @@ const Login = () => {
                 title: 'Sesión iniciada',
                 text: 'Sesión iniciada correctamente',
             }).then(() => {
-                setLocation('/admin/products');
+                navigate('/market/admin/products');
             })
         }
 

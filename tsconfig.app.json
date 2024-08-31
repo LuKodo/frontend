@@ -9,7 +9,7 @@
         "./node_modules/preact/compat/"
       ],
       "@/*": [
-        "./src/*"
+        "src/*"
       ]
     },
     "target": "ES2020",

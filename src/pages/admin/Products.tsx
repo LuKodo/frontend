@@ -5,7 +5,7 @@ import { Productofinal } from "@/interfaces/ProductoFinal"
 import { Sede } from "@/interfaces/Sede"
 import ProductImage from "@/components/Admin/ProductImage"
 import { SearchInputAdmin } from "@/components/Page/SearchInput"
-import { useSearch } from "wouter"
+import { useSearchParams } from "react-router-dom"
 
 const fetchDataProducts = async (page: number, limit: number, headquarter: string, query: string): Promise<Productofinal[]> => {
     let response
@@ -37,7 +37,10 @@ const fetchDataProducts = async (page: number, limit: number, headquarter: strin
 }
 
 const Products = () => {
-    const query = useSearch()
+
+    let [searchParams, _setSearchParams] = useSearchParams();
+    let query = searchParams.get("q");
+
     const [dataProducts, setDataProducts] = useState<Productofinal[]>([] as Productofinal[])
     const [reload, setReload] = useState(false)
     const [page, setPage] = useState(1)
@@ -58,8 +61,8 @@ const Products = () => {
     const fetchData = async () => {
         setDataProducts([] as Productofinal[])
         let data
-        if (query.split('=')[1] !== undefined) {
-            data = await fetchDataProducts(page, limit, headquarter, query.split('=')[1])
+        if (query) {
+            data = await fetchDataProducts(page, limit, headquarter, query)
         } else {
             data = await fetchDataProducts(page, limit, headquarter, '')
         }

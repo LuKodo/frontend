@@ -3,9 +3,9 @@ import { useEffect, useState } from "preact/hooks";
 import { formatPrice } from "@/utils/formatPrice";
 import { Product, Productofinal } from "@/interfaces/ProductoFinal";
 import { getCart, getCartQuantity, setCart } from "@/utils/cart";
-import { Link } from "wouter";
 import ImageCart from "@/components/Page/ImageCart";
 import { NumberInput } from "../NumberInput";
+import { Link } from "react-router-dom";
 
 export const CheckCart = ({ show, handleClose, setQty }: { show: boolean, handleClose: Function, setQty: Function }) => {
     const [products, setProducts] = useState<Product[]>(getCart());
@@ -100,7 +100,7 @@ export const CheckCart = ({ show, handleClose, setQty }: { show: boolean, handle
                                 <h6 class="text-end mb-3 fw-bold bg-light p-2">Total <span>{formatPrice(products.reduce((total: number, product: Product) => total + (product.product.precioventageneral ?? 0) * product.quantity, 0))}</span></h6>
 
                                 <div className="d-flex justify-content-between align-items-center gap-2">
-                                    <Link href="/bill" class="btn btn-warning w-50">Realizar pedido</Link>
+                                    <Link to="/market/bill" class="btn btn-warning w-50">Realizar pedido</Link>
                                     <span onClick={() => handleClose()} class="btn btn-danger w-50">Cancelar</span>
                                 </div>
                             </div>

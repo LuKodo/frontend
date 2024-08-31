@@ -9,10 +9,10 @@ import { Pagination } from "react-bootstrap"
 import { Key } from "preact"
 import { CarouselCategories } from "@/components/Page/CarouselCategories"
 import { Category } from "@/interfaces/Categoria"
-import { useParams, useSearch } from "wouter"
 import { ModalHeadquarter } from "@/components/Page/ModalHeadquarter"
 import { CarouselComponent } from "@/components/Page/Carousel"
 import { NavBarPro } from "@/components/NavBar"
+import { useParams, useSearchParams } from "react-router-dom"
 
 function dividirEnGrupos(array: Category[]) {
   const gruposCompletos = Math.floor(array.length / 6);
@@ -27,7 +27,9 @@ function dividirEnGrupos(array: Category[]) {
 
 const Shop = () => {
   const params = useParams();
-  const query = useSearch();
+  let [searchParams, _setSearchParams] = useSearchParams();
+  let query = searchParams.get("q");
+
   const [page, setPage] = useState(1)
   const [headquarter, setHeadquarter] = useState('SB')
   const [categories, setCategories] = useState([] as Category[][])
@@ -42,7 +44,7 @@ const Shop = () => {
   useMemo(() => {
     const fetchProductos = async () => {
       let response
-      if (query.split('=')[1] !== undefined) {
+      if (query) {
         response = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
           method: 'POST',
           body: JSON.stringify(
@@ -51,7 +53,7 @@ const Shop = () => {
               "offset": page,
               "sede": headquarter,
               "categoria": params.category,
-              "query": query.split('=')[1]
+              "query": query
             }
           )
         })

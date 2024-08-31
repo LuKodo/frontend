@@ -4,7 +4,7 @@ import { getImage } from "@/utils/checkImage"
 import { useEffect, useState } from "preact/hooks"
 import { Card } from "react-bootstrap"
 import { LazyLoadImage } from "react-lazy-load-image-component"
-import { useLocation } from "wouter"
+import { useNavigate } from "react-router-dom"
 
 interface CategoryProps {
     category: string
@@ -12,10 +12,10 @@ interface CategoryProps {
 }
 
 export const CategoryCard = (props: CategoryProps) => {
-    const [_location, navigate] = useLocation();
+    const navigate = useNavigate();
 
     const goToShop = (category: string) => {
-        navigate(`/shop/${category}`, { replace: true })
+        navigate(`/market/shop/${category}`, { replace: true })
     }
 
     const setCategory = (category: string) => {

@@ -1,14 +1,14 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Fragment } from "preact/jsx-runtime"
 import { Button, Col, Container, Row } from "react-bootstrap"
-import { useLocation } from "wouter";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     children: any;
 }
 
 export const Template: preact.FunctionComponent<Props> = ({ children }) => {
-    const [_location, setLocation] = useLocation();
+    const navigate = useNavigate()
     const { logout } = useAuth();
 
     return (
@@ -16,16 +16,16 @@ export const Template: preact.FunctionComponent<Props> = ({ children }) => {
             <Container>
                 <div className="mx-3 my-3 d-flex align-items-center justify-content-between gap-3">
                     <div className="mx-3 my-3 d-flex align-items-center justify-content-start gap-3">
-                        <Button variant="warning" size="sm" className="" onClick={() => setLocation('/admin/products')}>
+                        <Button variant="warning" size="sm" className="" onClick={() => navigate('/market/admin/products')}>
                             <i className="bi bi-box ms-2" /> Productos
                         </Button>
-                        <Button variant="warning" size="sm" className="" onClick={() => setLocation('/admin/categories')}>
+                        <Button variant="warning" size="sm" className="" onClick={() => navigate('/market/admin/categories')}>
                             <i className="bi bi-list ms-2" /> Categorias
                         </Button>
-                        <Button variant="warning" size="sm" className="" onClick={() => setLocation('/admin/promo')}>
+                        <Button variant="warning" size="sm" className="" onClick={() => navigate('/market/admin/promo')}>
                             <i className="bi bi-bag-fill ms-2" /> Promociones
                         </Button>
-                        <Button variant="warning" size="sm" className="" onClick={() => setLocation('/admin/carousel')}>
+                        <Button variant="warning" size="sm" className="" onClick={() => navigate('/market/admin/carousel')}>
                             <i className="bi bi-images ms-2" /> Carrusel
                         </Button>
                     </div>

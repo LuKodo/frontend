@@ -1,18 +1,17 @@
 import { useAuth } from '@/contexts/AuthContext';
-import { Route, Redirect } from 'wouter';
+import { Redirect } from './Redirect';
 
 interface ProtectedRouteProps {
-  path: string;
   children: JSX.Element;
 }
 
-const ProtectedRoute = ({ path, children }: ProtectedRouteProps) => {
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { isAuthenticated } = useAuth();
 
   return (
-    <Route path={path}>
-      {isAuthenticated ? children : <Redirect to="/login" />}
-    </Route>
+    <>
+      {isAuthenticated ? children : <Redirect to="/market/login" />}
+    </>
   );
 };
 

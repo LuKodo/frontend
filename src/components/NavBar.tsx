@@ -13,8 +13,8 @@ export const NavBarPro: React.FC<Props> = ({ headquarter, setHeadquarterShow, ca
     return (
         <Navbar expand='lg' className={'bg-white'} sticky="top">
         <Container className="d-flex align-items-center">
-          <Navbar.Brand href="/">
-            <img src="/logo.png" alt="" className="img-fluid" width={200} />
+          <Navbar.Brand href="/market/">
+            <img src="/market/logo.png" alt="" className="img-fluid" width={200} />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <SearchInput />
