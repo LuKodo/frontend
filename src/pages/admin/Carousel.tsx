@@ -87,7 +87,7 @@ const Carousel = () => {
     return (
         <Template>
             {
-                items.length > 0 ? items?.map((item) => {
+                items.length > 0 ? items?.map((item, index) => {
                     return (
                         <Card key={item.id} className={'mb-3'}>
                             <Card.Body>
@@ -103,7 +103,7 @@ const Carousel = () => {
 
                                 <Form.Control
                                     type="file"
-                                    onChange={(e) => handleSubmit(e, `${item.imageName}`, item.id)}
+                                    onChange={(e) => handleSubmit(e, `${item.imageName}-${index}`, item.id)}
                                     size="sm"
                                     className="w-25"
                                     accept={'.png, .jpg, .jpeg'}

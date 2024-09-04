@@ -6,7 +6,7 @@ export default defineConfig({
   base: "/market/",
   plugins: [preact()],
   build: {
-    outDir: "C:/xampp/htdocs/market",
+    outDir: "C:/laragon/www/market",
   },
   resolve: {
     alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
