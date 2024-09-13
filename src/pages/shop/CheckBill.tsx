@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import dayjs from "dayjs";
 import { NavBarPro } from "@/components/NavBar";
 import { Link, useNavigate } from "react-router-dom";
+import { Footer } from "@/components/Page/Footer";
 
 interface iDelivery {
     fecha_pedido: string
@@ -299,7 +300,7 @@ const CheckBill = () => {
                                                 </div>
                                                 <div className="d-flex gap-3">
                                                     <Button onClick={createDelivery} variant="success" className='w-50'>Pagar</Button>
-                                                    <Link className='w-50 btn btn-danger' to={'/'}>Cancelar</Link>
+                                                    <Link className='w-50 btn btn-danger' to={'/market'}>Cancelar</Link>
                                                 </div>
                                             </Card.Body>
                                         </Card>
@@ -310,6 +311,7 @@ const CheckBill = () => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </Fragment>
     )
 }

@@ -19,30 +19,41 @@ export const ProductCard = ({ product, show }: { product: Productofinal, show: F
     }, [product]);
 
     return (
-        <div className="card overflow-hidden rounded-2 border" style={{ height: '400px' }} onClick={() => show(product)}>
-            <div className="position-relative">
-                <a href="#" className="hover-img d-block overflow-hidden">
-
-                    <LazyLoadImage
-                        alt={product.codigo || 'Product Image'}
-                        className='card-img-top rounded-0'
-                        height="281px"
-                        src={imagePath ? imagePath : getDefaultImage(281)}
-                        effect="opacity"
-                        wrapperProps={{
-                            // If you need to, you can tweak the effect transition using the wrapper style.
-                            style: { transitionDelay: "1s" },
-                        }}
-                    />
-                </a>
-                <a href="#" className="text-bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
-                    <i className="bi bi-basket fs-4"></i>
-                </a>
-            </div>
-            <div className="card-body pt-3 p-4">
-                <h6 className="fw-semibold fs-4">{product.nombre}</h6>
-                <div className="d-flex align-items-center justify-content-between">
-                    <h6 className="fw-semibold fs-4 mb-0">{formatPrice(product.precioventageneral ?? 0)}</h6>
+        <div class="gi-product-content">
+            <div class="gi-product-inner">
+                <div class="gi-pro-image-outer">
+                    <div class="gi-pro-image">
+                        <a href="product-left-sidebar.html" class="image">
+                            <span class="label nonveg">
+                                <span class="dot"></span>
+                            </span>
+                            <LazyLoadImage
+                                alt={product.codigo || 'Product Image'}
+                                className='main-image'
+                                height="281px"
+                                src={imagePath ? imagePath : getDefaultImage(281)}
+                                effect="opacity"
+                                wrapperProps={{
+                                    style: { transitionDelay: "1s" },
+                                }}
+                            />
+                        </a>
+                        <div class="gi-pro-actions">
+                            <a href="#" class="gi-btn-group quickview" data-link-action="quickview" title="Quick view" data-bs-toggle="modal" data-bs-target="#gi_quickview_modal"><i class="bi bi-eye"></i></a>
+                            <a href="javascript:void(0)" title="Añadir al carrito" class="gi-btn-group add-to-cart"><i class="bi bi-bag"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="gi-pro-content">
+                    <a href="shop-left-sidebar-col-3.html">
+                        <h6 class="gi-pro-stitle">{product.categoria}</h6>
+                    </a>
+                    <h5 class="gi-pro-title"><a href="product-left-sidebar.html">{product.nombre}</a></h5>
+                    <div class="gi-pro-rat-price">
+                        <span class="gi-price">
+                            <span class="new-price">{formatPrice(product.precioventageneral ?? 0)}</span>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

@@ -56,8 +56,9 @@ export const ModalProduct: preact.FunctionalComponent<Props> = ({ product, handl
                             <div class="col-5">
                                 <div class="d-flex flex-column gap-2">
                                     <h5>{product.nombre}</h5>
-                                    <h4>{formatPrice((product.precioventageneral ?? 0))}</h4>
-                                    <NumberInput initialValue={quantity ?? 0} max={(product.nuevo ?? 0)} min={1} onChange={(value: number) => setQuantity(value)} />
+                                    <h4>Precio: {formatPrice((product.precioventageneral ?? 0))}</h4>
+                                    <NumberInput initialValue={quantity ?? 0} max={(product.nuevo ?? 0)} min={0.5} onChange={(value: number) => setQuantity(value)} />
+                                    <h4>Total: {formatPrice((product.precioventageneral ?? 0)*quantity)}</h4>
                                     <a href="#" class="btn btn-warning" onClick={() => handleAddToCart()}>
                                         <i class="bi bi-cart-fill me-2" />
                                         Añadir

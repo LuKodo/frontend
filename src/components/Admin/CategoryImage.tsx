@@ -31,7 +31,7 @@ const CategoryImage: preact.FunctionalComponent<{ category: Category, reload?: b
                 // If you need to, you can tweak the effect transition using the wrapper style.
                 style: { transitionDelay: "1s" },
             }}
-            className={"img-fluid rounded shadow-sm"}
+            className={"img-fluid rounded"}
         />
     );
 };

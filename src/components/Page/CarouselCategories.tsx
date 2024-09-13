@@ -1,41 +1,70 @@
-import { Col, Container, Row } from "react-bootstrap"
-import { Dispatch, StateUpdater } from "preact/hooks"
-import { CategoryCard } from "@/components/Page/CategoryCard"
+import { Dispatch, StateUpdater, useMemo, useState } from "preact/hooks"
 import { Category } from "@/interfaces/Categoria"
+import CategoryImage from "../Admin/CategoryImage"
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import { Container } from "react-bootstrap";
 
 interface Props {
   category: Category
-  categories: Category[][]
   setCategory: Dispatch<StateUpdater<Category>>
 }
 
-export const CarouselCategories: preact.FunctionalComponent<Props> = ({ categories, setCategory }) => {
+export const CarouselCategories: preact.FunctionalComponent<Props> = ({ setCategory }) => {
+  const [categories, setCategories] = useState([] as Category[])
+
+  useMemo(() => {
+    const fetchCategories = async () => {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/category`, {
+        method: 'POST',
+        body: JSON.stringify({
+          'limit': 1000,
+          'offset': 1,
+          'estado': 1
+        })
+      })
+
+      const data = await response.json()
+      setCategories(data.results)
+    }
+    fetchCategories()
+  }, [])
+
   return (
-    <Container fluid>
-      <div id="carouselExample" class="carousel slide d-flex justify-content-center align-items-center gap-3 my-3">
-        <button class="btn btn-warning btn-sm" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-          <i class="bi bi-chevron-left" />
-        </button>
-
-        <div class="carousel-inner">
-          {categories.map((group: any[], index: any) => (
-            <div class={`carousel-item ${index === 0 && 'active'}`} key={index}>
-              <Row>
-                {group.map((category: { incremento: any; descripcion: string }) => (
-                  <Col key={category.incremento} md={2} sm={4} xs={6}>
-                    <CategoryCard category={category.descripcion} setCategory={setCategory} />
-                  </Col>
-                ))}
-              </Row>
+    <Container className={"my-4"}>
+      <Swiper
+        spaceBetween={5}
+        autoplay
+        slidesPerView={1}
+        breakpoints={{
+          640: {
+            slidesPerView: 1,
+          },
+          768: {
+            slidesPerView: 3,
+          },
+          1024: {
+            slidesPerView: 6,
+          },
+        }}
+        modules={[Autoplay]}
+      >
+        {categories.map((slide) => (
+          <SwiperSlide key={slide.id}>
+            <div class="gi-cat-box gi-cat-box-3" role="button" style={{ height: '180px' }} onClick={() => setCategory(slide)}>
+              <div class="gi-ser-inner">
+                <div class="gi-cat-icon">
+                  <CategoryImage category={{ descripcion: slide.descripcion, id: '', estado: true }} />
+                  <div className="gi-cat-detail">
+                    <small class="gi-cat-title small">{slide.descripcion}</small>
+                  </div>
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
-
-
-        <button class="btn btn-warning btn-sm" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-          <i class="bi bi-chevron-right" />
-        </button>
-      </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </Container>
   )
 }

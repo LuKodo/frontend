@@ -2,7 +2,6 @@ import { Category } from "@/interfaces/Categoria"
 import { TipoImagen } from "@/interfaces/TipoImagenEnum"
 import { getImage } from "@/utils/checkImage"
 import { useEffect, useState } from "preact/hooks"
-import { Card } from "react-bootstrap"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import { useNavigate } from "react-router-dom"
 
@@ -24,26 +23,16 @@ export const CategoryCard = (props: CategoryProps) => {
     }
 
     return (
-        <Card class="overflow-hidden" onClick={() => setCategory(props.category)} style={{ cursor: 'pointer', height: '100px' }}>
-            <div class="el-card-item pb-3">
-                <div class="
-                      el-card-avatar
-                      mb-3
-                      el-overlay-1
-                      w-100
-                      overflow-hidden
-                      position-relative
-                      text-center
-                      d-flex
-                      justify-content-center
-                    ">
+        <div class="gi-ser-content gi-ser-content-1 p-tp-12 wow fadeInUp">
+            <div class="gi-ser-inner" onClick={() => setCategory(props.category)}>
+                <div class="gi-service-image">
                     <CategoryImage category={{ descripcion: props.category, id: '', estado: true }} />
                 </div>
-                <div class="el-card-content text-center">
-                    <p class="mb-0 small">{props.category}</p>
+                <div class="gi-service-desc" style={{ height: '30px' }}>
+                    <small class="small">{props.category}</small>
                 </div>
             </div>
-        </Card>
+        </div>
     )
 }
 
@@ -66,14 +55,13 @@ const CategoryImage: preact.FunctionalComponent<{ category: Category }> = ({ cat
     return (
         <LazyLoadImage
             alt={category.descripcion || 'Product Image'}
-            height="100px"
             src={imageSrc}
             effect="opacity"
             wrapperProps={{
                 // If you need to, you can tweak the effect transition using the wrapper style.
                 style: { transitionDelay: "1s" },
             }}
-            className={"img-fluid"}
+            className={"img-fluid p-1"}
         />
     );
 };

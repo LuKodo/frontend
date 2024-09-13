@@ -1,12 +1,13 @@
 import { useMemo, useState } from "preact/hooks"
 import { Fragment } from "preact/jsx-runtime"
 import { CheckCart } from "@/components/Page/CheckCart"
-import { ModalHeadquarter } from "@/components/Page/ModalHeadquarter"
 import { MasonryPromo } from "@/components/Page/MasonryPromo"
 import { CarouselCategories } from "@/components/Page/CarouselCategories"
 import { Category } from "@/interfaces/Categoria"
 import { getCartQuantity, getHeadquarter } from "@/utils/cart"
-import { NavBarPro } from "@/components/NavBar"
+const NavBarPro = lazy(() => import('@/components/NavBar'));
+import { Footer } from "@/components/Page/Footer"
+import { lazy } from "preact/compat"
 
 function dividirEnGrupos(array: Category[]) {
   const gruposCompletos = Math.floor(array.length / 6);
@@ -21,49 +22,43 @@ function dividirEnGrupos(array: Category[]) {
 
 const Home = () => {
   const [headquarter, setHeadquarter] = useState('SB')
-  const [headquarterShow, setHeadquarterShow] = useState(false)
   const [cartShow, setCartShow] = useState(false)
   const [cartQuantity, setCartQuantity] = useState(0)
-  const [categories, setCategories] = useState([] as Category[][])
   const [category, setCategory] = useState<Category>({ descripcion: 'all' } as Category)
-
-  useMemo(() => {
-    const fetchCategories = async () => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/category`, {
-        method: 'POST',
-        body: JSON.stringify({
-          'limit': 1000,
-          'offset': 1,
-          'estado': 1
-        })
-      })
-
-      const data = await response.json()
-      const newData = dividirEnGrupos(data.results)
-
-      const getQty = getCartQuantity()
-      setCartQuantity(getQty)
-
-      const headquarter = getHeadquarter()
-      if (headquarter) {
-        setHeadquarter(headquarter)
-      }
-
-      setCategories(newData)
-    }
-    fetchCategories()
-  }, [])
 
   const handleCloseCart = () => setCartShow(false)
 
   return (
     <Fragment>
       <CheckCart show={cartShow} handleClose={handleCloseCart} setQty={setCartQuantity} />
-      <ModalHeadquarter show={headquarterShow} handleClose={() => setHeadquarterShow(false)} setHeadquarter={setHeadquarter} />
-      <NavBarPro headquarter={headquarter} setHeadquarterShow={setHeadquarterShow} cartQuantity={cartQuantity} setCartShow={setCartShow} />
-      <CarouselCategories categories={categories} category={category} setCategory={setCategory} />
+      <NavBarPro headquarter={headquarter} cartQuantity={cartQuantity} setCartShow={setCartShow} />
+      <CarouselCategories category={category} setCategory={setCategory} />
 
       <MasonryPromo />
+      <Footer />
+      <div class="footer-bottom">
+        <div class="container">
+          <div class="row">
+            <div class="gi-bottom-info">
+              <div class="footer-copy">
+                <div class="footer-bottom-copy ">
+                  <div class="gi-copy">Copyright © <a class="site-name" href="https://me.luiscaraballo.com.co">Ing. Luis Caraballo </a>
+                    all
+                    rights reserved. Powered by Inversiones La Central.</div>
+                </div>
+              </div>
+              <div class="footer-bottom-right">
+                <div class="footer-bottom-payment d-flex justify-content-center">
+                  <div class="payment-link">
+                    <img src="/market/payment.png" alt="payment" />
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </Fragment>
   )
 }

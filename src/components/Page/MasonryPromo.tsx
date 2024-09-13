@@ -97,7 +97,7 @@ const PromoImage: preact.FunctionalComponent<{ image: string }> = ({ image }) =>
     return (
         <LazyLoadImage
             alt={image || 'Product Image'}
-            className='w-100 img-fluid'
+            className='w-100 img-fluid rounded border-dark'
             src={imageSrc}
             effect="opacity"
             wrapperProps={{

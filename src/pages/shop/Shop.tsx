@@ -5,25 +5,15 @@ import { ModalProduct } from "@/components/Page/ModalProduct"
 import { CheckCart } from "@/components/Page/CheckCart"
 import { getCartQuantity } from "@/utils/cart"
 import { ProductCard } from "@/components/Page/Product"
-import { Pagination } from "react-bootstrap"
+import { Container, Pagination } from "react-bootstrap"
 import { Key } from "preact"
 import { CarouselCategories } from "@/components/Page/CarouselCategories"
 import { Category } from "@/interfaces/Categoria"
 import { ModalHeadquarter } from "@/components/Page/ModalHeadquarter"
 import { CarouselComponent } from "@/components/Page/Carousel"
-import { NavBarPro } from "@/components/NavBar"
 import { useParams, useSearchParams } from "react-router-dom"
-
-function dividirEnGrupos(array: Category[]) {
-  const gruposCompletos = Math.floor(array.length / 6);
-  const resultado = [];
-  for (let i = 0; i < gruposCompletos; i++) {
-    const grupo = array.slice(i * 6, (i + 1) * 6);
-    resultado.push(grupo);
-  }
-
-  return resultado;
-}
+import { Footer } from "@/components/Page/Footer"
+import NavBarPro from "@/components/NavBar"
 
 const Shop = () => {
   const params = useParams();
@@ -32,7 +22,6 @@ const Shop = () => {
 
   const [page, setPage] = useState(1)
   const [headquarter, setHeadquarter] = useState('SB')
-  const [categories, setCategories] = useState([] as Category[][])
   const [category, setCategory] = useState<Category>({ descripcion: params.category || 'all' } as Category)
   const [products, setProducts] = useState([] as Productofinal[])
   const [product, setProduct] = useState({} as Productofinal)
@@ -81,24 +70,6 @@ const Shop = () => {
     fetchProductos()
   }, [page, params.category, query])
 
-  useMemo(() => {
-    const fetchCategories = async () => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/category`, {
-        method: 'POST',
-        body: JSON.stringify({
-          'limit': 1000,
-          'offset': 1,
-          'estado': 1
-        })
-      })
-      const data = await response.json()
-      const newData = dividirEnGrupos(data.results)
-
-      setCategories(newData)
-    }
-    fetchCategories()
-  }, [])
-
   useEffect(() => {
     setCartQuantity(getCartQuantity())
     setPage(1)
@@ -113,6 +84,10 @@ const Shop = () => {
     setShowModal(true)
   }
 
+  useEffect(() => {
+    console.log(query)
+  }, [query])
+
   const handleCloseCart = () => setCartShow(false)
 
   return (
@@ -120,39 +95,44 @@ const Shop = () => {
       <ModalProduct product={product} handleClose={handleClose} show={showModalProduct} />
       <CheckCart show={cartShow} handleClose={handleCloseCart} setQty={setCartQuantity} />
       <ModalHeadquarter show={headquarterShow} handleClose={() => setHeadquarterShow(false)} setHeadquarter={setHeadquarter} />
-      <NavBarPro headquarter={headquarter} setHeadquarterShow={setHeadquarterShow} cartQuantity={cartQuantity} setCartShow={setCartShow} />
+      <NavBarPro headquarter={headquarter} cartQuantity={cartQuantity} setCartShow={setCartShow} />
 
-      <CarouselComponent />
+      <CarouselCategories category={category} setCategory={setCategory} />
 
-      <CarouselCategories categories={categories} category={category} setCategory={setCategory} />
+      <Container>
+        <CarouselComponent />
+      </Container>
 
-      <div className="container px-5 mt-4">
-        <div className='position-relative overflow-hidden'>
-          <div className="shop-part">
-            <div className="row">
-              {
-                products.length === 0 ? <div className="text-center">No hay resultados</div>
-                  :
-                  products.map((
-                    product: Productofinal, index: Key | null | undefined) =>
-                  (
-                    <div className="col-lg-3 col-md-6 col-sm-6" key={index}>
-                      <ProductCard key={index} product={product} show={handleShow} />
-                    </div>
-                  ))
-              }
+      <Container className="mt-5">
+        <div className="row">
+          {
+            products.length === 0 ? <div className="text-center">No hay resultados</div>
+              :
+              products.map((
+                product: Productofinal, index: Key | null | undefined) =>
+              (
+                <div className="col-md-4 col-sm-6 col-xs-6 gi-col-5 gi-product-box" key={index}>
+                  <ProductCard key={index} product={product} show={handleShow} />
+                </div>
+              ))
+          }
 
-              <div className="text-center mt-0 mb-5">
-                <Pagination>
-                  {page > 1 && <Pagination.Item onClick={() => setPage(page - 1)}>{page - 1}</Pagination.Item>}
-                  <Pagination.Item active>{page}</Pagination.Item>
-                  <Pagination.Item onClick={() => setPage(page + 1)}>{page + 1}</Pagination.Item>
-                </Pagination>
-              </div>
-            </div>
+          <div className="gi-pro-pagination">
+            <span>Mostrando 1-{products.length < 20 ? products.length : 20} de {products.length} producto(s)</span>
+            <ul class={"gi-pro-pagination-inner"}>
+              {page > 1 && <Pagination.Item onClick={() => setPage(page - 1)}>{page - 1}</Pagination.Item>}
+              <li>
+                <a class="active" href="#">{page}</a>
+              </li>
+
+              <li>
+                <a href="#" onClick={() => setPage(page + 1)}>{page + 1}</a>
+              </li>
+            </ul>
           </div>
         </div>
-      </div>
+      </Container>
+      <Footer />
     </Fragment>
   )
 }

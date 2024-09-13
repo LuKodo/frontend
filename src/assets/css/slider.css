@@ -1,0 +1,9 @@
+.my-carousel .slide {
+  width:  33.66%; /* 6 slides en pantallas grandes */
+}
+
+@media (max-width: 767px) {
+  .my-carousel .slide {
+    width: 100%; /* 1 slide en móviles */
+  }
+}

@@ -1,7 +1,12 @@
 import { render } from 'preact'
-import '@/assets/css/main.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import '@fontsource-variable/manrope';
+import '@fontsource/poppins';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
+import '@/assets/css/responsive.css'
+import '@/assets/css/main.css'
+import '@/assets/css/color.css'
+// Supports weights 200-800
 
 const Home = lazy(() => import('@/pages/shop/Home'));
 const CheckBill = lazy(() => import('@/pages/shop/CheckBill'));

@@ -19,7 +19,7 @@ export const CarouselComponent = () => {
     }, [reload])
 
     return (
-        <Carousel>
+        <Carousel id={"carousel"}>
             {
                 items?.map((item) => {
                     return (

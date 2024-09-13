@@ -1,15 +1,11 @@
-import { Button } from "react-bootstrap"
 import { Sede } from "@/interfaces/Sede"
 import { useMemo, useState } from "react"
-import { getHeadquarter } from "@/utils/cart"
 
 interface Props {
     headquarter: string,
-    setHeadquarterShow: Function
 }
 
-export const Sedes: preact.FunctionalComponent<Props> = ({ headquarter, setHeadquarterShow }) => {
-    const [show, setShow] = useState(false);
+export const Sedes: preact.FunctionalComponent<Props> = ({ headquarter }) => {
     const [data, setData] = useState([] as Sede[])
     useMemo(() => {
         const fetchSedes = async () => {
@@ -17,13 +13,6 @@ export const Sedes: preact.FunctionalComponent<Props> = ({ headquarter, setHeadq
 
             if (!response.ok) {
                 throw new Error(response.statusText);
-            }
-
-            const headquarter = getHeadquarter()
-            if (headquarter) {
-                setShow(false)
-            } else {
-                setShow(true)
             }
 
             const data = await response.json()
@@ -34,26 +23,27 @@ export const Sedes: preact.FunctionalComponent<Props> = ({ headquarter, setHeadq
 
 
     return (
-        <div className="position-relative">
-            <div
-                className="d-flex align-items-center justify-content-center p-2"
-                onClick={() => setShow(!show)}
-                role="button"
-            >
-                <i className="bi bi-geo-alt-fill text-warning fs-9" />
-                <div className="d-flex flex-column" >
-                    <p className="text-ligth small mb-0">Estás comprando para</p>
-                    <h6 className="text-warning">{data.find((sede: Sede) => sede.prefijo === headquarter)?.nombre}</h6>
+        <div class="gi-location-block">
+            <div class="gi-location-menu">
+                <div class="gi-location-toggle">
+                    <i class="bi bi-geo-alt location"></i>
+                    <span class="gi-location-title d-1199 gi-location">{data.find((sede: Sede) => sede.prefijo === headquarter)?.nombre}</span>
+                    <i class="fi-rr-angle-small-down d-1199 gi-angle" aria-hidden="true"></i>
                 </div>
-            </div>
-
-            <div className={`position-absolute bg-white p-3 ${show ? 'd-block' : 'd-none'}`} style={{ width: '300px', lineHeight: '20px', filter: 'drop-shadow(0 3px 5px rgba(0,0,0,.3))' }}>
-                <div>
-                    <p className="fw-bold">¿Vas a comprar en {data.find((sede: Sede) => sede.prefijo === headquarter)?.nombre}?</p>
-                    <p>Los productos que te mostraremos son los disponibles para esta sede.</p>
-                    <div className="d-flex gap-2">
-                        <Button variant="outline-warning" className="rounded-2 w-100" size="sm" onClick={() => setShow(false)}>Mantenerse aquí</Button>
-                        <Button variant="warning" className="rounded-2 w-100" size="sm" onClick={() => { setHeadquarterShow(true); setShow(false) }}>Cambiar de Sede</Button>
+                <div class="gi-location-content">
+                    <div class="gi-location-dropdown">
+                        <div class="row gi-location-wrapper">
+                            <ul class="loc-grid">
+                                {data.map((sede: Sede) => {
+                                    return (
+                                        <li class="loc-list">
+                                            <i class="bi bi-geo-alt"></i>
+                                            <span class="gi-detail">{sede.nombre}</span>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
