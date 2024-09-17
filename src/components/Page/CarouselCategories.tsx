@@ -1,18 +1,20 @@
-import { Dispatch, StateUpdater, useMemo, useState } from "preact/hooks"
+import { useMemo, useState } from "preact/hooks"
 import { Category } from "@/interfaces/Categoria"
 import CategoryImage from "../Admin/CategoryImage"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import { Container } from "react-bootstrap";
+import { useNavigate } from "react-router-dom"
 
-interface Props {
-  category: Category
-  setCategory: Dispatch<StateUpdater<Category>>
-}
-
-export const CarouselCategories: preact.FunctionalComponent<Props> = ({ setCategory }) => {
+export const CarouselCategories = () => {
   const [categories, setCategories] = useState([] as Category[])
+  const [category, setCategory] = useState({ descripcion: 'all' } as Category)
+  const navigate = useNavigate()
+
+  useMemo(() => {
+    navigate(`/market/shop/${category.descripcion}`, { replace: true })
+  }, [category])
 
   useMemo(() => {
     const fetchCategories = async () => {
@@ -39,7 +41,7 @@ export const CarouselCategories: preact.FunctionalComponent<Props> = ({ setCateg
         slidesPerView={1}
         breakpoints={{
           640: {
-            slidesPerView: 1,
+            slidesPerView: 2,
           },
           768: {
             slidesPerView: 3,

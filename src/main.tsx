@@ -6,7 +6,6 @@ import 'react-lazy-load-image-component/src/effects/opacity.css';
 import '@/assets/css/responsive.css'
 import '@/assets/css/main.css'
 import '@/assets/css/color.css'
-// Supports weights 200-800
 
 const Home = lazy(() => import('@/pages/shop/Home'));
 const CheckBill = lazy(() => import('@/pages/shop/CheckBill'));
@@ -67,7 +66,6 @@ const router = createBrowserRouter([
         ]
     }
 ])
-
 
 render(
     <AuthProvider>

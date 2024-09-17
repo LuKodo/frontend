@@ -1,20 +1,14 @@
-import { Button, Modal } from "react-bootstrap"
-import { useEffect, useState } from "preact/hooks";
+import { useEffect } from "preact/hooks";
 import { formatPrice } from "@/utils/formatPrice";
 import { Product, Productofinal } from "@/interfaces/ProductoFinal";
-import { getCart, getCartQuantity, setCart } from "@/utils/cart";
-import ImageCart from "@/components/Page/ImageCart";
-import { NumberInput } from "../NumberInput";
-import { Link } from "react-router-dom";
+import { getCart, setCart } from "@/utils/cart";
+import { Fragment } from "preact/jsx-runtime";
+import ImageCart from "./ImageCart";
 
-export const CheckCart = ({ show, handleClose, setQty }: { show: boolean, handleClose: Function, setQty: Function }) => {
-    const [products, setProducts] = useState<Product[]>(getCart());
-
+export const CheckCart = ({ setReload, setProducts, products }: { setReload: Function, setProducts: Function, products: Product[] }) => {
     useEffect(() => {
-        if (show) {
-            setProducts(getCart())
-        }
-    }, [show])
+        setProducts(getCart());
+    }, [])
 
     const addProduct = (product: Productofinal, quantity: number) => {
         const existingProduct = products.find((p: Product) => p.product.codigo === product.codigo);
@@ -29,85 +23,63 @@ export const CheckCart = ({ show, handleClose, setQty }: { show: boolean, handle
 
         setProducts(newProducts);
         setCart(newProducts);
+        setReload(true)
     }
+
+
+    const increase = (value: number, max: number, product: Productofinal) => {
+        const newVal = value + 0.5;
+        const val = newVal <= max ? newVal : max;
+        addProduct(product, val);
+        setReload(true)
+    }
+
+    const decrease = (value: number, min: number, product: Productofinal) => {
+        const newVal = value - 0.5;
+        const val = newVal >= min ? newVal : min;
+        addProduct(product, val);
+        setReload(true)
+    }
+
 
     const deleteProduct = (product: Product) => {
         const newData = products.filter((p: Product) => p.product.codigo !== product.product.codigo);
         setProducts(newData);
         setCart(newData);
-        setQty(getCartQuantity());
+        setReload(true)
     }
 
     return (
-        <Modal show={show} onHide={() => handleClose()} size="lg">
-            <Modal.Header closeButton className="border-0" />
-            <Modal.Body>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="shoping__cart__table" style={{ height: '250px', overflow: 'auto' }}>
-                                <table className="table table-sm">
-                                    <thead>
-                                        <tr>
-                                            <th class="shoping__product">Producto</th>
-                                            <th>Precio</th>
-                                            <th>Cantidad</th>
-                                            <th>Total</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            products.length === 0 ? (
-                                                <tr>
-                                                    <td colSpan={5} class="shoping__cart__item">
-                                                        <h5>No hay productos en el carrito</h5>
-                                                    </td>
-                                                </tr>
-                                            ) : (
-                                                products.map((product: Product) => (
-                                                    <tr key={product.product.codigo}>
-                                                        <td class="d-flex align-items-center gap-2">
-                                                            <ImageCart imageName={product.product.codigo} />
-                                                            <h5 class="small">{product.product.nombre}</h5>
-                                                        </td>
-                                                        <td class="shoping__cart__price">
-                                                            {formatPrice((product.product.precioventageneral ?? 0))}
-                                                        </td>
-                                                        <td class="w-25">
-                                                            <NumberInput initialValue={product.quantity ?? 0} max={(product.product.nuevo ?? 0)} min={1} onChange={(value: number) => addProduct(product.product, value)} />
-                                                        </td>
-                                                        <td class="shoping__cart__total">
-                                                            {formatPrice((product.product.precioventageneral ?? 0) * product.quantity)}
-                                                        </td>
-                                                        <td>
-                                                            <Button variant="danger" size="sm" onClick={() => deleteProduct(product)}>
-                                                                <i class="bi bi-trash"></i>
-                                                            </Button>
-                                                        </td>
-                                                    </tr>
-                                                ))
-                                            )
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="">
-                                <h6 class="text-end mb-3 fw-bold bg-light p-2">Total <span>{formatPrice(products.reduce((total: number, product: Product) => total + (product.product.precioventageneral ?? 0) * product.quantity, 0))}</span></h6>
-
-                                <div className="d-flex justify-content-between align-items-center gap-2">
-                                    <Link to="/market/bill" class="btn btn-warning w-50">Realizar pedido</Link>
-                                    <span onClick={() => handleClose()} class="btn btn-danger w-50">Cancelar</span>
+        <Fragment>
+            <ul class="gi-cart-pro-items">
+                {
+                    products.length === 0 ? (
+                        <tr>
+                            <td colSpan={5} class="shoping__cart__item">
+                                <h5>No hay productos en el carrito</h5>
+                            </td>
+                        </tr>
+                    ) : (
+                        products.map((product: Product) => (
+                            <li key={product.product.codigo}>
+                                <a href="product-left-sidebar.html" class="gi-pro-img">
+                                    <ImageCart imageName={product.product.codigo} />
+                                </a>
+                                <div class="gi-pro-content">
+                                    <a href="product-left-sidebar.html" class="cart-pro-title">{product.product.nombre}</a>
+                                    <span class="cart-price"><span>{formatPrice((product.product.precioventageneral ?? 0))}</span> x {product.quantity}</span>
+                                    <div class="qty-plus-minus">
+                                        <div class="dec gi-qtybtn" onClick={() => decrease(product.quantity, 0, product.product)}>-</div>
+                                        <input class="qty-input" type="text" name="gi-qtybtn" value={product.quantity} />
+                                        <div class="inc gi-qtybtn" onClick={() => increase(product.quantity, (product.product.nuevo ?? 0), product.product)}>+</div>
+                                    </div>
+                                    <a href="javascript:void(0)" class="remove" onClick={() => deleteProduct(product)}>×</a>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Modal.Body>
-        </Modal>
+                            </li>
+                        ))
+                    )
+                }
+            </ul>
+        </Fragment>
     )
 }

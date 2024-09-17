@@ -1,12 +1,10 @@
 import { Sede } from "@/interfaces/Sede"
+import { setHeadquarterLocal } from "@/utils/cart"
 import { useMemo, useState } from "react"
 
-interface Props {
-    headquarter: string,
-}
-
-export const Sedes: preact.FunctionalComponent<Props> = ({ headquarter }) => {
+export const Sedes = ({ headquarter, setHeadquarter }: { headquarter: string, setHeadquarter: Function }) => {
     const [data, setData] = useState([] as Sede[])
+
     useMemo(() => {
         const fetchSedes = async () => {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/headquarters`)
@@ -36,7 +34,7 @@ export const Sedes: preact.FunctionalComponent<Props> = ({ headquarter }) => {
                             <ul class="loc-grid">
                                 {data.map((sede: Sede) => {
                                     return (
-                                        <li class="loc-list">
+                                        <li class="loc-list"  onClick={() => { setHeadquarterLocal(sede.prefijo); setHeadquarter(sede.prefijo) }}>
                                             <i class="bi bi-geo-alt"></i>
                                             <span class="gi-detail">{sede.nombre}</span>
                                         </li>
@@ -48,5 +46,45 @@ export const Sedes: preact.FunctionalComponent<Props> = ({ headquarter }) => {
                 </div>
             </div>
         </div>
+    )
+}
+
+export const SedesSM = ({ headquarter, setHeadquarter }: { headquarter: string, setHeadquarter: Function }) => {
+    const [data, setData] = useState([] as Sede[])
+
+    useMemo(() => {
+        const fetchSedes = async () => {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/headquarters`)
+
+            if (!response.ok) {
+                throw new Error(response.statusText);
+            }
+
+            const data = await response.json()
+            setData(data)
+        }
+        fetchSedes()
+    }, [])
+
+
+    return (
+        <div class="dropdown" >
+            <div className="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-geo-alt" /> {data.find((sede: Sede) => sede.prefijo === headquarter)?.nombre}
+            </div>
+            <ul class="dropdown-menu">
+                {data.map((sede: Sede) => {
+                    return (
+                        <li onClick={() => { setHeadquarterLocal(sede.prefijo); setHeadquarter(sede.prefijo) }}>
+                            <a href="javascript:void(0)" className="dropdown-item">
+                                <i class="bi bi-geo-alt me-2 small"></i>
+                                <span class="gi-detail">{sede.nombre}</span>
+                            </a>
+                        </li>
+                    )
+                })}
+            </ul>
+        </div >
+
     )
 }

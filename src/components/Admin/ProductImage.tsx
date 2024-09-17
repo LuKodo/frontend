@@ -30,7 +30,6 @@ const ProductImage: preact.FunctionalComponent<{ nombre: string, reload?: boolea
                 src={imageSrc !== 'undefined' ? imageSrc : 'https://placehold.co/100x100/png'}
                 effect="opacity"
                 wrapperProps={{
-                    // If you need to, you can tweak the effect transition using the wrapper style.
                     style: { transitionDelay: "1s" },
                 }}
             />

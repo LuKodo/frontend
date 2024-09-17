@@ -1,4 +1,4 @@
-import { useEffect, useState } from "preact/hooks"
+import { useState } from "preact/hooks"
 import { FormControl, InputGroup } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 
@@ -16,13 +16,10 @@ export const SearchInput = () => {
             navigate(`/market/shop/all?q=${query}`, { replace: true })
         }
     }
-    useEffect(() => {
-        console.log(query)
-    }, [query])
 
     return (
         <div class="header-search">
-            <span class="gi-search-group" action="#">
+            <span class="gi-search-group-form" action="#">
                 <input class="form-control" placeholder="¿Qué quieres buscar?" type="text" value={query} onChange={handleChange} onKeyDown={handleKey} />
                 <span class="search_submit" type="button" onClick={() => navigate(`/market/shop/all?q=${query}`)}><i class="bi bi-search"></i></span>
             </span>

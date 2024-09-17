@@ -34,7 +34,7 @@ export const getHeadquarter = () => {
     if (headquarter) {
         return headquarter;
     }
-    return false
+    return undefined
 }
 
 export const removeFromCart = (product: Productofinal) => {
@@ -69,5 +69,15 @@ export const initCartFromLocalStorage = () => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
         cart.push(...JSON.parse(storedCart));
+    }
+}
+
+export const getTotal = () => {
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+        const cart = JSON.parse(storedCart) as { product: Productofinal, quantity: number }[];
+        return cart.reduce((total, item) => total + (item.product.precioventageneral ?? 0) * item.quantity, 0);
+    } else {
+        return 0;
     }
 }
