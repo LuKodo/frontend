@@ -7,6 +7,7 @@ import { getCart, getCartQuantity, getTotal } from "@/utils/cart"
 import { CheckCart } from "./Page/CheckCart"
 import { formatPrice } from "@/utils/formatPrice"
 import { Product } from "@/interfaces/ProductoFinal"
+import { Modal } from "react-bootstrap"
 
 const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquarter }: { children: JSX.Element, updateCart: boolean, setUpdateCart: Function, headquarter: string, setHeadquarter: Function }) => {
     const params = useParams();
@@ -14,6 +15,8 @@ const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquart
     let [searchParams, _setSearchParams] = useSearchParams();
     const location = useLocation()
     let query = searchParams.get("q");
+    const [pedidos, setPedidos] = useState(false)
+    const [pedido, setPedido] = useState('')
 
     const [quantity, setQuantity] = useState(getCartQuantity())
     const [total, setTotal] = useState(getTotal())
@@ -28,9 +31,18 @@ const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquart
         }
     }, [updateCart])
 
+    const handleChangePedido = (event: Event) => {
+        event.preventDefault()
+        const field = event.target as HTMLInputElement | HTMLSelectElement
+
+        if (field.name === 'idPedido') {
+            setPedido(field.value)
+        }
+    }
+
     return (
         <Fragment>
-            <NavBarPro setShowCart={setShowCart} quantity={quantity} headquarter={headquarter} setHeadquarter={setHeadquarter} />
+            <NavBarPro setShowCart={setShowCart} quantity={quantity} headquarter={headquarter} setHeadquarter={setHeadquarter} setShowModal={setPedidos} />
             <div class="gi-side-cart-overlay" style={`display: ${showCart ? "block" : "none"}`} onClick={() => setShowCart(false)}></div>
             <div id="gi-side-cart" class={`gi-side-cart ${showCart ? "gi-open-cart" : ""}`} tabindex={-1}>
                 <div class="gi-cart-inner">
@@ -84,6 +96,33 @@ const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquart
                     </div>
                 </div>
             </div>
+
+            <Modal show={pedidos} onHide={() => setPedidos(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Rastrea tu pedido</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div className="d-flex justify-content-between align-items-center gap-2">
+                                    <input
+                                        type="text"
+                                        name="idPedido"
+                                        onChange={handleChangePedido}
+                                        className="form-control"
+                                        value={pedido}
+                                        placeholder="Ingrese el ID del pedido"
+                                    />
+                                    <button className="btn btn-warning">
+                                        <i className="bi bi-search" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
 
             {location.pathname !== '/market/bill' && (<CarouselCategories />)}
 

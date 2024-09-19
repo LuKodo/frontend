@@ -1,7 +1,7 @@
 import { Sedes, SedesSM } from "./Page/Headquarter"
 import { SearchInput } from "./Page/SearchInput"
 
-const NavBarPro: preact.FunctionComponent<{ setShowCart: Function, quantity: number, headquarter: string, setHeadquarter: Function }> = ({ setShowCart, quantity, headquarter, setHeadquarter }) => {
+const NavBarPro: preact.FunctionComponent<{ setShowCart: Function, quantity: number, headquarter: string, setHeadquarter: Function, setShowModal: Function }> = ({ setShowCart, quantity, headquarter, setHeadquarter, setShowModal }) => {
   return (
     <header className="gi-header">
       <div class="header-top">
@@ -62,6 +62,22 @@ const NavBarPro: preact.FunctionComponent<{ setShowCart: Function, quantity: num
                       <span class="badge badge-pill bg-warning rounded-pill ms-1">{quantity}</span>
                     </span>
                   </a>
+                  <div className="hover-pedido">
+                    <a href="javascript:void(0)"
+                      class="gi-header-btn gi-cart-toggle"
+                      onClick={() => setShowModal(true)}
+                    >
+                      <div class="header-icon">
+                        <img src="/market/motorcycle.svg" className="img-fluid btn-heartbeat" width={40} alt="wish" />
+                        <span class="main-label-note-new"></span>
+                      </div>
+                    </a>
+
+                    <span className="tooltip-text small">
+                      Rastrea tu pedido
+                    </span>
+                  </div>
+
                   <Sedes headquarter={headquarter} setHeadquarter={setHeadquarter} />
                 </div>
               </div>
