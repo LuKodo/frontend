@@ -30,7 +30,7 @@ export const MasonryPromo = () => {
     const [images, setImages] = useState<string[][]>()
 
     const fetchImages = async () => {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/promotion`,
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/promotions`,
             {
                 method: 'POST',
                 body: JSON.stringify({
@@ -41,7 +41,7 @@ export const MasonryPromo = () => {
         )
         const data = await response.json()
 
-        const groupedData = groupByRow(data.results);
+        const groupedData = groupByRow(data);
         setImages(groupedData)
     }
 

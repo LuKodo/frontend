@@ -3,7 +3,7 @@ import { TipoImagen } from '@/interfaces/TipoImagenEnum';
 import { useEffect, useState } from 'preact/hooks';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-const CategoryImage: preact.FunctionalComponent<{ category: Category, reload?: boolean }> = ({ category, reload }) => {
+const CategoryImage: preact.FunctionalComponent<{ category: Category }> = ({ category }) => {
     const [imageSrc, setImageSrc] = useState('');
 
     useEffect(() => {
@@ -18,7 +18,7 @@ const CategoryImage: preact.FunctionalComponent<{ category: Category, reload?: b
         };
 
         fetchImage();
-    }, [category.descripcion, reload]);
+    }, [category.descripcion]);
 
     return (
         <LazyLoadImage

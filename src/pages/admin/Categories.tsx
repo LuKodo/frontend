@@ -16,8 +16,6 @@ const fetchCategories = async (page: number, limit: number): Promise<response> =
 
 const Categories = () => {
     const [categories, setCategories] = useState<response>({} as response)
-    const [category, setCategory] = useState<Category>({} as Category)
-    const [showEditModal, setShowEditModal] = useState(false)
     const [page, setPage] = useState(1)
     const [limit, _setLimit] = useState(5)
 
@@ -27,15 +25,10 @@ const Categories = () => {
     }
 
     useMemo(() => {
-        if (!showEditModal) {
-            setCategory({} as Category);
-            fetchData()
-        }
-
         if (page) {
             fetchData()
         }
-    }, [page, showEditModal])
+    }, [page])
 
     const hideCategory = (id: string, categoria: Category) => {
         const fetchData = async () => {
@@ -64,7 +57,7 @@ const Categories = () => {
                 data.append('file', target.files[0])
             }
 
-            await fetch(`${import.meta.env.VITE_API_URL}/upload/${filename.trim()}/products`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/upload/${filename.trim()}/category`, {
                 method: 'POST',
                 body: data,
             }).then(res => res.json()).then(res => console.log(res))
@@ -105,7 +98,7 @@ const Categories = () => {
                                     <td>{category.descripcion}</td>
                                     <td>
                                         {
-                                            category && <CategoryImage category={category} reload={showEditModal} />
+                                            category && <CategoryImage category={category} />
                                         }
                                     </td>
                                     <td>
@@ -117,7 +110,7 @@ const Categories = () => {
                                                     id="image"
                                                     accept="image/*"
                                                     className="form-control form-control-sm"
-                                                    onChange={(e) => handleSubmit(e, product.codigo)}
+                                                    onChange={(e) => handleSubmit(e, category.descripcion)}
                                                 />
                                             </div>
                                             <div className="col">

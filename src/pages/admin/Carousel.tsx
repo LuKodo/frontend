@@ -29,7 +29,7 @@ const Carousel = () => {
             imageName: 'default'
         }
 
-        await fetch(`${import.meta.env.VITE_API_URL}/carousel`, {
+        await fetch(`${import.meta.env.VITE_API_URL}/carousel/upsert`, {
             method: 'POST',
             body: JSON.stringify(newSlide)
         })
@@ -51,7 +51,7 @@ const Carousel = () => {
                 data.append('file', target.files[0])
             }
 
-            await fetch(`${import.meta.env.VITE_API_URL}/carousel`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/carousel/upsert`, {
                 method: "POST",
                 body: JSON.stringify({
                     order: categoria.order,
@@ -72,15 +72,14 @@ const Carousel = () => {
     }
 
     const removeSlide = async (id: number) => {
-
         try {
-            await fetch(`${import.meta.env.VITE_API_URL}/carousel/${id}`, {
-                method: 'DELETE'
-            }).then(res => res.json()).then(res => console.log(res))
-            const newData = items.filter((row) => !(row.id === id))
-            setItems(newData);
+            await fetch(`${import.meta.env.VITE_API_URL}/carousel/delete/${id}`)
         } catch (error) {
             console.error(error)
+        } finally {
+            const newData = items.filter((row) => !(row.id === id))
+            setItems(newData);
+            setReload(true);
         }
     }
 

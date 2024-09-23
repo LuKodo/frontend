@@ -18,17 +18,10 @@ export const CarouselCategories = () => {
 
   useMemo(() => {
     const fetchCategories = async () => {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/category`, {
-        method: 'POST',
-        body: JSON.stringify({
-          'limit': 1000,
-          'offset': 1,
-          'estado': 1
-        })
-      })
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/categories_admin/1`)
 
       const data = await response.json()
-      setCategories(data.results)
+      setCategories(data)
     }
     fetchCategories()
   }, [])
@@ -57,7 +50,7 @@ export const CarouselCategories = () => {
             <div class="gi-cat-box gi-cat-box-3" role="button" style={{ height: '180px' }} onClick={() => setCategory(slide)}>
               <div class="gi-ser-inner">
                 <div class="gi-cat-icon">
-                  <CategoryImage category={{ descripcion: slide.descripcion, id: '', estado: true }} />
+                  <CategoryImage category={{ descripcion: slide.descripcion, id: '', estado: "1" }} />
                   <div className="gi-cat-detail">
                     <small class="gi-cat-title small">{slide.descripcion}</small>
                   </div>

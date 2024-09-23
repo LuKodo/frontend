@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
+import { InputGroup } from "react-bootstrap";
 
 export interface iDelivery {
     fecha_pedido: string
@@ -50,6 +51,8 @@ const CheckBill = () => {
     const [client, setClient] = useState<Client>({} as Client)
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
+
+    const [buscar, setBuscar] = useState(true);
 
     const handleChangeClient = (event: Event) => {
         event.preventDefault()
@@ -146,7 +149,7 @@ const CheckBill = () => {
             const deliveryDetails = products.map((product: Product) => {
                 return {
                     id_detalle: 0,
-                    id_pedido: data.id,
+                    id_pedido: data,
                     codigo: product.product.codigo,
                     cantidad: product.quantity,
                     precio_unitario: product.product.precioventageneral ?? 0,
@@ -161,7 +164,7 @@ const CheckBill = () => {
                 Swal.fire({
                     icon: 'success',
                     title: 'Listo',
-                    text: 'Se ha generado la orden, tu numero de pedido es: ' + data.id,
+                    text: 'Se ha generado la orden, tu numero de pedido es: ' + data,
                 })
                 setProducts([])
                 setCart([])
@@ -169,6 +172,35 @@ const CheckBill = () => {
                 navigate('/market/')
             })
         }
+    }
+
+    const handleSearch = async () => {
+        if (client.documento === '' || client.documento === undefined) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Falta el documento',
+            })
+            return
+        }
+
+        await fetch(`${import.meta.env.VITE_API_URL}/client/${client.documento}`).then((res) => {
+            if (res.status !== 404) {
+                res.json().then((data) => {
+                    setClient({
+                        tipodoc: data[0].tipodoc,
+                        documento: data[0].documento,
+                        nombres: data[0].nombres,
+                        apellidos: data[0].apellidos,
+                        direccion: data[0].direccion,
+                        telefono: data[0].telefono,
+                        forma_pago: data[0].forma_pago
+                    })
+                })
+            } else {
+                setBuscar(false)
+            }
+        })
     }
 
     return (
@@ -187,32 +219,31 @@ const CheckBill = () => {
                                         <div class="gi-sb-title">
                                             <h3 class="gi-sidebar-title">Detalles del Pedido<div class="gi-sidebar-res"><i class="gicon gi-angle-down"></i></div></h3>
                                         </div>
-                                        <div class="gi-sb-block-content gi-sidebar-dropdown">
-                                            <div class="gi-cart-form">
+                                        <div class="gi-sb-block-content gi-sidebar-dropdown bg-white">
+                                            <div class="gi-cart-form p-3">
                                                 <div>
                                                     <span className="gi-cart-wrap">
-                                                        <label>Tipo de Documento</label>
-                                                        <input type="text" name="tipodoc" onChange={handleChangeClient} className="form-control bg-white" />
-                                                    </span>
-                                                    <span className="gi-cart-wrap">
                                                         <label>Número de Documento</label>
-                                                        <input type="text" name="documento" onChange={handleChangeClient} className="form-control bg-white" />
+                                                        <InputGroup className={"mb-3"}>
+                                                            <input type="text" name="documento" disabled={!buscar} onKeyDown={(e) => e.key === 'Enter' && handleSearch()} onChange={handleChangeClient} className="form-control mb-0" value={client.documento} />
+                                                            <button type="button" className="btn btn-primary" onClick={handleSearch}> {buscar ? <i className="bi bi-search" /> : <i className="bi bi-check" />} </button>
+                                                        </InputGroup>
                                                     </span>
                                                     <span className="gi-cart-wrap">
                                                         <label>Nombres</label>
-                                                        <input type="text" name="nombres" onChange={handleChangeClient} className="form-control bg-white" />
+                                                        <input type="text" name="nombres" disabled={buscar} onChange={handleChangeClient} className="form-control" value={client.nombres} />
                                                     </span>
                                                     <span className="gi-cart-wrap">
                                                         <label>Apellidos</label>
-                                                        <input type="text" name="apellidos" onChange={handleChangeClient} className="bg-white" />
+                                                        <input type="text" name="apellidos" disabled={buscar} onChange={handleChangeClient} className="form-control" value={client.apellidos} />
                                                     </span>
                                                     <span className="gi-cart-wrap">
                                                         <label>Dirección</label>
-                                                        <textarea type="text" name="direccion" onChange={handleChangeClient} placeholder="" className="form-control" />
+                                                        <textarea type="text" name="direccion" disabled={buscar} onChange={handleChangeClient} className="form-control" value={client.direccion} />
                                                     </span>
                                                     <span className="gi-cart-wrap">
                                                         <label>Teléfono</label>
-                                                        <input type="text" name="telefono" onChange={handleChangeClient} className="bg-white form-control" />
+                                                        <input type="text" name="telefono" disabled={buscar} onChange={handleChangeClient} className="form-control" value={client.telefono} />
                                                     </span>
                                                     <span class="gi-cart-wrap">
                                                         <label>Forma de pago</label>

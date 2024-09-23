@@ -22,7 +22,7 @@ const Shop = () => {
     const fetchProductos = async () => {
       let response
       if (query) {
-        response = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
+        response = await fetch(`${import.meta.env.VITE_API_URL}/products_admin`, {
           method: 'POST',
           body: JSON.stringify(
             {
@@ -41,7 +41,7 @@ const Shop = () => {
           body: JSON.stringify(
             {
               "limit": 20,
-              "offset": page-1,
+              "offset": page,
               "sede": headquarter,
               "categoria": params.category,
               "paginapromo": "SI",

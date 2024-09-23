@@ -221,11 +221,11 @@ const Products = () => {
                                             <div className="col">
                                                 {
                                                     product.paginapromo === 'NO' ? (
-                                                        <button class="btn btn-warning" onClick={() => hideCategory(product.codigo, product.prefijo, 'SI')}>
+                                                        <button class="btn btn-sm btn-warning" onClick={() => hideCategory(product.codigo, product.prefijo, 'SI')}>
                                                             <i class="bi bi-eye-slash-fill" />
                                                         </button>
                                                     ) : (
-                                                        <button class="btn btn-warning" onClick={() => hideCategory(product.codigo, product.prefijo, 'NO')}>
+                                                        <button class="btn btn-sm btn-warning" onClick={() => hideCategory(product.codigo, product.prefijo, 'NO')}>
                                                             <i class="bi bi-eye-fill" />
                                                         </button>
                                                     )

@@ -27,18 +27,12 @@ const Promotion = () => {
 
     useMemo(() => {
         const fetchPromos = async () => {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/promotion`, {
-                method: 'POST',
-                body: JSON.stringify({
-                    "limit": 1000,
-                    "offset": 1
-                })
-            })
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/promotions`)
             const data = await response.json()
 
-            if (data && data.results) {
-                setRows(Array.from(new Set(data.results.map((item: Item) => item.rowIndex))))
-                setData(data.results)
+            if (data) {
+                setRows(Array.from(new Set(data.map((item: Item) => item.rowIndex))))
+                setData(data)
                 setReload(false)
             }
         }
@@ -64,10 +58,8 @@ const Promotion = () => {
     }
 
     const deletePromotion = async (id: number) => {
-        console.log(id);
-
         try {
-            await fetch(`${import.meta.env.VITE_API_URL}/promotion/${id}`, { method: 'DELETE' }).then(res => res.json()).then(res => console.log(res))
+            await fetch(`${import.meta.env.VITE_API_URL}/promotion/delete/${id}`)
         } catch (error) {
             console.error(error)
         }
@@ -150,6 +142,10 @@ const Promotion = () => {
 
     return (
         <Template>
+            <div class="page-header">
+                <h1 id="navbars">Promociones</h1>
+            </div>
+
             <Container>
                 {
                     rows.map((row) => (
@@ -169,7 +165,6 @@ const Promotion = () => {
                                                         className='w-100 h-75 img-fluid'
                                                         effect="opacity"
                                                         wrapperProps={{
-                                                            // If you need to, you can tweak the effect transition using the wrapper style.
                                                             style: { transitionDelay: "1s" },
                                                         }}
                                                     />
@@ -181,7 +176,7 @@ const Promotion = () => {
                                             <div className="d-flex flex-column gap-2 w-50">
                                                 <input
                                                     type="file"
-                                                    className="form-control form-control-sm bg-warning text-white"
+                                                    className="form-control form-control-sm"
                                                     accept="image/*"
                                                     onChange={(event) => handleImageChange(column, event)}
                                                     id={`image-${column.rowIndex}-${column.columnIndex}`}
