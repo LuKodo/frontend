@@ -7,7 +7,10 @@ import { getCart, getCartQuantity, getTotal } from "@/utils/cart"
 import { CheckCart } from "./Page/CheckCart"
 import { formatPrice } from "@/utils/formatPrice"
 import { Product } from "@/interfaces/ProductoFinal"
-import { Modal } from "react-bootstrap"
+import { Form, InputGroup, Modal } from "react-bootstrap"
+import '@/assets/css/responsive.css'
+import '@/assets/css/main.css'
+import '@/assets/css/color.css'
 
 const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquarter }: { children: JSX.Element, updateCart: boolean, setUpdateCart: Function, headquarter: string, setHeadquarter: Function }) => {
     const params = useParams();
@@ -16,7 +19,7 @@ const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquart
     const location = useLocation()
     let query = searchParams.get("q");
     const [pedidos, setPedidos] = useState(false)
-    const [pedido, setPedido] = useState('')
+    const [_pedido, setPedido] = useState('')
 
     const [quantity, setQuantity] = useState(getCartQuantity())
     const [total, setTotal] = useState(getTotal())
@@ -105,19 +108,22 @@ const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquart
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-12">
-                                <div className="d-flex justify-content-between align-items-center gap-2">
-                                    <input
-                                        type="text"
-                                        name="idPedido"
-                                        onChange={handleChangePedido}
-                                        className="form-control"
-                                        value={pedido}
+                                <InputGroup className="mb-3" size="sm">
+                                    <Form.Control
                                         placeholder="Ingrese el ID del pedido"
+                                        aria-label="Username"
+                                        aria-describedby="basic-addon1"
+                                        onChange={handleChangePedido}
                                     />
-                                    <button className="btn btn-warning">
-                                        <i className="bi bi-search" />
-                                    </button>
-                                </div>
+                                    <InputGroup.Text id="basic-addon1" className={"bg-warning"} role={"button"}>
+                                        <i className="bi bi-search p-1 text-white" />
+                                    </InputGroup.Text>
+                                </InputGroup>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-12">
+
                             </div>
                         </div>
                     </div>

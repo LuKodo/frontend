@@ -35,6 +35,10 @@ export interface Productofinal {
   proveedor3?: string | null;
   fechaactualizado?: Date | null;
   horaactualizado?: Date | null;
+  paginapromo?: string | null;
+  libre1?: string | null;
+  libre2?: string | null;
+  libre3?: string | null;
 }
 
 export interface Product {

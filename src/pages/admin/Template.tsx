@@ -1,47 +1,63 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Fragment } from "preact/jsx-runtime"
-import { Button, Col, Container, Row } from "react-bootstrap"
-import { useNavigate } from "react-router-dom";
+import { Col, Container, Row } from "react-bootstrap"
+import '@/assets/css/admin.css';
 
 interface Props {
     children: any;
 }
 
 export const Template: preact.FunctionComponent<Props> = ({ children }) => {
-    const navigate = useNavigate()
     const { logout } = useAuth();
 
     return (
         <Fragment>
-            <Container>
-                <div className="mx-3 my-3 d-flex align-items-center justify-content-between gap-3">
-                    <div className="mx-3 my-3 d-flex align-items-center justify-content-start gap-3">
-                        <Button variant="warning" size="sm" className="" onClick={() => navigate('/market/admin/products')}>
-                            <i className="bi bi-box ms-2" /> Productos
-                        </Button>
-                        <Button variant="warning" size="sm" className="" onClick={() => navigate('/market/admin/categories')}>
-                            <i className="bi bi-list ms-2" /> Categorias
-                        </Button>
-                        <Button variant="warning" size="sm" className="" onClick={() => navigate('/market/admin/promo')}>
-                            <i className="bi bi-bag-fill ms-2" /> Promociones
-                        </Button>
-                        <Button variant="warning" size="sm" className="" onClick={() => navigate('/market/admin/carousel')}>
-                            <i className="bi bi-images ms-2" /> Carrusel
-                        </Button>
+            <div class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark">
+                <div class="container">
+                    <a href="../" class="navbar-brand">Market Admin Panel</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarResponsive">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/market/admin/products">
+                                    <i className="bi bi-box ms-2" /> Productos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/market/admin/categories">
+                                    <i className="bi bi-list ms-2" /> Categorias
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/market/admin/promo">
+                                    <i className="bi bi-bag-fill ms-2" /> Promociones
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/market/admin/carousel">
+                                    <i className="bi bi-images ms-2" /> Carrusel
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav ms-md-auto">
+                            <li class="nav-item">
+                                <a target="_blank" rel="noopener" onClick={logout} class="nav-link" href="https://github.com/thomaspark/bootswatch/"><i class="bi bi-box-arrow-in-right me-2" />Salir</a>
+                            </li>
+                        </ul>
                     </div>
-
-                    <Button variant="danger" size="sm" className="" onClick={logout}>
-                        <i className="bi bi-arrow-clockwise me-1" /> Salir
-                    </Button>
                 </div>
-            </Container>
+            </div>
 
             <Container>
+                <div className="bs-docs-section clearfix">
                 <Row>
                     <Col md={12}>
                         {children}
                     </Col>
                 </Row>
+                </div>
             </Container>
         </Fragment>
     )

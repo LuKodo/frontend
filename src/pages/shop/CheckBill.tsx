@@ -9,11 +9,13 @@ import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
 
-interface iDelivery {
+export interface iDelivery {
     fecha_pedido: string
     id_estado: number
     prefijo: string
     total: number
+    tipodoc: string
+    documento: string
     nombres: string
     apellidos: string
     direccion: string
@@ -23,6 +25,8 @@ interface iDelivery {
 }
 
 interface Client {
+    tipodoc: string
+    documento: string
     nombres: string
     apellidos: string
     direccion: string
@@ -122,6 +126,8 @@ const CheckBill = () => {
             id_estado: EstadoPedido.PENDIENTE,
             prefijo: headquarter ?? 'SB',
             total: products.reduce((total: number, product: Product) => total + product.quantity * (product.product.precioventageneral ?? 0), 0),
+            tipodoc: client.tipodoc,
+            documento: client.documento,
             nombres: client.nombres,
             apellidos: client.apellidos,
             direccion: client.direccion,
@@ -184,6 +190,14 @@ const CheckBill = () => {
                                         <div class="gi-sb-block-content gi-sidebar-dropdown">
                                             <div class="gi-cart-form">
                                                 <div>
+                                                    <span className="gi-cart-wrap">
+                                                        <label>Tipo de Documento</label>
+                                                        <input type="text" name="tipodoc" onChange={handleChangeClient} className="form-control bg-white" />
+                                                    </span>
+                                                    <span className="gi-cart-wrap">
+                                                        <label>Número de Documento</label>
+                                                        <input type="text" name="documento" onChange={handleChangeClient} className="form-control bg-white" />
+                                                    </span>
                                                     <span className="gi-cart-wrap">
                                                         <label>Nombres</label>
                                                         <input type="text" name="nombres" onChange={handleChangeClient} className="form-control bg-white" />

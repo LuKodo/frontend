@@ -3,9 +3,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import '@fontsource-variable/manrope';
 import '@fontsource/poppins';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
-import '@/assets/css/responsive.css'
-import '@/assets/css/main.css'
-import '@/assets/css/color.css'
 
 const Home = lazy(() => import('@/pages/shop/Home'));
 const CheckBill = lazy(() => import('@/pages/shop/CheckBill'));
@@ -73,5 +70,5 @@ render(
             <RouterProvider router={router} />
         </Suspense>
     </AuthProvider>,
-    document.getElementById('app')!
+    document.body!
 )

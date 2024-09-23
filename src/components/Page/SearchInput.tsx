@@ -44,8 +44,8 @@ export const SearchInputAdmin = () => {
 
     return (
         <InputGroup>
-            <FormControl type="text" placeholder="¿Qué quieres buscar?" value={query} onChange={handleChange} onKeyDown={handleKey} className="border-dark" />
-            <InputGroup.Text id="basic-addon1" className="bg-white border-dark" onClick={() => navigate(`/market/admin/products?q=${query}`)}>
+            <FormControl type="text" placeholder="¿Qué quieres buscar?" value={query} onChange={handleChange} onKeyDown={handleKey} />
+            <InputGroup.Text id="basic-addon1" className="bg-white" onClick={() => navigate(`/market/admin/products?q=${query}`)}>
                 <i className="bi bi-search text-dark"></i>
             </InputGroup.Text>
         </InputGroup>

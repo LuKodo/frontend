@@ -6,29 +6,37 @@ import { Sede } from "@/interfaces/Sede"
 import ProductImage from "@/components/Admin/ProductImage"
 import { SearchInputAdmin } from "@/components/Page/SearchInput"
 import { useSearchParams } from "react-router-dom"
+import { Category } from "@/interfaces/Categoria"
 
-const fetchDataProducts = async (page: number, limit: number, headquarter: string, query: string): Promise<Productofinal[]> => {
+interface result {
+    result: Productofinal[]
+    count: number
+}
+
+const fetchDataProducts = async (page: number, limit: number, category: string, headquarter: string, query: string): Promise<result> => {
     let response
     if (query !== '') {
-        response = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
+        response = await fetch(`${import.meta.env.VITE_API_URL}/products_admin`, {
             method: 'POST',
             body: JSON.stringify(
                 {
                     "limit": limit,
                     "offset": page,
                     "sede": headquarter,
+                    "categoria": category,
                     "query": query
                 }
             )
         })
     } else {
-        response = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
+        response = await fetch(`${import.meta.env.VITE_API_URL}/products_admin`, {
             method: 'POST',
             body: JSON.stringify(
                 {
                     "limit": limit,
                     "offset": page,
                     "sede": headquarter,
+                    "categoria": category
                 }
             )
         })
@@ -41,12 +49,23 @@ const Products = () => {
     let [searchParams, _setSearchParams] = useSearchParams();
     let query = searchParams.get("q");
 
-    const [dataProducts, setDataProducts] = useState<Productofinal[]>([] as Productofinal[])
+    const [dataProducts, setDataProducts] = useState<result>({} as result)
+    const [categories, setCategories] = useState<Category[]>([] as Category[])
+    const [category, setCategory] = useState<string>("all")
     const [reload, setReload] = useState(false)
     const [page, setPage] = useState(1)
     const [limit, _setLimit] = useState(5)
     const [headquarter, setHeadquarter] = useState("SB")
     const [headquarters, setHeadquarters] = useState<Sede[]>([] as Sede[])
+
+    useMemo(() => {
+        const fetchCategories = async () => {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/categories_admin/1`)
+            const data = await response.json()
+            setCategories(data);
+        }
+        fetchCategories()
+    }, [])
 
     useMemo(() => {
         const fetSedes = async () => {
@@ -59,12 +78,12 @@ const Products = () => {
     }, [])
 
     const fetchData = async () => {
-        setDataProducts([] as Productofinal[])
+        setDataProducts({} as result)
         let data
         if (query) {
-            data = await fetchDataProducts(page, limit, headquarter, query)
+            data = await fetchDataProducts(page, limit, category, headquarter, query)
         } else {
-            data = await fetchDataProducts(page, limit, headquarter, '')
+            data = await fetchDataProducts(page, limit, category, headquarter, '')
         }
         setDataProducts(data)
     }
@@ -74,7 +93,23 @@ const Products = () => {
         if (reload) {
             setReload(false)
         }
-    }, [headquarter, page, reload, query])
+    }, [headquarter, page, reload, query, category])
+
+    const hideCategory = (codigo: string, prefijo: string, estado: string) => {
+        const fetchCate = async () => {
+            await fetch(`${import.meta.env.VITE_API_URL}/product/update`, {
+                method: "POST",
+                body: JSON.stringify({
+                    paginapromo: estado,
+                    codigo: codigo,
+                    prefijo: prefijo
+                })
+            })
+
+            await fetchData()
+        }
+        fetchCate()
+    }
 
     const handleSubmit = async (e: Event, filename: string) => {
         e.preventDefault()
@@ -99,8 +134,13 @@ const Products = () => {
 
     return (
         <Template>
-            <Row className="mb-4">
-                <Col md={{ offset: 6, span: 3 }}>
+            <div class="page-header">
+                <h1 id="navbars">Productos</h1>
+            </div>
+
+            <Row className="my-5">
+                <Col md={{ span: 3, offset: 3 }}>
+
                     <FormLabel>Sede</FormLabel>
                     <FormSelect onChange={(e) => {
                         const target = e.target as HTMLSelectElement
@@ -115,18 +155,34 @@ const Products = () => {
                         }
                     </FormSelect>
                 </Col>
-                <Col>
+                <Col md={3}>
+                    <FormLabel>Categoría</FormLabel>
+                    <FormSelect onChange={(e) => {
+                        const target = e.target as HTMLSelectElement
+                        setCategory(target.value)
+                    }}>
+                        <option value="all">Todos</option>
+                        {
+                            categories
+                                .filter((cat) => (Number(cat.estado) === 1))
+                                .map((hq) => (
+                                    (hq.descripcion === category) ?
+                                        <option key={hq.id} value={hq.descripcion} selected>{hq.descripcion}</option> :
+                                        <option key={hq.id} value={hq.descripcion}>{hq.descripcion}</option>
+                                ))
+                        }
+                    </FormSelect>
+                </Col>
+                <Col md={3}>
                     <FormLabel>Buscar</FormLabel>
                     <SearchInputAdmin />
                 </Col>
             </Row>
 
-            <Card>
-                <Card.Header>
-                    <Card.Title>Productos</Card.Title>
-                </Card.Header>
+            <div class="card mb-3">
+                <Card.Header>Productos</Card.Header>
                 <Card.Body>
-                    <table className="table table-sm">
+                    <table className="table table-sm small">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -137,35 +193,69 @@ const Products = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {dataProducts.map((product) => (
+                            {dataProducts.count === 0 && (
+                                <tr>
+                                    <td colSpan={5} className="text-center">
+                                        No hay resultados
+                                    </td>
+                                </tr>
+                            )}
+                            {dataProducts.result?.map((product) => (
                                 <tr>
                                     <td>{product.codigo}</td>
-                                    <td>{product.nombre}</td>
+                                    <td width={350}>{product.nombre}</td>
                                     <td>{product.prefijo}</td>
                                     <td><ProductImage nombre={product.codigo} reload={reload} /></td>
                                     <td>
-                                        <input
-                                            type="file"
-                                            name="image"
-                                            id="image"
-                                            accept="image/*"
-                                            className="form-control"
-                                            onChange={(e) => handleSubmit(e, product.codigo)}
-                                        />
+                                        <div className="row">
+                                            <div className="col">
+                                                <input
+                                                    type="file"
+                                                    name="image"
+                                                    id="image"
+                                                    accept="image/*"
+                                                    className="form-control form-control-sm"
+                                                    onChange={(e) => handleSubmit(e, product.codigo)}
+                                                />
+                                            </div>
+                                            <div className="col">
+                                                {
+                                                    product.paginapromo === 'NO' ? (
+                                                        <button class="btn btn-warning" onClick={() => hideCategory(product.codigo, product.prefijo, 'SI')}>
+                                                            <i class="bi bi-eye-slash-fill" />
+                                                        </button>
+                                                    ) : (
+                                                        <button class="btn btn-warning" onClick={() => hideCategory(product.codigo, product.prefijo, 'NO')}>
+                                                            <i class="bi bi-eye-fill" />
+                                                        </button>
+                                                    )
+                                                }
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </Card.Body>
-                <Card.Footer>
+                <Card.Footer className="pt-3 py-0">
                     <Pagination>
-                        {page > 1 && <Pagination.Item onClick={() => setPage(page - 1)}>{page - 1}</Pagination.Item>}
-                        <Pagination.Item active>{page}</Pagination.Item>
-                        <Pagination.Item onClick={() => setPage(page + 1)}>{page + 1}</Pagination.Item>
+                        {
+                            (page > 1) && <Pagination.First onClick={() => setPage(1)} />
+                        }
+                        {
+                            (page > 1) && <Pagination.Prev onClick={() => setPage(page - 1)} />
+                        }
+                        <Pagination.Item>{page}</Pagination.Item>
+                        {
+                            (page < Math.round(dataProducts.count / 5)) && <Pagination.Next onClick={() => setPage(page + 1)} />
+                        }
+                        {
+                            (page < Math.round(dataProducts.count / 5)) && <Pagination.Last onClick={() => setPage(Math.round(dataProducts.count / 5))} />
+                        }
                     </Pagination>
                 </Card.Footer>
-            </Card>
+            </div>
         </Template>
     )
 }

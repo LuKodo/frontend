@@ -1,29 +1,21 @@
 import { useMemo, useState } from "preact/hooks"
 import { Category } from "@/interfaces/Categoria"
-import { Button, ButtonGroup, Card, Pagination } from "react-bootstrap"
+import { Button, Card, Pagination } from "react-bootstrap"
 import { Template } from "./Template"
-import { ModalCategory } from "@/components/Admin/ModalCategory"
 import CategoryImage from "@/components/Admin/CategoryImage"
 
-interface result {
-    results: Category[]
-    total: number
-    pages: number
+interface response {
+    result: Category[],
+    count: number
 }
 
-const fetchCategories = async (page: number, limit: number): Promise<result> => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/category`, {
-        method: "POST",
-        body: JSON.stringify({
-            "limit": limit,
-            "offset": page
-        })
-    })
+const fetchCategories = async (page: number, limit: number): Promise<response> => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/categories/${page}/${limit}`)
     return await response.json()
 }
 
 const Categories = () => {
-    const [categories, setCategories] = useState<result>({} as result)
+    const [categories, setCategories] = useState<response>({} as response)
     const [category, setCategory] = useState<Category>({} as Category)
     const [showEditModal, setShowEditModal] = useState(false)
     const [page, setPage] = useState(1)
@@ -47,10 +39,10 @@ const Categories = () => {
 
     const hideCategory = (id: string, categoria: Category) => {
         const fetchData = async () => {
-            await fetch(`${import.meta.env.VITE_API_URL}/category/upsert`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/category/update`, {
                 method: "POST",
                 body: JSON.stringify({
-                    estado: !categoria.estado,
+                    estado: categoria.estado === '1' ? '0' : '1',
                     id: id,
                     descripcion: categoria.descripcion
                 })
@@ -62,15 +54,35 @@ const Categories = () => {
         fetchData()
     }
 
+    const handleSubmit = async (e: Event, filename: string) => {
+        e.preventDefault()
+        const target = e.target as HTMLInputElement
+        try {
+            const data = new FormData()
+
+            if (target && target.files && target.files[0]) {
+                data.append('file', target.files[0])
+            }
+
+            await fetch(`${import.meta.env.VITE_API_URL}/upload/${filename.trim()}/products`, {
+                method: 'POST',
+                body: data,
+            }).then(res => res.json()).then(res => console.log(res))
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     return (
         <Template>
-            <ModalCategory category={category.descripcion} show={showEditModal} onHide={() => setShowEditModal(false)} />
-            <Card>
-                <Card.Header>
-                    <Card.Title>Categorías</Card.Title>
-                </Card.Header>
+            <div class="page-header">
+                <h1 id="navbars">Categorías</h1>
+            </div>
+
+            <Card className="mt-4">
+                <Card.Header>Categorías</Card.Header>
                 <Card.Body>
-                    <table className="table table-sm">
+                    <table className="table table-sm small">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -81,13 +93,13 @@ const Categories = () => {
                         </thead>
                         <tbody>
                             {
-                                categories.total === 0 && (
+                                categories.count === 0 && (
                                     <tr>
                                         <td colSpan={4}>No hay categorías</td>
                                     </tr>
                                 )
                             }
-                            {categories.total > 0 && categories.results.map((category) => (
+                            {categories.count > 0 && categories.result.map((category) => (
                                 <tr>
                                     <td>{category.id}</td>
                                     <td>{category.descripcion}</td>
@@ -97,23 +109,29 @@ const Categories = () => {
                                         }
                                     </td>
                                     <td>
-                                        <ButtonGroup>
-                                            <Button variant="info" size="sm" onClick={() => {
-                                                setCategory(category)
-                                                setShowEditModal(true)
-                                            }}>
-                                                <i className="bi bi-pencil-fill"></i>
-                                            </Button>
-                                            <Button variant="danger" size="sm" onClick={() => hideCategory(category.id, category)}>
-                                                {
-                                                    category.estado ? (
-                                                        <i className="bi bi-eye-fill"></i>
-                                                    ) : (
-                                                        <i className="bi bi-eye-slash-fill"></i>
-                                                    )
-                                                }
-                                            </Button>
-                                        </ButtonGroup>
+                                        <div className="row">
+                                            <div className="col">
+                                                <input
+                                                    type="file"
+                                                    name="image"
+                                                    id="image"
+                                                    accept="image/*"
+                                                    className="form-control form-control-sm"
+                                                    onChange={(e) => handleSubmit(e, product.codigo)}
+                                                />
+                                            </div>
+                                            <div className="col">
+                                                <Button variant="warning" size="sm" onClick={() => hideCategory(category.id, category)}>
+                                                    {
+                                                        category.estado === "1" ? (
+                                                            <i className="bi bi-eye-fill"></i>
+                                                        ) : (
+                                                            <i className="bi bi-eye-slash-fill"></i>
+                                                        )
+                                                    }
+                                                </Button>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}
@@ -123,11 +141,17 @@ const Categories = () => {
                 <Card.Footer>
                     <Pagination>
                         {
-                            page > 1 && <Pagination.Prev onClick={() => setPage(page - 1)} />
+                            (page > 1) && <Pagination.First onClick={() => setPage(1)} />
+                        }
+                        {
+                            (page > 1) && <Pagination.Prev onClick={() => setPage(page - 1)} />
                         }
                         <Pagination.Item>{page}</Pagination.Item>
                         {
-                            page < categories.pages && <Pagination.Next onClick={() => setPage(page + 1)} />
+                            (page < Math.round(categories.count / 5)) && <Pagination.Next onClick={() => setPage(page + 1)} />
+                        }
+                        {
+                            (page < Math.round(categories.count / 5)) && <Pagination.Last onClick={() => setPage(Math.round(categories.count / 5))} />
                         }
                     </Pagination>
                 </Card.Footer>

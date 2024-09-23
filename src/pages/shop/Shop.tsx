@@ -30,6 +30,7 @@ const Shop = () => {
               "offset": page,
               "sede": headquarter,
               "categoria": params.category,
+              "paginapromo": "SI",
               "query": query
             }
           )
@@ -40,9 +41,10 @@ const Shop = () => {
           body: JSON.stringify(
             {
               "limit": 20,
-              "offset": page,
+              "offset": page-1,
               "sede": headquarter,
               "categoria": params.category,
+              "paginapromo": "SI",
             }
           )
         })

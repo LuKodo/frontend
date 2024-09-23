@@ -1,6 +1,6 @@
 export const getImage = async (imageName: string, type: string) => {
     try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/getFile/${imageName}/${type}`);
+        const response = await fetch(`http://triton.inversioneslacentral.com/market/api/uploads/${type}/${imageName}.webp`);
 
         if (response.ok && response.status === 200) {
             const data = await response.json();
