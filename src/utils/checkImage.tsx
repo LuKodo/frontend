@@ -1,6 +1,6 @@
 export const getImage = async (imageName: string, type: string) => {
     try {
-        const response = await fetch(`http://localhost/api/getfile/${imageName}/${type}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/getfile/${imageName}/${type}`);
 
         if (response.ok && response.status === 200) {
             const data = await response.json();
