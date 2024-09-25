@@ -120,10 +120,10 @@ const Promotion = () => {
             const data = new FormData()
 
             if (target && target.files && target.files[0]) {
-                data.append('file', target.files[0])
+                data.append('userfile', target.files[0])
             }
 
-            await fetch(`${import.meta.env.VITE_API_URL}/upload/${name.trim()}/promotions`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/upload/promotions/${name.replace(/ /g, '-').replace(/[^a-zA-Z0-9\s]/g, '')}`, {
                 method: 'POST',
                 body: data
             })
@@ -132,7 +132,7 @@ const Promotion = () => {
                 id: String(item.id),
                 rowIndex: (item.rowIndex).toString(),
                 columnIndex: (item.columnIndex).toString(),
-                imageName: name.trim(),
+                imageName: name.replace(/ /g, '-').replace(/[^a-zA-Z0-9\s]/g, ''),
                 image: target.files[0]
             })
         }

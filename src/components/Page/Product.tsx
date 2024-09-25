@@ -70,7 +70,7 @@ export const ProductCard = ({ product, setUpdateCart }: { product: Productofinal
                         </div>
                     </div>
                     <div class="gi-pro-content">
-                        <a href="shop-left-sidebar-col-3.html">
+                        <a href="javascript:void(0)">
                             <h6 class="gi-pro-stitle">{product.categoria}</h6>
                         </a>
                         <h5 class="gi-pro-title"><a href="javascript:void(0)" onClick={() => setShow(true)}>{product.nombre}</a></h5>

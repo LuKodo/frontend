@@ -118,10 +118,10 @@ const Products = () => {
             const data = new FormData()
 
             if (target && target.files && target.files[0]) {
-                data.append('file', target.files[0])
+                data.append('userfile', target.files[0])
             }
 
-            await fetch(`${import.meta.env.VITE_API_URL}/upload/${filename.trim()}/products`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/upload/products/${filename.trim()}`, {
                 method: 'POST',
                 body: data,
             }).then(res => res.json()).then(res => console.log(res))

@@ -40,6 +40,7 @@ const Carousel = () => {
 
     const handleSubmit = async (e: Event, filename: string, id: number) => {
         e.preventDefault()
+        filename = filename.replace(/ /g, '-').replace(/[^a-zA-Z0-9\s]/g, '')
 
         const categoria = items.filter((row) => row.id === id)[0]
         const target = e.target as HTMLInputElement
@@ -48,7 +49,7 @@ const Carousel = () => {
             const data = new FormData()
 
             if (target && target.files && target.files[0]) {
-                data.append('file', target.files[0])
+                data.append('userfile', target.files[0])
             }
 
             await fetch(`${import.meta.env.VITE_API_URL}/carousel/upsert`, {
@@ -60,7 +61,7 @@ const Carousel = () => {
                 })
             })
 
-            await fetch(`${import.meta.env.VITE_API_URL}/upload/${filename.trim()}/carousel`, {
+            await fetch(`${import.meta.env.VITE_API_URL}/upload/carousel/${filename.trim()}`, {
                 method: 'POST',
                 body: data
             })

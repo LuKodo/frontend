@@ -1,5 +1,6 @@
 import { Category } from '@/interfaces/Categoria';
 import { TipoImagen } from '@/interfaces/TipoImagenEnum';
+import { getImage } from '@/utils/checkImage';
 import { useEffect, useState } from 'preact/hooks';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
@@ -9,7 +10,7 @@ const CategoryImage: preact.FunctionalComponent<{ category: Category }> = ({ cat
     useEffect(() => {
         const fetchImage = async () => {
             try {
-                const imagePath = `http://triton.inversioneslacentral.com/market/api/uploads/${TipoImagen.CATEGORY}/${category.descripcion}.png`;
+                const imagePath = await getImage(category.descripcion, TipoImagen.CATEGORY);
                 setImageSrc(imagePath);
             } catch (error) {
                 console.error('Error fetching image:', error);

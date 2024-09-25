@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import { Product } from "@/interfaces/ProductoFinal";
+import { Product, Productofinal } from "@/interfaces/ProductoFinal";
 import { getCart, getHeadquarter, setCart } from "@/utils/cart";
 import { formatPrice } from "@/utils/formatPrice";
 import ImageCart from "@/components/Page/ImageCart";
@@ -203,6 +203,33 @@ const CheckBill = () => {
         })
     }
 
+    const addProduct = (product: Productofinal, quantity: number) => {
+        const existingProduct = products.find((p: Product) => p.product.codigo === product.codigo);
+        let newProducts = [];
+
+        if (existingProduct) {
+            newProducts = products.map((p: Product) => p.product.codigo === product.codigo ? { ...p, quantity: quantity } : p)
+        } else {
+            products.push({ product, quantity });
+            newProducts = [...products, { product, quantity }];
+        }
+
+        setProducts(newProducts);
+        setCart(newProducts);
+    }
+
+    const increase = (value: number, max: number, product: Productofinal) => {
+        const newVal = value + 0.5;
+        const val = newVal <= max ? newVal : max;
+        addProduct(product, val);
+    }
+
+    const decrease = (value: number, min: number, product: Productofinal) => {
+        const newVal = value - 0.5;
+        const val = newVal >= min ? newVal : min;
+        addProduct(product, val);
+    }
+
     return (
         <Layout headquarter={headquarter ?? 'SB'} setHeadquarter={setHeadquarter} updateCart={updateCart} setUpdateCart={setUpdateCart}>
             {
@@ -318,10 +345,10 @@ const CheckBill = () => {
                                                                             </td>
                                                                             <td data-label="Quantity" class="gi-cart-pro-qty" style="text-align: center;">
                                                                                 <div class="cart-qty-plus-minus">
-                                                                                    <input class="cart-plus-minus" type="text" name="cartqtybutton" value="1" />
+                                                                                    <input class="cart-plus-minus" type="text" name="cartqtybutton" value={product.quantity}/>
                                                                                     <div class="ms_cart_qtybtn">
-                                                                                        <div class="inc ms_qtybtn">+</div>
-                                                                                        <div class="dec ms_qtybtn">-</div>
+                                                                                        <div class="inc ms_qtybtn" onClick={() => increase(product.quantity, 10, product.product)}>+</div>
+                                                                                        <div class="dec ms_qtybtn" onClick={() => decrease(product.quantity, 1, product.product)}>-</div>
                                                                                     </div>
                                                                                 </div>
                                                                             </td>

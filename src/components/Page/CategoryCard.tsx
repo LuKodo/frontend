@@ -26,7 +26,7 @@ export const CategoryCard = (props: CategoryProps) => {
         <div class="gi-ser-content gi-ser-content-1 p-tp-12 wow fadeInUp">
             <div class="gi-ser-inner" onClick={() => setCategory(props.category)}>
                 <div class="gi-service-image">
-                    <CategoryImage category={{ descripcion: props.category, id: '', estado: true }} />
+                    <CategoryImage category={{ descripcion: props.category, id: '', estado: "1" }} />
                 </div>
                 <div class="gi-service-desc" style={{ height: '30px' }}>
                     <small class="small">{props.category}</small>

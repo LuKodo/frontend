@@ -2,12 +2,12 @@ import { useMemo, useState } from "preact/hooks"
 import { Productofinal } from "@/interfaces/ProductoFinal"
 import { Fragment } from "preact/jsx-runtime"
 import { getHeadquarter } from "@/utils/cart"
-import { ProductCard } from "@/components/Page/Product"
 import { Container, Pagination } from "react-bootstrap"
-import { Key } from "preact"
 import { CarouselComponent } from "@/components/Page/Carousel"
 import { useParams, useSearchParams } from "react-router-dom"
 import Layout from "@/components/Layout"
+import { ProductCard } from "@/components/Page/Product"
+import { Key } from "preact"
 
 const Shop = () => {
   const params = useParams();
@@ -16,7 +16,7 @@ const Shop = () => {
   const [headquarter, setHeadquarter] = useState(getHeadquarter())
 
   const [page, setPage] = useState(1)
-  const [products, setProducts] = useState([] as Productofinal[])
+  const [products, setProducts] = useState<{result: Productofinal[], count: number}>({} as {result: Productofinal[], count: number})
 
   useMemo(() => {
     const fetchProductos = async () => {
@@ -36,7 +36,7 @@ const Shop = () => {
           )
         })
       } else {
-        response = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
+        response = await fetch(`${import.meta.env.VITE_API_URL}/products_admin`, {
           method: 'POST',
           body: JSON.stringify(
             {
@@ -76,9 +76,9 @@ const Shop = () => {
                 <div className="shop-pro-inner">
                   <div className="row">
                     {
-                      products.length === 0 ? <div className="text-center">No hay resultados</div>
+                      products.result && products.result.length === 0 ? <div className="text-center">No hay resultados</div>
                         :
-                        products.map((
+                        products.result && products.result.map((
                           product: Productofinal, index: Key | null | undefined) =>
                         (
                           <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-6 mb-6 gi-product-box pro-gl-content" key={index}>
@@ -86,24 +86,23 @@ const Shop = () => {
                           </div>
                         ))
                     }
+
+                    <div className="gi-pro-pagination">
+                      <span>Mostrando 1-{products.result && products.result.length < 20 ? products.result.length : 20} de {products.count} producto(s)</span>
+                      <ul class={"gi-pro-pagination-inner"}>
+                        {page > 1 && <Pagination.Item onClick={() => setPage(page - 1)}>{page - 1}</Pagination.Item>}
+                        <li>
+                          <a class="active" href="#">{page}</a>
+                        </li>
+
+                        <li>
+                          <a href="#" onClick={() => setPage(page + 1)}>{page + 1}</a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-
-
-            <div className="gi-pro-pagination">
-              <span>Mostrando 1-{products.length < 20 ? products.length : 20} de {products.length} producto(s)</span>
-              <ul class={"gi-pro-pagination-inner"}>
-                {page > 1 && <Pagination.Item onClick={() => setPage(page - 1)}>{page - 1}</Pagination.Item>}
-                <li>
-                  <a class="active" href="#">{page}</a>
-                </li>
-
-                <li>
-                  <a href="#" onClick={() => setPage(page + 1)}>{page + 1}</a>
-                </li>
-              </ul>
             </div>
           </div>
         </Container>
