@@ -1,16 +1,12 @@
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '../admin/presentation/contexts/AuthContext';
 import { Redirect } from './Redirect';
 
-interface ProtectedRouteProps {
-  children: JSX.Element;
-}
-
-const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+const ProtectedRoute = (props: { children: any}) => {
   const { isAuthenticated } = useAuth();
 
   return (
     <>
-      {isAuthenticated ? children : <Redirect to="/market/login" />}
+      {isAuthenticated ? props.children : <Redirect to="/market/login" />}
     </>
   );
 };

@@ -1,8 +1,8 @@
-import { useMemo, useState } from "preact/hooks"
-import { Col, Container, Row } from "react-bootstrap"
-import { Template } from "./Template"
-import PromoImage, { getDefaultImage } from "@/components/Admin/PromoImage"
-import { LazyLoadImage } from "react-lazy-load-image-component"
+import { Col, Container, Row } from "solid-bootstrap"
+import { Template } from "../components/Template.tsx"
+import { createMemo, createSignal } from "solid-js"
+import { UnLazyImage } from "@unlazy/solid"
+import PromoImage, { getDefaultImage } from "../components/PromoImage.tsx"
 
 interface Item {
     id: number
@@ -21,17 +21,20 @@ interface ItemFormData {
 
 const Promotion = () => {
     const maxColumns: number = 6
-    const [data, setData] = useState<Item[]>([])
-    const [rows, setRows] = useState<number[]>([])
-    const [reload, setReload] = useState(false)
+    const [data, setData] = createSignal<Item[]>([])
+    const [rows, setRows] = createSignal<number[]>([])
+    const [reload, setReload] = createSignal(false)
 
-    useMemo(() => {
+    createMemo(() => {
         const fetchPromos = async () => {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/promotions`)
             const data = await response.json()
 
             if (data) {
-                setRows(Array.from(new Set(data.map((item: Item) => item.rowIndex))))
+                let rows: number[] = Array.from(
+                    new Set(data.map((item: Item) => item.rowIndex))
+                ).map(Number) || [0];
+                setRows(rows)
                 setData(data)
                 setReload(false)
             }
@@ -68,22 +71,22 @@ const Promotion = () => {
     const addRow = () => {
         const newRow = {
             id: 0,
-            rowIndex: rows.length === 0 ? 0 : Math.max(...rows) + 1,
+            rowIndex: rows().length === 0 ? 0 : Math.max(...rows() ?? 0) + 1,
             columnIndex: 0,
             imageName: "default",
         };
         handleSubmit({
             id: "0",
-            rowIndex: rows.length === 0 ? "0" : (Math.max(...rows) + 1).toString(),
+            rowIndex: rows().length === 0 ? "0" : (Math.max(...rows()) + 1).toString(),
             columnIndex: "0",
             imageName: "default",
             image: null
         })
-        setData([...data, newRow]);
+        setData([...data(), newRow]);
     };
 
     const addColumn = (rowIndex: number) => {
-        const columnIndex = data.filter((row) => row.rowIndex === rowIndex).length
+        const columnIndex = data().filter((row) => row.rowIndex === rowIndex).length
 
         if (columnIndex >= maxColumns) {
             return
@@ -95,7 +98,7 @@ const Promotion = () => {
             imageName: "default",
         };
 
-        const newData = [...data, item]
+        const newData = [...data(), item]
 
         setData(newData);
         handleSubmit({
@@ -108,12 +111,12 @@ const Promotion = () => {
     };
 
     const removeColumn = (id: number) => {
-        const newData = data.filter((row) => !(row.id === id))
+        const newData = data().filter((row) => !(row.id === id))
         setData(newData);
         deletePromotion(id)
     };
 
-    const handleImageChange = async (item: Item, event: Event) => {
+    const handleImageChange = async (item: Item, event: Event & { currentTarget: HTMLInputElement; target: HTMLInputElement }) => {
         const target = event.target as HTMLInputElement;
         if (target.files) {
             const name = target.files[0].name.split('.')[0]
@@ -148,52 +151,48 @@ const Promotion = () => {
 
             <Container>
                 {
-                    rows.map((row) => (
+                    rows().map((row: { toString: () => any }) => (
                         <Row key={row.toString()}>
-                            {data.map((column, columnIndex) => (
+                            {data().map((column: Item, columnIndex: any) => (
                                 row === column.rowIndex && (
                                     <Col
-                                        className="mb-4"
+                                        class="mb-4"
                                         key={columnIndex}
-                                        md={data.filter((row) => row.rowIndex === column.rowIndex).length === 6 ? 2 : data.filter((row) => row.rowIndex === column.rowIndex).length === 5 ? 2 : data.filter((row) => row.rowIndex === column.rowIndex).length === 4 ? 3 : data.filter((row) => row.rowIndex === column.rowIndex).length === 3 ? 4 : data.filter((row) => row.rowIndex === column.rowIndex).length === 2 ? 6 : 12}
+                                        md={data().filter((row: { rowIndex: any }) => row.rowIndex === column.rowIndex).length === 6 ? 2 : data().filter((row: { rowIndex: any }) => row.rowIndex === column.rowIndex).length === 5 ? 2 : data().filter((row: { rowIndex: any }) => row.rowIndex === column.rowIndex).length === 4 ? 3 : data().filter((row: { rowIndex: any }) => row.rowIndex === column.rowIndex).length === 3 ? 4 : data().filter((row: { rowIndex: any }) => row.rowIndex === column.rowIndex).length === 2 ? 6 : 12}
                                     >
-                                        <div className="border p-4 gap-1 d-flex flex-column justify-content-center align-items-center" style={{ height: "100%", maxHeight: "400px" }}>
+                                        <div class="border p-4 gap-1 d-flex flex-column justify-content-center align-items-center" style={{ height: "100%", "max-height": "400px" }}>
                                             {
                                                 column.imageName === 'default' ? (
-                                                    <LazyLoadImage
-                                                        src={getDefaultImage(data.filter((row) => row.rowIndex === column.rowIndex).length)}
-                                                        className='w-100 h-75 img-fluid'
-                                                        effect="opacity"
-                                                        wrapperProps={{
-                                                            style: { transitionDelay: "1s" },
-                                                        }}
+                                                    <UnLazyImage
+                                                        src={getDefaultImage(data().filter((row: { rowIndex: any }) => row.rowIndex === column.rowIndex).length)}
+                                                        class='w-100 h-75 img-fluid'
                                                     />
                                                 ) : (
                                                     <PromoImage image={column.imageName} />
                                                 )
                                             }
 
-                                            <div className="d-flex flex-column gap-2 w-50">
+                                            <div class="d-flex flex-column gap-2 w-50">
                                                 <input
                                                     type="file"
-                                                    className="form-control form-control-sm"
+                                                    class="form-control form-control-sm"
                                                     accept="image/*"
                                                     onChange={(event) => handleImageChange(column, event)}
                                                     id={`image-${column.rowIndex}-${column.columnIndex}`}
                                                 />
 
                                                 <button
-                                                    className="btn btn-sm btn-warning"
+                                                    class="btn btn-sm btn-warning"
                                                     onClick={() => addColumn(column.rowIndex)}
                                                 >
-                                                    <i className="bi bi-layout-sidebar-inset-reverse" /> Nueva Columna
+                                                    <i class="bi bi-layout-sidebar-inset-reverse" /> Nueva Columna
                                                 </button>
 
                                                 <button
-                                                    className="btn btn-sm btn-warning"
+                                                    class="btn btn-sm btn-warning"
                                                     onClick={() => removeColumn(column.id)}
                                                 >
-                                                    <i className="bi bi-trash-fill" /> Eliminar Columna
+                                                    <i class="bi bi-trash-fill" /> Eliminar Columna
                                                 </button>
                                             </div>
 
@@ -206,13 +205,13 @@ const Promotion = () => {
                 }
             </Container>
 
-            <Row className={"mb-3"}>
-                <Col className="d-flex justify-content-center gap-2 align-items-center">
+            <Row class={"mb-3"}>
+                <Col class="d-flex justify-content-center gap-2 align-items-center">
                     <button
-                        className="btn btn-sm btn-warning"
+                        class="btn btn-sm btn-warning"
                         onClick={addRow}
                     >
-                        <i className="bi bi-arrow-bar-down" /> Añadir Fila
+                        <i class="bi bi-arrow-bar-down" /> Añadir Fila
                     </button>
                 </Col>
             </Row>

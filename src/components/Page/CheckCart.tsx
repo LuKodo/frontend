@@ -1,12 +1,11 @@
-import { useEffect } from "preact/hooks";
-import { formatPrice } from "@/utils/formatPrice";
-import { Product, Productofinal } from "@/interfaces/ProductoFinal";
-import { getCart, setCart } from "@/utils/cart";
-import { Fragment } from "preact/jsx-runtime";
+import { createEffect } from "solid-js";
 import ImageCart from "./ImageCart";
+import { getCart, setCart } from "../../shared/utils/cart";
+import { Product, Productofinal } from "../../admin/domain/entities/ProductoFinal";
+import { formatPrice } from "../../shared/utils/formatPrice";
 
 export const CheckCart = ({ setReload, setProducts, products }: { setReload: Function, setProducts: Function, products: Product[] }) => {
-    useEffect(() => {
+    createEffect(() => {
         setProducts(getCart());
     }, [])
 
@@ -50,7 +49,7 @@ export const CheckCart = ({ setReload, setProducts, products }: { setReload: Fun
     }
 
     return (
-        <Fragment>
+        <>
             <ul class="gi-cart-pro-items">
                 {
                     products.length === 0 ? (
@@ -61,7 +60,7 @@ export const CheckCart = ({ setReload, setProducts, products }: { setReload: Fun
                         </tr>
                     ) : (
                         products.map((product: Product) => (
-                            <li key={product.product.codigo}>
+                            <li>
                                 <a href="product-left-sidebar.html" class="gi-pro-img">
                                     <ImageCart imageName={product.product.codigo} />
                                 </a>
@@ -80,6 +79,6 @@ export const CheckCart = ({ setReload, setProducts, products }: { setReload: Fun
                     )
                 }
             </ul>
-        </Fragment>
+        </>
     )
 }

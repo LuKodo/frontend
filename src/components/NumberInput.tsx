@@ -1,9 +1,9 @@
-import { useState } from "preact/hooks";
-import { Fragment } from "preact/jsx-runtime";
+import { createSignal } from "solidjs";
+import { Fragment } from "solidjs";
 import { FormControl, InputGroup } from "react-bootstrap";
 
 export const NumberInput = ({ initialValue = 0, min = 0, max = 1, onChange }: { initialValue: number, min: number, max: number, onChange: Function }) => {
-    const [value, setValue] = useState(initialValue);
+    const [value, setValue] = createSignal(initialValue);
 
     const increase = () => {
         const newVal = value + 0.5;

@@ -1,100 +1,100 @@
 /* color-6 */
 .gi-category-menu .gi-category-toggle {
-  background-color: #f44336;
+  background-color: #F2BB77;
 }
 
 .header-top-social ul li:hover i {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-cat-dropdown .gi-cat-tab button.active {
-  color: #f44336;
-  border-color: #f44336;
+  color: #F2BB77;
+  border-color: #F2BB77;
 }
 .gi-cat-dropdown .gi-cat-tab button.active i {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-cat-dropdown .gi-cat-tab .tab-content .gi-col-title {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-cat-dropdown .gi-cat-tab .tab-content .tab-list li a:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-help:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .header-top-lan-curr.dropdown .dropdown-toggle:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 .header-top-lan-curr.dropdown .dropdown-toggle:hover i {
-  color: #f44336;
+  color: #F2BB77;
 }
 .header-top-lan-curr.dropdown .dropdown-menu li.active .dropdown-item {
-  color: #f44336;
+  color: #F2BB77;
 }
 .header-top-lan-curr.dropdown .dropdown-menu .dropdown-item:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-breadcrumb-list li.active {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-breadcrumb-list .gi-breadcrumb-item.active:before {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-header-buttons .gi-header-btn:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-header-buttons .gi-header-btn:hover .gi-btn-title {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-header-buttons .gi-acc-drop .gi-dropdown-menu a:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-main-menu ul li:hover > a {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-main-menu ul li:hover > a i {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-main-menu ul li .mega-menu li .mega-block li.menu_title a {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-main-menu ul li .mega-menu li .mega-block li a:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-main-menu ul li.dropdown ul li a:hover,
 .gi-main-menu ul li.dropdown ul li a .active {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-main-menu ul li.dropdown ul li a:hover i,
 .gi-main-menu ul li.dropdown ul li a .active i {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-main-menu ul li.dropdown ul li:hover > a {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-main-menu ul li.dropdown ul li:hover > a i {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-btn-2 {
-  background-color: #f44336;
+  background-color: #F2BB77;
 }
 
 .gi-location-block .gi-location-menu .gi-location-toggle {
-  background-color: #f44336;
+  background-color: #F2BB77;
 }
 .gi-location-block .gi-location-dropdown .loc-grid .loc-list:hover {
-  color: #f44336;
-  border: 1px solid #f44336;
+  color: #F2BB77;
+  border: 1px solid #F2BB77;
 }
 .gi-location-block .gi-location-dropdown .loc-grid .loc-list:hover i {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-hero
@@ -104,31 +104,31 @@
   .gi-slider
   .gi-slide-content
   p {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-btn-1:hover {
-  background-color: #f44336;
+  background-color: #F2BB77;
 }
 
 .gi-category .gi-category-block .gi-cat-box .gi-cat-icon i,
 .gi-category .gi-category-block-2 .gi-cat-box .gi-cat-icon i {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-category .gi-category-block .gi-cat-box .gi-cat-icon .gi-lbl,
 .gi-category .gi-category-block-2 .gi-cat-box .gi-cat-icon .gi-lbl {
-  background: #f44336;
+  background: #F2BB77;
 }
 
 .section-title .section-detail h2 span {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-product-inner .gi-pro-content .gi-pro-title a:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-product-inner .gi-pro-image .gi-pro-actions .gi-btn-group:hover {
-  background-color: #f44336;
+  background-color: #F2BB77;
 }
 
 .gi-pro-variation
@@ -139,54 +139,54 @@
   .gi-pro-variation-inner.gi-pro-variation-size
   .gi-pro-variation-content
   li:hover {
-  background-color: #f44336 !important;
-  border-color: #f44336 !important;
+  background-color: #F2BB77 !important;
+  border-color: #F2BB77 !important;
   color: #fff;
 }
 
 .gi-animated-banner .gi-bnr-detail h3 {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-pro-tab-nav .nav-item .nav-link.active,
 .gi-pro-tab-nav .nav-item .nav-link:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-ser-inner .gi-service-image i {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-all-product-inner .gi-pro-content .gi-pro-stitle a:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-all-product-content .slick-arrow:hover:before {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .section-title .title-link a:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 .section-title .title-link a:hover i {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-blog .blog-info .detail .more-info a:hover,
 .gi-blog-section .blog-info .detail .more-info a:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-blog .blog-info .detail .more-info a:hover i,
 .gi-blog-section .blog-info .detail .more-info a:hover i {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-blog .blog-info .detail label a:hover,
 .gi-blog-section .blog-info .detail label a:hover {
-  color: #f44336 !important;
+  color: #F2BB77 !important;
 }
 
 .gi-footer .footer-top .gi-footer-widget .gi-footer-links .gi-footer-link {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-footer
   .footer-top
@@ -194,52 +194,52 @@
   .gi-footer-links
   .gi-footer-link
   a:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .svg_img.foo_svg {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .footer-bottom .gi-copy a {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 /**  Home - 2  **/
 .gi-shop-sidebar-2 .gi-sidebar-block .gi-sidebar-block-item .checked:after {
-  border: 1px solid #f44336;
-  background: #f44336;
+  border: 1px solid #F2BB77;
+  background: #F2BB77;
 }
 
 /**  End Home - 2  **/
 .gi-about .gi-about-detail .section-title h2 span {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .section-title-2 h2 span {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-test-section .gi-test-name {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-team-section .gi-team-box .gi-team-imag .gi-team-socials ul li a:hover {
-  background-color: #f44336;
+  background-color: #F2BB77;
 }
 
 .gi-single-blog-item .single-blog-info .single-blog-detail label a:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-pro-pagination ul li a.active {
-  background-color: #f44336;
+  background-color: #F2BB77;
 }
 .gi-pro-pagination ul li a:hover {
-  background-color: #f44336;
+  background-color: #F2BB77;
 }
 .gi-pro-pagination ul li a.next {
-  background-color: #f44336;
+  background-color: #F2BB77;
 }
 
 .gi-blog-comments
@@ -247,7 +247,7 @@
   .gi-blog-comment-content
   .gi-blog-details-btn
   a {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-blogs-sidebar
@@ -255,46 +255,46 @@
   .gi-sidebar-block-item
   .gi-sidebar-block-detial
   a {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-blogs-sidebar .gi-sidebar-block .gi-sidebar-block-item .checked:after {
-  border: 1px solid #f44336;
-  background: #f44336;
+  border: 1px solid #F2BB77;
+  background: #F2BB77;
 }
 
 .gi-cart-summary-bottom .gi-cart-summary .text-right a {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-checkout-summary .text-right a {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-checkout-section [type="radio"]:checked + label:before {
-  border: 1px solid #f44336;
+  border: 1px solid #F2BB77;
 }
 .gi-checkout-section [type="radio"]:checked + label:after {
-  background: #f44336;
+  background: #F2BB77;
 }
 
 .gi-wish-notify a,
 .gi-compare-notify a,
 .gi-cart-notify a {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-wish-notify p,
 .gi-compare-notify p,
 .gi-cart-notify p {
-  border-bottom: 5px solid #f44336;
+  border-bottom: 5px solid #F2BB77;
 }
 
 .gi-product-inner .gi-pro-image .gi-pro-actions .wishlist.active,
 .gi-product-inner .gi-pro-image .gi-pro-actions .compare.active {
-  background-color: #f44336;
+  background-color: #F2BB77;
 }
 
 .gi-accordion.style-1 .gi-accordion-body code {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-login-wrapper
@@ -303,7 +303,7 @@
   .gi-login-btn
   span
   a:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-single-product
@@ -311,50 +311,50 @@
   .gi-single-price
   .final-price
   .price-des {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-single-product
   .single-pro-content
   .gi-single-price-stoke
   .gi-single-ps-title {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-single-product .single-pro-content .gi-single-qty .gi-btn-group:hover {
-  background-color: #f44336;
-  border-color: #f44336;
+  background-color: #F2BB77;
+  border-color: #F2BB77;
 }
 
 .gi-single-product .single-nav-thumb .slick-slide:hover img {
-  border-color: #f44336;
+  border-color: #F2BB77;
 }
 .gi-single-product
   .single-nav-thumb
   .slick-slide.slick-current.slick-active
   img {
-  border-color: #f44336;
+  border-color: #F2BB77;
 }
 
 .gi-shop-sidebar .gi-sidebar-block .gi-sidebar-block-item .checked:after,
 .gi-shop-sidebar-2 .gi-sidebar-block .gi-sidebar-block-item .checked:after {
-  border: 1px solid #f44336;
-  background: #f44336;
+  border: 1px solid #F2BB77;
+  background: #F2BB77;
 }
 
 .gi-price-range-slider .noUi-horizontal .noUi-handle {
-  border: 2px solid #f44336;
+  border: 2px solid #F2BB77;
 }
 .gi-price-range-slider .noUi-horizontal .noUi-handle:hover {
-  background: #f44336;
+  background: #F2BB77;
 }
 
 .gi-single-product .gi-single-pro-tab-nav .nav-tabs .nav-link.active {
-  background-color: #f44336;
-  border: 1px solid #f44336;
+  background-color: #F2BB77;
+  border: 1px solid #F2BB77;
 }
 .gi-single-product .gi-single-pro-tab-nav .nav-tabs .nav-link:hover {
-  background-color: #f44336;
-  border: 1px solid #f44336;
+  background-color: #F2BB77;
+  border: 1px solid #F2BB77;
 }
 
 .gi-register-wrapper
@@ -363,27 +363,27 @@
   .gi-register-btn
   span
   a:hover {
-  color: #f44336;
+  color: #F2BB77;
 }
 
 .gi-shop .gi-pro-list-top .grid-btn.active {
-  background: #f44336;
-  border: 1px solid #f44336;
+  background: #F2BB77;
+  border: 1px solid #F2BB77;
 }
 
 .gi-shop .gi-select-btn-clear .gi-select-clear:hover {
-  background-color: #f44336;
+  background-color: #F2BB77;
 }
 
 .gi-track .gi-step-completed .gi-step-indicator {
-  background-color: #f44336;
+  background-color: #F2BB77;
 }
 
 .gi-track .gi-step-active .gi-step-icon {
-  color: #f44336;
+  color: #F2BB77;
 }
 .gi-track .gi-steps-header .progress .progress-bar {
-  background-color: #f44336;
+  background-color: #F2BB77;
 }
 
 .hover-pedido {
@@ -409,7 +409,29 @@
   transition: opacity 0.3s;
 }
 
+.hover-pedido .tooltip-top {
+visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 10%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
 .hover-pedido:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.hover-pedido:hover .tooltip-top {
   visibility: visible;
   opacity: 1;
 }
@@ -444,7 +466,7 @@
 }
 
 .btn-heartbeat {
-  animation: heartbeat 1.5s infinite;
+  animation: heartbeat 2.5s infinite;
 }
 
 .btn-heartbeat:hover {

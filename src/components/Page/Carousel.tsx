@@ -1,11 +1,11 @@
-import { Carrusel } from "@/interfaces/Carrusel"
-import { useMemo, useState } from "preact/hooks"
+import { Carrusel } from "@/admin/domain/entities/Carrusel.ts"
+import { useMemo, createSignal } from "solidjs"
 import { Carousel } from "react-bootstrap"
-import CarruselImage from "../Admin/CarruselImage"
+import CarruselImage from "@/admin/presentation/components/CarruselImage"
 
 export const CarouselComponent = () => {
-    const [items, setItems] = useState<Carrusel[]>([] as Carrusel[])
-    const [reload, _setReload] = useState(false)
+    const [items, setItems] = createSignal<Carrusel[]>([] as Carrusel[])
+    const [reload, _setReload] = createSignal(false)
 
     useMemo(() => {
         const fetchItems = async () => {

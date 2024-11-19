@@ -1,12 +1,12 @@
-import { useState } from "preact/hooks"
+import { ChangeEvent, KeyboardEvent, createSignal } from "solidjs"
 import { FormControl, InputGroup } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 
 export const SearchInput = () => {
-    const [query, setQuery] = useState('')
+    const [query, setQuery] = createSignal('')
     const navigate = useNavigate()
 
-    const handleChange = (e: Event) => {
+    const handleChange = (e: ChangeEvent) => {
         const value = (e.target as HTMLInputElement).value
         setQuery(value)
     }
@@ -18,20 +18,20 @@ export const SearchInput = () => {
     }
 
     return (
-        <div class="header-search">
-            <span class="gi-search-group-form" action="#">
-                <input class="form-control" placeholder="¿Qué quieres buscar?" type="text" value={query} onChange={handleChange} onKeyDown={handleKey} />
-                <span class="search_submit" type="button" onClick={() => navigate(`/market/shop/all?q=${query}`)}><i class="bi bi-search"></i></span>
+        <div className="header-search">
+            <span className="gi-search-group-form bg-white rounded-pill">
+                <input className="form-control" placeholder="¿Qué quieres buscar?" type="text" value={query} onChange={handleChange} onKeyDown={handleKey} />
+                <span className="search_submit" onClick={() => navigate(`/market/shop/all?q=${query}`)}><i className="bi bi-search"></i></span>
             </span>
         </div>
     )
 }
 
 export const SearchInputAdmin = () => {
-    const [query, setQuery] = useState('')
+    const [query, setQuery] = createSignal('')
     const navigate = useNavigate()
 
-    const handleChange = (e: Event) => {
+    const handleChange = (e: ChangeEvent) => {
         const value = (e.target as HTMLInputElement).value
         setQuery(value)
     }

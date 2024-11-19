@@ -1,10 +1,10 @@
-import { FC } from 'preact/compat';
-import { useEffect } from 'preact/hooks';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@solidjs/router';
+import { Component, createEffect } from 'solid-js';
 
-export const Redirect: FC<{ to: string }> = ({ to }) => {
+export const Redirect: Component<{ to: string }> = ({ to }) => {
     const navigate = useNavigate();
-    useEffect(() => {
+
+    createEffect(() => {
         navigate(to)
     })
 

@@ -1,24 +1,24 @@
-import { Fragment, useEffect, useState } from "react";
-import { getImage } from "@/utils/checkImage";
-import { formatPrice } from "@/utils/formatPrice";
-import { Productofinal } from "@/interfaces/ProductoFinal";
-import { TipoImagen } from "@/interfaces/TipoImagenEnum";
-import { getDefaultImage } from "../Admin/PromoImage";
+import { Fragment, createEffect, createSignal } from "solidjs";
+import { getImage } from "@/shared/utils/checkImage";
+import { formatPrice } from "@/shared/utils/formatPrice";
+import { Productofinal } from "@/admin/domain/entities/ProductoFinal.ts";
+import { TipoImagen } from "@/admin/domain/entities/TipoImagenEnum.ts";
+import { getDefaultImage } from "@/admin/presentation/components/PromoImage";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Swal from "sweetalert2";
-import { addToCart } from "@/utils/cart";
+import { addToCart } from "@/shared/utils/cart";
 import { ModalProduct } from "./ModalProduct";
 
 export const ProductCard = ({ product, setUpdateCart }: { product: Productofinal, setUpdateCart: Function }) => {
-    const [imagePath, setImagePath] = useState('');
-    const [show, setShow] = useState(false);
+    const [imagePath, setImagePath] = createSignal('');
+    const [show, setShow] = createSignal(false);
 
     const imagePathget = async () => {
         const path = await getImage(product.codigo, TipoImagen.PRODUCT);
         setImagePath(path)
     }
 
-    useEffect(() => {
+    createEffect(() => {
         imagePathget()
     }, [product]);
 
@@ -45,13 +45,13 @@ export const ProductCard = ({ product, setUpdateCart }: { product: Productofinal
     return (
         <Fragment>
             <ModalProduct product={product} handleClose={() => setShow(false)} show={show} setUpdateCart={setUpdateCart} />
-            <div class="gi-product-content" >
-                <div class="gi-product-inner">
-                    <div class="gi-pro-image-outer">
-                        <div class="gi-pro-image" onClick={() => setShow(true)}>
-                            <a href="javascript:void(0)" onClick={() => setShow(true)} class="image">
-                                <span class="label nonveg">
-                                    <span class="dot"></span>
+            <div className="gi-product-content" >
+                <div className="gi-product-inner">
+                    <div className="gi-pro-image-outer">
+                        <div className="gi-pro-image" onClick={() => setShow(true)}>
+                            <a href="javascript:void(0)" onClick={() => setShow(true)} className="image">
+                                <span className="label nonveg">
+                                    <span className="dot"></span>
                                 </span>
                                 <LazyLoadImage
                                     alt={product.codigo || 'Product Image'}
@@ -63,20 +63,20 @@ export const ProductCard = ({ product, setUpdateCart }: { product: Productofinal
                                     }}
                                 />
                             </a>
-                            <div class="gi-pro-actions">
-                                <a href="javascript:void(0)" onClick={() => setShow(true)} class="gi-btn-group quickview" title="Vista rápida"><i class="bi bi-eye"></i></a>
-                                <a href="javascript:void(0)" onClick={addProduct} title="Añadir al carrito" class="gi-btn-group add-to-cart"><i class="bi bi-bag"></i></a>
+                            <div className="gi-pro-actions">
+                                <a href="javascript:void(0)" onClick={() => setShow(true)} className="gi-btn-group quickview" title="Vista rápida"><i className="bi bi-eye"></i></a>
+                                <a href="javascript:void(0)" onClick={addProduct} title="Añadir al carrito" className="gi-btn-group add-to-cart"><i className="bi bi-bag"></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="gi-pro-content">
+                    <div className="gi-pro-content">
                         <a href="javascript:void(0)">
-                            <h6 class="gi-pro-stitle">{product.categoria}</h6>
+                            <h6 className="gi-pro-stitle">{product.categoria}</h6>
                         </a>
-                        <h5 class="gi-pro-title"><a href="javascript:void(0)" onClick={() => setShow(true)}>{product.nombre}</a></h5>
-                        <div class="gi-pro-rat-price">
-                            <span class="gi-price">
-                                <span class="new-price">{formatPrice(product.precioventageneral ?? 0)}</span>
+                        <h5 className="gi-pro-title"><a href="javascript:void(0)" onClick={() => setShow(true)}>{product.nombre}</a></h5>
+                        <div className="gi-pro-rat-price">
+                            <span className="gi-price">
+                                <span className="new-price">{formatPrice(product.precioventageneral ?? 0)}</span>
                             </span>
                         </div>
                     </div>

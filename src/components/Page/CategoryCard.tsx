@@ -1,7 +1,7 @@
-import { Category } from "@/interfaces/Categoria"
-import { TipoImagen } from "@/interfaces/TipoImagenEnum"
-import { getImage } from "@/utils/checkImage"
-import { useEffect, useState } from "preact/hooks"
+import { Category } from "@/admin/domain/entities/Categoria.ts"
+import { TipoImagen } from "@/admin/domain/entities/TipoImagenEnum.ts"
+import { getImage } from "@/shared/utils/checkImage"
+import { FC, createEffect, createSignal } from "solidjs"
 import { LazyLoadImage } from "react-lazy-load-image-component"
 import { useNavigate } from "react-router-dom"
 
@@ -23,23 +23,23 @@ export const CategoryCard = (props: CategoryProps) => {
     }
 
     return (
-        <div class="gi-ser-content gi-ser-content-1 p-tp-12 wow fadeInUp">
-            <div class="gi-ser-inner" onClick={() => setCategory(props.category)}>
-                <div class="gi-service-image">
+        <div className="gi-ser-content gi-ser-content-1 p-tp-12 wow fadeInUp">
+            <div className="gi-ser-inner" onClick={() => setCategory(props.category)}>
+                <div className="gi-service-image">
                     <CategoryImage category={{ descripcion: props.category, id: '', estado: "1" }} />
                 </div>
-                <div class="gi-service-desc" style={{ height: '30px' }}>
-                    <small class="small">{props.category}</small>
+                <div className="gi-service-desc" style={{ height: '30px' }}>
+                    <small className="small">{props.category}</small>
                 </div>
             </div>
         </div>
     )
 }
 
-const CategoryImage: preact.FunctionalComponent<{ category: Category }> = ({ category }) => {
-    const [imageSrc, setImageSrc] = useState('');
+const CategoryImage: FC<{ category: Category }> = ({ category }) => {
+    const [imageSrc, setImageSrc] = createSignal('');
 
-    useEffect(() => {
+    createEffect(() => {
         const fetchImage = async () => {
             try {
                 const imagePath = await getImage(category.descripcion, TipoImagen.CATEGORY)

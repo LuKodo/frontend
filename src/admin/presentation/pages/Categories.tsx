@@ -1,8 +1,8 @@
-import { useMemo, useState } from "preact/hooks"
-import { Category } from "@/interfaces/Categoria"
-import { Button, Card, Pagination } from "react-bootstrap"
-import { Template } from "./Template"
-import CategoryImage from "@/components/Admin/CategoryImage"
+import { Button, Card, Pagination } from "solid-bootstrap"
+import { Template } from "../components/Template.tsx"
+import { Category } from "../../domain/entities/Categoria.ts"
+import { Component, createEffect, createMemo, createSignal, JSX } from "solid-js"
+import CategoryImage from "../components/CategoryImage.tsx"
 
 interface response {
     result: Category[],
@@ -14,21 +14,21 @@ const fetchCategories = async (page: number, limit: number): Promise<response> =
     return await response.json()
 }
 
-const Categories = () => {
-    const [categories, setCategories] = useState<response>({} as response)
-    const [page, setPage] = useState(1)
-    const [limit, _setLimit] = useState(5)
+export const Categories: Component = () => {
+    const [categories, setCategories] = createSignal<response>({ result: [], count: 0 })
+    const [page, setPage] = createSignal<number>(1)
+    const [limit, _setLimit] = createSignal(5)
 
     const fetchData = async () => {
-        const data = await fetchCategories(page, limit)
+        const data = await fetchCategories(page(), limit())
         setCategories(data)
     }
 
-    useMemo(() => {
-        if (page) {
+    createMemo(() => {
+        if (page()) {
             fetchData()
         }
-    }, [page])
+    })
 
     const hideCategory = (id: string, categoria: Category) => {
         const fetchData = async () => {
@@ -41,13 +41,13 @@ const Categories = () => {
                 })
             })
 
-            const data = await fetchCategories(page, limit)
+            const data = await fetchCategories(page(), limit())
             setCategories(data)
         }
         fetchData()
     }
 
-    const handleSubmit = async (e: Event, filename: string) => {
+    const handleSubmit = async (e: Event & { currentTarget: HTMLInputElement; target: HTMLInputElement }, filename: string) => {
         e.preventDefault()
         const target = e.target as HTMLInputElement
         try {
@@ -72,10 +72,10 @@ const Categories = () => {
                 <h1 id="navbars">Categorías</h1>
             </div>
 
-            <Card className="mt-4">
+            <Card class="mt-4">
                 <Card.Header>Categorías</Card.Header>
                 <Card.Body>
-                    <table className="table table-sm small">
+                    <table class="table table-sm small">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -86,13 +86,13 @@ const Categories = () => {
                         </thead>
                         <tbody>
                             {
-                                categories.count === 0 && (
+                                categories().count === 0 && (
                                     <tr>
                                         <td colSpan={4}>No hay categorías</td>
                                     </tr>
                                 )
                             }
-                            {categories.count > 0 && categories.result.map((category) => (
+                            {categories().count > 0 && categories().result.map((category: Category) => (
                                 <tr>
                                     <td>{category.id}</td>
                                     <td>{category.descripcion}</td>
@@ -102,24 +102,24 @@ const Categories = () => {
                                         }
                                     </td>
                                     <td>
-                                        <div className="row">
-                                            <div className="col">
+                                        <div class="row">
+                                            <div class="col">
                                                 <input
                                                     type="file"
                                                     name="image"
                                                     id="image"
                                                     accept="image/*"
-                                                    className="form-control form-control-sm"
+                                                    class="form-control form-control-sm"
                                                     onChange={(e) => handleSubmit(e, category.descripcion)}
                                                 />
                                             </div>
-                                            <div className="col">
+                                            <div class="col">
                                                 <Button variant="warning" size="sm" onClick={() => hideCategory(category.id, category)}>
                                                     {
                                                         category.estado === "1" ? (
-                                                            <i className="bi bi-eye-fill"></i>
+                                                            <i class="bi bi-eye-fill"></i>
                                                         ) : (
-                                                            <i className="bi bi-eye-slash-fill"></i>
+                                                            <i class="bi bi-eye-slash-fill"></i>
                                                         )
                                                     }
                                                 </Button>
@@ -134,17 +134,17 @@ const Categories = () => {
                 <Card.Footer>
                     <Pagination>
                         {
-                            (page > 1) && <Pagination.First onClick={() => setPage(1)} />
+                            (page() > 1) && <Pagination.First onClick={() => setPage(1)} />
                         }
                         {
-                            (page > 1) && <Pagination.Prev onClick={() => setPage(page - 1)} />
+                            (page() > 1) && <Pagination.Prev onClick={() => setPage(page() - 1)} />
                         }
-                        <Pagination.Item>{page}</Pagination.Item>
+                        <Pagination.Item>{page()}</Pagination.Item>
                         {
-                            (page < Math.round(categories.count / 5)) && <Pagination.Next onClick={() => setPage(page + 1)} />
+                            (page() < Math.round(categories().count / 5)) && <Pagination.Next onClick={() => setPage(page() + 1)} />
                         }
                         {
-                            (page < Math.round(categories.count / 5)) && <Pagination.Last onClick={() => setPage(Math.round(categories.count / 5))} />
+                            (page() < Math.round(categories().count / 5)) && <Pagination.Last onClick={() => setPage(Math.round(categories().count / 5))} />
                         }
                     </Pagination>
                 </Card.Footer>

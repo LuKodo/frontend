@@ -1,17 +1,15 @@
-import { useMemo, useState } from "preact/hooks"
 import NavBarPro from "./NavBar"
-import { CarouselCategories } from "./Page/CarouselCategories"
-import { Fragment } from "preact/jsx-runtime"
-import { useLocation, useParams, useSearchParams } from "react-router-dom"
-import { getCart, getCartQuantity, getTotal } from "@/utils/cart"
+import '@/css/responsive.css'
+import '@/css/main.css'
+import '@/css/color.css'
+import { Form, InputGroup, Modal } from "solid-bootstrap";
+import { useParams, useSearchParams } from "@solidjs/router"
+import { createMemo, createSignal } from "solid-js"
+import { getCart, getCartQuantity, getTotal } from "../shared/utils/cart"
+import { Product } from "../admin/domain/entities/ProductoFinal"
 import { CheckCart } from "./Page/CheckCart"
-import { formatPrice } from "@/utils/formatPrice"
-import { Product } from "@/interfaces/ProductoFinal"
-import { Form, InputGroup, Modal } from "react-bootstrap"
-import '@/assets/css/responsive.css'
-import '@/assets/css/main.css'
-import '@/assets/css/color.css'
-import { get_human_status } from "@/utils/estadosPedidos.enum"
+import { formatPrice } from "../shared/utils/formatPrice"
+import { get_human_status } from "../shared/utils/estadosPedidos.enum"
 
 export interface iDelivery {
     id_pedido: number
@@ -35,29 +33,29 @@ interface iDeliveryDetails {
     subtotal: number
 }
 
-const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquarter }: { children: JSX.Element, updateCart: boolean, setUpdateCart: Function, headquarter: string, setHeadquarter: Function }) => {
+const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquarter }: { children: any, updateCart: boolean, setUpdateCart: Function, headquarter: string, setHeadquarter: Function }) => {
     const params = useParams();
-    const [showCart, setShowCart] = useState(false)
+    const [showCart, setShowCart] = createSignal(false)
     let [searchParams, _setSearchParams] = useSearchParams();
-    const location = useLocation()
-    let query = searchParams.get("q");
-    const [rastreo, setRastreo] = useState(false)
-    const [idPedido, setIdPedido] = useState('')
-    const [pedido, setPedido] = useState<iDelivery | undefined>(undefined)
-    const [detallePedido, setDetallePedido] = useState<iDeliveryDetails[] | undefined>(undefined)
+    let query = searchParams.q;
+    const [rastreo, setRastreo] = createSignal(false)
+    const [idPedido, setIdPedido] = createSignal('')
+    const [pedido, setPedido] = createSignal<iDelivery | undefined>(undefined)
+    const [detallePedido, setDetallePedido] = createSignal<iDeliveryDetails[] | undefined>(undefined)
+    const [showListCategories, setShowListCategories] = createSignal(false);
 
-    const [quantity, setQuantity] = useState(getCartQuantity())
-    const [total, setTotal] = useState(getTotal())
-    const [products, setProducts] = useState<Product[]>(getCart());
+    const [quantity, setQuantity] = createSignal(getCartQuantity())
+    const [total, setTotal] = createSignal(getTotal())
+    const [products, setProducts] = createSignal<Product[]>(getCart());
 
-    useMemo(() => {
+    createMemo(() => {
         if (updateCart) {
             setUpdateCart(false)
             setQuantity(getCartQuantity())
             setTotal(getTotal())
             setProducts(getCart())
         }
-    }, [updateCart])
+    })
 
     const rastrear = async () => {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/tracking/${idPedido}`)
@@ -74,19 +72,43 @@ const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquart
     }
 
     return (
-        <Fragment>
-            <NavBarPro setShowCart={setShowCart} quantity={quantity} headquarter={headquarter} setHeadquarter={setHeadquarter} setShowModal={setRastreo} />
-            <div class="gi-side-cart-overlay" style={`display: ${showCart ? "block" : "none"}`} onClick={() => setShowCart(false)}></div>
-            <div id="gi-side-cart" class={`gi-side-cart ${showCart ? "gi-open-cart" : ""}`} tabindex={-1}>
+        <>
+            <NavBarPro
+                setShowCart={setShowCart}
+                quantity={quantity()}
+                headquarter={headquarter}
+                setHeadquarter={setHeadquarter}
+                setShowModal={setRastreo}
+                setShowListCategories={setShowListCategories}
+            />
+
+            <div class={`offcanvas offcanvas-start ${showListCategories() ? 'show' : ''}`} tabIndex={-1} id="offcanvas" aria-labelledby="offcanvasLabel">
+                <div class="offcanvas-header shadow-sm">
+                    <h5 class="offcanvas-title fw-bold" id="offcanvasLabel">Categorías</h5>
+                    <button type="button" onClick={() => setShowListCategories(false)} class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    Content for the offcanvas goes here. You can place just about any Bootstrap component or custom
+                    elements here.
+                </div>
+            </div>
+
+            <div class={`gi-side-cart-overlay ${showCart() ? "block" : "none"}`}
+                onClick={() => setShowCart(false)}></div>
+            <div id="gi-side-cart" class={`gi-side-cart ${showCart() ? "gi-open-cart" : ""}`} style={{ "z-index": 1030 }}
+                tabIndex={-1}>
                 <div class="gi-cart-inner">
                     <div class="gi-cart-top">
                         <div class="gi-cart-title">
                             <span class="cart_title">Mi Carrito</span>
-                            <a href="javascript:void(0)" onClick={() => { setShowCart(false); setUpdateCart(true) }} class="gi-cart-close">
+                            <a href="javascript:void(0)" onClick={() => {
+                                setShowCart(false);
+                                setUpdateCart(true)
+                            }} class="gi-cart-close">
                                 <i class="bi bi-x"></i>
                             </a>
                         </div>
-                        <CheckCart setReload={setUpdateCart} products={products} setProducts={setProducts} />
+                        <CheckCart setReload={setUpdateCart} products={products()} setProducts={setProducts} />
                     </div>
                     <div class="gi-cart-bottom">
                         <div class="cart-sub-total">
@@ -94,7 +116,7 @@ const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquart
                                 <tbody>
                                     <tr>
                                         <td class="text-left">Total :</td>
-                                        <td class="text-right primary-color">{formatPrice(total)}</td>
+                                        <td class="text-right primary-color">{formatPrice(total())}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -107,7 +129,7 @@ const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquart
             </div>
 
             <div class="gi-breadcrumb m-b-40">
-                <div class="container">
+                <div class="container mt-5">
                     <div class="row">
                         <div class="col-12">
                             <div class="row gi_breadcrumb_inner">
@@ -130,7 +152,7 @@ const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquart
                 </div>
             </div>
 
-            <Modal show={rastreo} onHide={closeModal}>
+            <Modal show={rastreo()} onHide={closeModal}>
                 <Modal.Header closeButton>
                     <Modal.Title>Rastrea tu pedido</Modal.Title>
                 </Modal.Header>
@@ -138,7 +160,7 @@ const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquart
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-12">
-                                <InputGroup className="mb-3" size="sm">
+                                <InputGroup class="mb-3" size="sm">
                                     <Form.Control
                                         placeholder="Ingrese el ID del pedido"
                                         aria-label="Username"
@@ -147,34 +169,37 @@ const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquart
                                             const field = e.target as HTMLInputElement
                                             setIdPedido(field.value)
                                         }}
-                                        value={idPedido}
+                                        value={idPedido()}
                                         onKeyDown={(e) => {
                                             if (e.key === 'Enter') {
                                                 rastrear()
                                             }
                                         }}
                                     />
-                                    <InputGroup.Text id="basic-addon1" onClick={rastrear} className={"bg-warning"} role={"button"}>
-                                        <i className="bi bi-search p-1 text-white" />
+                                    <InputGroup.Text id="basic-addon1" onClick={rastrear} class={"bg-warning"}
+                                        role={"button"}>
+                                        <i class="bi bi-search p-1 text-white" />
                                     </InputGroup.Text>
                                 </InputGroup>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col-12">
+                        <div class="row">
+                            <div class="col-12">
                                 {
                                     pedido !== undefined &&
-                                    <div className="d-flex justify-content-between align-items-center">
-                                        <p># de pedido: {pedido.id_pedido}</p>
-                                        <p>Estado: <label className="badge bg-success">{get_human_status(Number(pedido.id_estado))}</label></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p># de pedido: {pedido()?.id_pedido}</p>
+                                        <p>Estado: <label
+                                            class="badge bg-success">{get_human_status(Number(pedido()?.id_estado))}</label>
+                                        </p>
                                     </div>
                                 }
 
                                 {
                                     detallePedido &&
-                                    <Fragment>
-                                        <h5 className="fw-bold small">Detalles del pedido</h5>
-                                        <table className="table">
+                                    <>
+                                        <h5 class="fw-bold small">Detalles del pedido</h5>
+                                        <table class="table">
                                             <thead>
                                                 <tr>
                                                     <th>Producto</th>
@@ -184,8 +209,8 @@ const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquart
                                             </thead>
                                             <tbody>
                                                 {
-                                                    detallePedido.map((item: iDeliveryDetails, index: number) => (
-                                                        <tr key={index}>
+                                                    detallePedido()?.map((item: iDeliveryDetails) => (
+                                                        <tr>
                                                             <td>{item.nombre}</td>
                                                             <td>{item.cantidad}</td>
                                                             <td>{item.precio_unitario}</td>
@@ -194,15 +219,13 @@ const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquart
                                                 }
                                             </tbody>
                                         </table>
-                                    </Fragment>
+                                    </>
                                 }
                             </div>
                         </div>
                     </div>
                 </Modal.Body>
             </Modal>
-
-            {location.pathname !== '/market/bill' && (<CarouselCategories />)}
 
             {children}
 
@@ -211,13 +234,24 @@ const Layout = ({ children, updateCart, setUpdateCart, headquarter, setHeadquart
                     <div class="row">
                         <div class="col-12">
                             <div class="gi-copy">Copyright © Inversiones La Central de Clemencia<br />
-                                all rights reserved. Powered by <a class="site-name" href="https://me.luiscaraballo.com.co">Ing. Luis Caraballo </a>.
+                                all rights reserved. Powered by <a class="site-name"
+                                    href="https://me.luiscaraballo.com.co">Ing. Luis
+                                    Caraballo </a>.
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </Fragment >
+
+            <a href="#" class="position-fixed bottom-0 end-0 me-3 mb-3 hover-pedido" style={{ "z-index": 1030 }}>
+                <img
+                    src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo-whatsapp-256.png"
+                    width={"60"} height={"60"} alt="" />
+                <span class="tooltip-top small">
+                    Rastrea tu pedido
+                </span>
+            </a>
+        </>
     )
 }
 

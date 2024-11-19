@@ -1,10 +1,10 @@
 import { defineConfig } from "vite";
-import preact from "@preact/preset-vite";
+import solid from 'vite-plugin-solid'
 import { fileURLToPath } from "url";
 
 export default defineConfig({
   base: "/market/",
-  plugins: [preact()],
+  plugins: [solid()],
   build: {
     outDir: "C:/laragon/www/market",
   },
@@ -12,6 +12,6 @@ export default defineConfig({
     alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) },
   },
   server: {
-    port: 9723,
+    port: 5174,
   },
 });

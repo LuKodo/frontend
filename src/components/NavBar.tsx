@@ -1,91 +1,33 @@
-import { Sedes, SedesSM } from "./Page/Headquarter"
-import { SearchInput } from "./Page/SearchInput"
+import { Component } from "solid-js";
+import { SedesSM } from "./Page/Headquarter"
 
-const NavBarPro: preact.FunctionComponent<{ setShowCart: Function, quantity: number, headquarter: string, setHeadquarter: Function, setShowModal: Function }> = ({ setShowCart, quantity, headquarter, setHeadquarter, setShowModal }) => {
+const NavBarPro: Component<{ setShowListCategories: Function, setShowCart: Function, quantity: number, headquarter: string, setHeadquarter: Function, setShowModal: Function }> = ({headquarter, setHeadquarter, setShowCart,setShowListCategories}) => {
   return (
-    <header className="gi-header">
-      <div class="header-top">
-        <div class="container">
-          <div class="row align-itegi-center">
-            <div class="col header-top-right d-none d-lg-block">
-              <div class="header-top-right-inner d-flex justify-content-end">
-                <a class="gi-help" href="javascript:void(0)"><i class="bi bi-phone"></i> +57 333 246 3000</a>
-                <a class="gi-help" href="javascript:void(0)"><i class="bi bi-whatsapp"></i> +57 333 246 3000</a>
-              </div>
-            </div>
-            <div class="col header-top-res d-lg-none">
-              <div class="gi-header-buttons">
-                <div class="right-icons">
-                  <a href="javascript:void(0)" class="gi-header-btn gi-wish-toggle">
-                    <SedesSM headquarter={headquarter} setHeadquarter={setHeadquarter} />
-                  </a>
-                  <a href="javascript:void(0)" class="gi-header-btn gi-cart-toggle" onClick={() => setShowCart(true)}>
-                    <div class="header-icon">
-                      <i class="bi bi-bag"></i>
-                      <span class="main-label-note-new"></span>
-                    </div>
-                    <span class="gi-header-count gi-cart-count">{quantity}</span>
-                  </a>
-                  <a href="javascript:void(0)" class="gi-header-btn gi-site-menu-icon d-lg-none"></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top p-0">
+          <div class="w-100 d-flex flex-column">
+              <div class="w-100 d-flex justify-content-between p-3 align-items-center" style={{"background-color": "#F26E22"}}>
+                  <div class={"d-flex justify-content-between align-items-center gap-2"}>
+                      <i class={"bi bi-grid text-white fs-3"} role={"button"} onClick={() => setShowListCategories(true)} />
 
-      <div class="gi-header-bottom d-lg-block">
-        <div class="container position-relative">
-          <div class="row">
-            <div class="gi-flex">
-              <div class="align-self-center gi-header-logo">
-                <div class="header-logo">
-                  <a href="/market/">
-                    <img
-                      src="/market/logo.png"
-                      className="img-fluid"
-                    />
-                  </a>
-                </div>
-              </div>
-              <div class="align-self-center gi-header-search">
-                <SearchInput />
-              </div>
-              <div class="gi-header-action align-self-center">
-                <div class="gi-header-buttons">
-                  <a href="javascript:void(0)" class="gi-header-btn gi-cart-toggle" title="Cart" onClick={() => setShowCart(true)}>
-                    <div class="header-icon">
-                      <i class="bi bi-bag"></i>
-                      <span class="main-label-note-new"></span>
-                    </div>
-                    <span class="flags">
-                      <span class="badge badge-pill bg-warning rounded-pill ms-1">{quantity}</span>
-                    </span>
-                  </a>
-                  <div className="hover-pedido">
-                    <a href="javascript:void(0)"
-                      class="gi-header-btn gi-cart-toggle"
-                      onClick={() => setShowModal(true)}
-                    >
-                      <div class="header-icon">
-                        <img src="/market/motorcycle.svg" className="img-fluid btn-heartbeat" width={40} alt="wish" />
-                        <span class="main-label-note-new"></span>
-                      </div>
-                    </a>
-
-                    <span className="tooltip-text small">
-                      Rastrea tu pedido
-                    </span>
+                      <a href="/market/" class={"img-fluid"}>
+                          <img src="/market/logo.png" alt="Logo"
+                               class="img-fluid d-none d-md-block w-50"/>
+                          <img src="/market/single.png" alt="Logo" class="img-fluid d-block d-md-none w-25"/>
+                      </a>
                   </div>
 
-                  <Sedes headquarter={headquarter} setHeadquarter={setHeadquarter} />
-                </div>
+                  <div class="d-flex align-items-center gap-3">
+                      <i class="bi bi-search text-white fs-3" role={"button"}/>
+                      <i class="bi bi-cart text-white fs-1" role={"button"} onClick={() => setShowCart(true)}/>
+                      <i class="bi bi-radar text-white fs-1" role={"button"}/>
+                  </div>
               </div>
-            </div>
+
+              <div class="w-100 bg-white p-2 shadow-sm">
+                  <SedesSM headquarter={headquarter} setHeadquarter={setHeadquarter}/>
+              </div>
           </div>
-        </div>
-      </div>
-    </header>
+      </nav>
   )
 }
 

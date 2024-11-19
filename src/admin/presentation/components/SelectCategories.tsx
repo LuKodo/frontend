@@ -1,9 +1,9 @@
-import { Category } from "@/interfaces/Categoria"
-import { useMemo, useState } from "preact/hooks"
+import { Category } from "@/admin/domain/entities/Categoria.ts"
+import { useMemo, createSignal } from "solidjs"
 import { FormSelect } from "react-bootstrap"
 
 export const SelectCategories = () => {
-    const [categories, setCategories] = useState<Category[]>([] as Category[])
+    const [categories, setCategories] = createSignal<Category[]>([] as Category[])
 
     useMemo(() => {
         const fetchCategories = async () => {

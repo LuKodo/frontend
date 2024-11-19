@@ -1,11 +1,11 @@
-import { useEffect, useState } from "preact/hooks";
-import { Productofinal } from "@/interfaces/ProductoFinal"
-import { formatPrice } from "@/utils/formatPrice"
-import { getImage } from "@/utils/checkImage";
-import { Fragment } from "preact/jsx-runtime";
+import { FC, MouseEvent, createEffect, createSignal } from "solidjs";
+import { Productofinal } from "@/admin/domain/entities/ProductoFinal.ts"
+import { formatPrice } from "@/shared/utils/formatPrice"
+import { getImage } from "@/shared/utils/checkImage";
+import { Fragment } from "solidjs";
 import { Modal } from "react-bootstrap";
-import { addToCart } from "@/utils/cart";
-import { TipoImagen } from "@/interfaces/TipoImagenEnum";
+import { addToCart } from "@/shared/utils/cart";
+import { TipoImagen } from "@/admin/domain/entities/TipoImagenEnum.ts";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Swal from "sweetalert2";
 
@@ -16,9 +16,9 @@ interface Props {
     setUpdateCart: Function
 }
 
-export const ModalProduct: preact.FunctionalComponent<Props> = ({ product, handleClose, show, setUpdateCart }) => {
-    const [imagePath, setImagePath] = useState('');
-    const [quantity, setQuantity] = useState(0);
+export const ModalProduct: FC<Props> = ({ product, handleClose, show, setUpdateCart }) => {
+    const [imagePath, setImagePath] = createSignal('');
+    const [quantity, setQuantity] = createSignal(0);
 
     const handleAddToCart = () => {
         if (quantity === 0) {
@@ -54,11 +54,11 @@ export const ModalProduct: preact.FunctionalComponent<Props> = ({ product, handl
         setImagePath(path)
     }
 
-    useEffect(() => {
+    createEffect(() => {
         imagePathget()
     }, [product]);
 
-    const handleChangeInput = (event: Event, mov: string) => {
+    const handleChangeInput = (event: MouseEvent, mov: string) => {
         event.preventDefault()
         let val = 0
         if (mov === 'add') {
@@ -79,8 +79,8 @@ export const ModalProduct: preact.FunctionalComponent<Props> = ({ product, handl
             <Modal show={show} onHide={() => handleClose()} size="sm" style={{ width: "100%", margin: "auto" }}>
                 <Modal.Header closeButton className="border-0" />
                 <Modal.Body>
-                    <div class="row">
-                        <div class="col-6">
+                    <div className="row">
+                        <div className="col-6">
                             <div className="single-pro-img">
                                 <LazyLoadImage
                                     alt={product.codigo || 'Product Image'}
@@ -94,28 +94,28 @@ export const ModalProduct: preact.FunctionalComponent<Props> = ({ product, handl
                                 />
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="single-pro-desc m-t-991">
-                                <div class="single-pro-content">
-                                    <h6 class="gi-single-title">{product.nombre}</h6>
+                        <div className="col-6">
+                            <div className="single-pro-desc m-t-991">
+                                <div className="single-pro-content">
+                                    <h6 className="gi-single-title">{product.nombre}</h6>
 
-                                    <div class="gi-single-price-stoke">
-                                        <div class="gi-single-price mb-2">
-                                            <div class="final-price w-50 text-center p-1 rounded text-bg-warning fw-bold">{formatPrice((product.precioventageneral ?? 0))}</div>
+                                    <div className="gi-single-price-stoke">
+                                        <div className="gi-single-price mb-2">
+                                            <div className="final-price w-50 text-center p-1 rounded text-bg-warning fw-bold">{formatPrice((product.precioventageneral ?? 0))}</div>
                                         </div>
-                                        <div class="gi-single-stoke">
-                                            <span class="gi-single-sku">SKU#: {product.codigo}</span>
+                                        <div className="gi-single-stoke">
+                                            <span className="gi-single-sku">SKU#: {product.codigo}</span>
                                         </div>
                                     </div>
 
-                                    <div class="d-flex align-items-center my-3 border rounded" style={{ height: "40px", width: "150px" }}>
-                                        <div class="w-25 text-center" role="button" onClick={(e) => handleChangeInput(e, 'sub')}>-</div>
-                                        <input class="border-0 border-top border-bottom w-50 text-center" type="text" style={{ height: "40px" }} value={quantity} />
-                                        <div class="w-25 text-center" role="button" onClick={(e) => handleChangeInput(e, 'add')}>+</div>
+                                    <div className="d-flex align-items-center my-3 border rounded" style={{ height: "40px", width: "150px" }}>
+                                        <div className="w-25 text-center" role="button" onClick={(e) => handleChangeInput(e, 'sub')}>-</div>
+                                        <input className="border-0 border-top border-bottom w-50 text-center" type="text" style={{ height: "40px" }} value={quantity} />
+                                        <div className="w-25 text-center" role="button" onClick={(e) => handleChangeInput(e, 'add')}>+</div>
                                     </div>
 
-                                    <div class="gi-single-cart">
-                                        <button class="btn btn-primary gi-btn-1" onClick={handleAddToCart}>Añadir al carrito</button>
+                                    <div className="gi-single-cart">
+                                        <button className="btn btn-primary gi-btn-1" onClick={handleAddToCart}>Añadir al carrito</button>
                                     </div>
 
                                 </div>

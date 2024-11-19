@@ -1,22 +1,22 @@
-import { useMemo, useState } from "preact/hooks"
-import { Productofinal } from "@/interfaces/ProductoFinal"
-import { Fragment } from "preact/jsx-runtime"
-import { getHeadquarter } from "@/utils/cart"
+import { useMemo, createSignal } from "solidjs"
+import { Productofinal } from "@/admin/domain/entities/ProductoFinal.ts"
+import { Fragment } from "solidjs"
+import { getHeadquarter } from "@/shared/utils/cart.tsx"
 import { Container, Pagination } from "react-bootstrap"
-import { CarouselComponent } from "@/components/Page/Carousel"
+import { CarouselComponent } from "@/components/Page/Carousel.tsx"
 import { useParams, useSearchParams } from "react-router-dom"
-import Layout from "@/components/Layout"
-import { ProductCard } from "@/components/Page/Product"
+import Layout from "@/components/Layout.tsx"
+import { ProductCard } from "@/components/Page/Product.tsx"
 import { Key } from "preact"
 
 const Shop = () => {
   const params = useParams();
   let [searchParams, _setSearchParams] = useSearchParams();
   let query = searchParams.get("q");
-  const [headquarter, setHeadquarter] = useState(getHeadquarter())
+  const [headquarter, setHeadquarter] = createSignal(getHeadquarter())
 
-  const [page, setPage] = useState(1)
-  const [products, setProducts] = useState<{result: Productofinal[], count: number}>({} as {result: Productofinal[], count: number})
+  const [page, setPage] = createSignal(1)
+  const [products, setProducts] = createSignal<{ result: Productofinal[], count: number }>({} as { result: Productofinal[], count: number })
 
   useMemo(() => {
     const fetchProductos = async () => {
@@ -60,7 +60,7 @@ const Shop = () => {
     fetchProductos()
   }, [page, params.category, query, headquarter])
 
-  const [updateCart, setUpdateCart] = useState(false)
+  const [updateCart, setUpdateCart] = createSignal(false)
 
   return (
     <Layout setUpdateCart={setUpdateCart} updateCart={updateCart} setHeadquarter={setHeadquarter} headquarter={headquarter ?? ''}>
@@ -89,10 +89,10 @@ const Shop = () => {
 
                     <div className="gi-pro-pagination">
                       <span>Mostrando 1-{products.result && products.result.length < 20 ? products.result.length : 20} de {products.count} producto(s)</span>
-                      <ul class={"gi-pro-pagination-inner"}>
+                      <ul className={"gi-pro-pagination-inner"}>
                         {page > 1 && <Pagination.Item onClick={() => setPage(page - 1)}>{page - 1}</Pagination.Item>}
                         <li>
-                          <a class="active" href="#">{page}</a>
+                          <a className="active" href="#">{page}</a>
                         </li>
 
                         <li>

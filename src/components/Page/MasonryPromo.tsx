@@ -1,9 +1,10 @@
-import { TipoImagen } from "@/interfaces/TipoImagenEnum"
-import { getImage } from "@/utils/checkImage"
-import { useEffect, useMemo, useState } from "preact/hooks"
-import { Col, Container, Row } from "react-bootstrap"
-import { getDefaultImage } from "../Admin/PromoImage"
-import { LazyLoadImage } from "react-lazy-load-image-component"
+import { Container, Row } from "solid-bootstrap"
+import { Component, createEffect, createMemo, createSignal } from "solid-js"
+import { getColSize } from "../../shared/utils/getColSize"
+import { getDefaultImage } from "../../admin/presentation/components/PromoImage"
+import { getImage } from "../../shared/utils/checkImage"
+import { TipoImagen } from "../../admin/domain/entities/TipoImagenEnum"
+import { UnLazyImage } from "@unlazy/solid"
 
 interface Item {
     id: number
@@ -26,8 +27,8 @@ const groupByRow = (array: Item[]) => {
     return result;
 };
 
-export const MasonryPromo = () => {
-    const [images, setImages] = useState<string[][]>()
+export const MasonryPromo: Component = () => {
+    const [images, setImages] = createSignal<string[][]>()
 
     const fetchImages = async () => {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/promotions`,
@@ -41,36 +42,32 @@ export const MasonryPromo = () => {
         )
         const data = await response.json()
 
-        const groupedData = groupByRow(data);
-        setImages(groupedData)
+        return groupByRow(data);
     }
 
-    useMemo(() => {
-        fetchImages()
-    }, [])
+    createMemo(() => {
+        fetchImages().then(response => setImages(response))
+    })
 
     return (
         <Container>
-            {images?.map((row, index) => (
-                <Row key={index}>
-                    {row.map((col, index) => (
-                        <Col key={index} className="mb-4">
+            {images()?.map((row) => (
+                <Row class="gap-0 p-0">
+                    {row.map((col) => (
+                        <div class={`mb-4 col-md-${getColSize(row.length, 'auto')} col-sm-${getColSize(row.length, 'sm')}`}>
                             {
                                 col === 'default' ? (
-                                    <LazyLoadImage
+                                    <UnLazyImage
+                                        blurhash="LKO2:N%2Tw=w]~RBVZRi};RPxuwH"
                                         width="100%"
-                                        src={getDefaultImage(row.length)}
-                                        effect="opacity"
-                                        wrapperProps={{
-                                            // If you need to, you can tweak the effect transition using the wrapper style.
-                                            style: { transitionDelay: "1s" },
-                                        }}
+                                        srcSet={getDefaultImage(row.length)}
+                                        autoSizes
                                     />
                                 ) : (
                                     <PromoImage image={col} />
                                 )
                             }
-                        </Col>
+                        </div>
                     ))}
                 </Row>
             ))}
@@ -78,32 +75,28 @@ export const MasonryPromo = () => {
     )
 }
 
-const PromoImage: preact.FunctionalComponent<{ image: string }> = ({ image }) => {
-    const [imageSrc, setImageSrc] = useState('');
+const PromoImage: Component<{ image: string }> = ({ image }) => {
+    const [imageSrc, setImageSrc] = createSignal('');
 
-    useEffect(() => {
+    createEffect(() => {
         const fetchImage = async () => {
             try {
-                const imagePath = await getImage(image, TipoImagen.PROMO);
-                setImageSrc(imagePath);
+                return await getImage(image, TipoImagen.PROMO);
             } catch (error) {
                 console.error('Error fetching image:', error);
             }
         };
 
-        fetchImage();
-    }, [image]);
+        fetchImage().then(response => setImageSrc(response));
+    });
 
     return (
-        <LazyLoadImage
+        <UnLazyImage
+            blurhash="LKO2:N%2Tw=w]~RBVZRi};RPxuwH"
+            srcSet={imageSrc()}
+            autoSizes
             alt={image || 'Product Image'}
-            className='w-100 img-fluid rounded border-dark'
-            src={imageSrc}
-            effect="opacity"
-            wrapperProps={{
-                // If you need to, you can tweak the effect transition using the wrapper style.
-                style: { transitionDelay: "1s" },
-            }}
+            class='w-100 img-fluid rounded border-dark'
         />
     );
 };

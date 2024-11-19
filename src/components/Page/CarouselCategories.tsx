@@ -1,15 +1,15 @@
-import { useMemo, useState } from "preact/hooks"
-import { Category } from "@/interfaces/Categoria"
-import CategoryImage from "../Admin/CategoryImage"
+import { useMemo, createSignal } from "solidjs"
+import { Category } from "@/admin/domain/entities/Categoria.ts"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
-import 'swiper/css';
+import 'swiper/swiper.css';
 import { Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom"
+import CategoryImage from "@/admin/presentation/components/CategoryImage.tsx";
 
 export const CarouselCategories = () => {
-  const [categories, setCategories] = useState([] as Category[])
-  const [category, setCategory] = useState({ descripcion: 'all' } as Category)
+  const [categories, setCategories] = createSignal([] as Category[])
+  const [category, setCategory] = createSignal({ descripcion: 'all' } as Category)
   const navigate = useNavigate()
 
   useMemo(() => {
@@ -27,11 +27,11 @@ export const CarouselCategories = () => {
   }, [])
 
   return (
-    <Container className={"my-4"}>
+    <Container fluid className={"mb-4"}>
       <Swiper
         spaceBetween={5}
         autoplay
-        slidesPerView={1}
+        slidesPerView={3}
         breakpoints={{
           640: {
             slidesPerView: 2,
@@ -40,19 +40,19 @@ export const CarouselCategories = () => {
             slidesPerView: 3,
           },
           1024: {
-            slidesPerView: 6,
+            slidesPerView: 8,
           },
         }}
         modules={[Autoplay]}
       >
         {categories.map((slide) => (
           <SwiperSlide key={slide.id}>
-            <div class="gi-cat-box gi-cat-box-3" role="button" style={{ height: '180px' }} onClick={() => setCategory(slide)}>
-              <div class="gi-ser-inner">
-                <div class="gi-cat-icon">
+            <div className="" role="button" style={{ height: '100px' }} onClick={() => setCategory(slide)}>
+              <div className="text-center">
+                <div className="gi-cat-icon">
                   <CategoryImage category={{ descripcion: slide.descripcion, id: '', estado: "1" }} />
                   <div className="gi-cat-detail">
-                    <small class="gi-cat-title small">{slide.descripcion}</small>
+                    <small className="gi-cat-title small">{slide.descripcion}</small>
                   </div>
                 </div>
               </div>

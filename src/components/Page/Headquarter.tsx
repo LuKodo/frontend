@@ -1,11 +1,10 @@
-import { Sede } from "@/interfaces/Sede"
-import { setHeadquarterLocal } from "@/utils/cart"
-import { useMemo, useState } from "react"
+import { createEffect, createSignal } from "solid-js"
+import { Sede } from "../../admin/domain/entities/Sede"
 
 export const Sedes = ({ headquarter, setHeadquarter }: { headquarter: string, setHeadquarter: Function }) => {
-    const [data, setData] = useState([] as Sede[])
+    const [data, setData] = createSignal([] as Sede[])
 
-    useMemo(() => {
+    createEffect(() => {
         const fetchSedes = async () => {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/headquarters`)
 
@@ -17,7 +16,7 @@ export const Sedes = ({ headquarter, setHeadquarter }: { headquarter: string, se
             setData(data)
         }
         fetchSedes()
-    }, [])
+    })
 
 
     return (
@@ -25,16 +24,16 @@ export const Sedes = ({ headquarter, setHeadquarter }: { headquarter: string, se
             <div class="gi-location-menu">
                 <div class="gi-location-toggle">
                     <i class="bi bi-geo-alt location"></i>
-                    <span class="gi-location-title d-1199 gi-location">{data.find((sede: Sede) => sede.prefijo === headquarter)?.nombre}</span>
+                    <span class="gi-location-title d-1199 gi-location">{data().find((sede: Sede) => sede.prefijo === headquarter)?.nombre}</span>
                     <i class="fi-rr-angle-small-down d-1199 gi-angle" aria-hidden="true"></i>
                 </div>
                 <div class="gi-location-content">
                     <div class="gi-location-dropdown">
                         <div class="row gi-location-wrapper">
                             <ul class="loc-grid">
-                                {data.map((sede: Sede) => {
+                                {data().map((sede: Sede) => {
                                     return (
-                                        <li class="loc-list"  onClick={() => { setHeadquarterLocal(sede.prefijo); setHeadquarter(sede.prefijo) }}>
+                                        <li class="loc-list" onClick={() => { setHeadquarter(sede.prefijo) }}>
                                             <i class="bi bi-geo-alt"></i>
                                             <span class="gi-detail">{sede.nombre}</span>
                                         </li>
@@ -50,9 +49,9 @@ export const Sedes = ({ headquarter, setHeadquarter }: { headquarter: string, se
 }
 
 export const SedesSM = ({ headquarter, setHeadquarter }: { headquarter: string, setHeadquarter: Function }) => {
-    const [data, setData] = useState([] as Sede[])
+    const [data, setData] = createSignal([] as Sede[])
 
-    useMemo(() => {
+    createEffect(() => {
         const fetchSedes = async () => {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/headquarters`)
 
@@ -64,19 +63,19 @@ export const SedesSM = ({ headquarter, setHeadquarter }: { headquarter: string, 
             setData(data)
         }
         fetchSedes()
-    }, [])
+    })
 
 
     return (
         <div class="dropdown" >
-            <div className="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-geo-alt" /> {data.find((sede: Sede) => sede.prefijo === headquarter)?.nombre}
+            <div class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-geo-alt-fill text-warning me-2" /><b>Sede:</b> {data().find((sede: Sede) => sede.prefijo === headquarter)?.nombre}
             </div>
             <ul class="dropdown-menu">
-                {data.map((sede: Sede) => {
+                {data().map((sede: Sede) => {
                     return (
-                        <li onClick={() => { setHeadquarterLocal(sede.prefijo); setHeadquarter(sede.prefijo) }}>
-                            <a href="javascript:void(0)" className="dropdown-item">
+                        <li onClick={() => { setHeadquarter(sede.prefijo) }}>
+                            <a href="javascript:void(0)" class="dropdown-item">
                                 <i class="bi bi-geo-alt me-2 small"></i>
                                 <span class="gi-detail">{sede.nombre}</span>
                             </a>

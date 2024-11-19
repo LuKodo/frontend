@@ -1,12 +1,12 @@
-import { useEffect, useState } from "preact/hooks";
-import { getImage } from "@/utils/checkImage";
-import { TipoImagen } from "@/interfaces/TipoImagenEnum";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+import { createEffect, createSignal } from "solid-js";
+import { getImage } from "../../shared/utils/checkImage";
+import { TipoImagen } from "../../admin/domain/entities/TipoImagenEnum";
+import { UnLazyImage } from "@unlazy/solid";
 
 const ImageCart = ({ imageName }: { imageName: string }) => {
-  const [imagePath, setImagePath] = useState('');
+  const [imagePath, setImagePath] = createSignal('');
 
-  useEffect(() => {
+  createEffect(() => {
     const get = async () => {
       const path = await getImage(imageName, TipoImagen.PRODUCT);
       if (path) {
@@ -20,16 +20,11 @@ const ImageCart = ({ imageName }: { imageName: string }) => {
   }, [imageName]);
 
   return (
-    <LazyLoadImage
-      alt={imagePath || 'Product Image'}
+    <UnLazyImage
+      alt={imagePath() || 'Product Image'}
       width="50"
       height="50"
-      src={imagePath}
-      effect="opacity"
-      wrapperProps={{
-        // If you need to, you can tweak the effect transition using the wrapper style.
-        style: { transitionDelay: "1s" },
-      }}
+      srcSet={imagePath()}
     />
   );
 };

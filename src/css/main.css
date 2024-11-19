@@ -1,55 +1,9 @@
 @charset "UTF-8";
-/*---------------------------------------------------------------------------------
-Item Name: Grabit - Multipurpose eCommerce HTML Template.
-Author: Maraviya Infotech
-Version: 3.0.1
-Copyright 2024
------------------------------------------------------------------------------------
-
-/*---------------------------------------------------------------------------------
-    Included CSS INDEX
------------------------------------------------------------------------------------
-
-01. Typography
-02. Components
-    - Common
-    - Breadcrumb
-    - Cart-sidebar
-    - Quickview
-    - Tools Sidebar
-
-03. Layout
-    - Header Section
-    - Footer section
-    - Category Section
-    - New product
-    - Blog
-    - Banner Section
-    - Service
-    - Shop Sidebar
-
-04. Pages
-    - About us Page
-    - Contact us Page
-    - Cart Page
-    - Checkout Page
-    - Compare Page
-    - Faq Page
-    - Login Page
-    - Register Page
-    - Track Order Page
-    - Term Page
-    - Shop Page
-    - Single Product Page
-    - Wishlist
-
-
-/*===== Commen css =====*/
 body {
   width: 100%;
   height: 100%;
   position: relative;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   font-weight: 400;
   -webkit-user-select: none;
   -gi-user-select: none;
@@ -59,7 +13,7 @@ body {
 }
 
 h1 {
-  font-family: "Manrope Variable", sans-serif;
+  font-family: "Nunito Variable", sans-serif;
   font-weight: 700;
   letter-spacing: 0.01rem;
 }
@@ -69,7 +23,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Manrope Variable", sans-serif;
+  font-family: "Nunito Variable", sans-serif;
   font-weight: 400;
   letter-spacing: 0.01rem;
 }
@@ -494,7 +448,7 @@ input {
   padding: 0;
   text-transform: capitalize;
   line-height: 1;
-  font-family: "Manrope Variable", sans-serif;
+  font-family: "Nunito Variable", sans-serif;
 }
 .section-title .section-detail h2 span {
   color: #5caf90;
@@ -557,7 +511,7 @@ input {
 }
 .section-title-2 h2 {
   margin-bottom: 0;
-  font-family: "Manrope Variable", sans-serif;
+  font-family: "Nunito Variable", sans-serif;
   font-size: 26px;
   line-height: 38px;
   font-weight: 600;
@@ -599,7 +553,7 @@ input {
 }
 .section-title-3 h2 {
   margin-bottom: 0;
-  font-family: "Manrope Variable", sans-serif;
+  font-family: "Nunito Variable", sans-serif;
   font-size: 22px;
   line-height: 38px;
   font-weight: 600;
@@ -1050,7 +1004,7 @@ i.gicon.gi-star.fill {
   color: #4b5966;
   display: block;
   font-size: 15px;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   line-height: 22px;
   font-weight: 600;
   margin: 0 auto;
@@ -1196,7 +1150,7 @@ i.gicon.gi-star.fill {
 .gi-side-cart .gi-cart-inner .gi-cart-title .cart_title {
   font-size: 15px;
   color: #4b5966;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   font-weight: 600;
 }
 .gi-side-cart .gi-cart-inner .gi-cart-title .gi-cart-close {
@@ -1792,7 +1746,7 @@ Tools sidebar
   font-size: 14px;
   font-weight: 500;
   color: #4b5966;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
 }
 .gi-tools-sidebar .gi-tools-detail .gi-tools-block p {
   margin: 0;
@@ -3077,7 +3031,7 @@ div#gi-main-menu-desk {
   font-weight: 500;
   line-height: 30px;
   text-transform: capitalize;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   display: block;
   border-bottom: 1px solid #eee;
   margin-bottom: 10px;
@@ -3655,7 +3609,7 @@ body.gi-menu-open:before {
   width: 100%;
   padding-bottom: 15px;
   text-transform: capitalize;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   border-bottom: 1px solid #eee;
 }
 .gi-footer .footer-top .gi-footer-widget .s-head {
@@ -4046,7 +4000,7 @@ body.gi-menu-open:before {
   line-height: 22px;
   font-weight: 600;
   color: #4b5966;
-  font-family: "Manrope Variable", sans-serif;
+  font-family: "Nunito Variable", sans-serif;
   text-transform: capitalize;
 }
 .gi-category .gi-category-block .gi-cat-box .gi-cat-icon .gi-cat-detail .items, .gi-category .gi-category-block-2 .gi-cat-box .gi-cat-icon .gi-cat-detail .items {
@@ -4243,8 +4197,8 @@ body.gi-menu-open:before {
   padding: 0;
   text-transform: uppercase;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 8px;
+  right: 8px;
   z-index: 2;
 }
 .gi-product-inner .gi-pro-image .flags span {
@@ -4423,7 +4377,7 @@ body.gi-menu-open:before {
   font-weight: 400;
   letter-spacing: 0.85px;
   text-transform: capitalize;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
 }
 .gi-product-inner .gi-pro-content .gi-pro-title a:hover {
   color: #5caf90;
@@ -4752,7 +4706,7 @@ i.gicon.gi-star.fill {
   line-height: 26px;
 }
 .gi-blog .blog-info .detail h3 a, .gi-blog-section .blog-info .detail h3 a {
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   color: #4b5966;
   font-size: 17px;
   font-weight: 500;
@@ -4807,7 +4761,7 @@ i.gicon.gi-star.fill {
       -ms-flex-pack: justify;
           justify-content: space-between;
   position: relative;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   font-size: 18px;
   font-weight: 500;
 }
@@ -5229,7 +5183,7 @@ i.gicon.gi-star.fill {
 }
 
 .gi-service-desc h3 {
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   font-size: 18px;
   font-weight: 500;
   color: #4b5966;
@@ -5369,7 +5323,7 @@ i.gicon.gi-star.fill {
       -ms-flex-pack: justify;
           justify-content: space-between;
   position: relative;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   font-size: 17px !important;
   font-weight: 500;
   color: #4b5966;
@@ -5986,7 +5940,7 @@ i.gicon.gi-star.fill {
 }
 .gi-about .gi-about-detail .section-title h2 {
   margin-bottom: 15px;
-  font-family: "Manrope Variable", sans-serif;
+  font-family: "Nunito Variable", sans-serif;
   font-size: 26px;
   line-height: 38px;
   font-weight: 600;
@@ -6061,7 +6015,7 @@ i.gicon.gi-star.fill {
   font-weight: 500;
   color: #4b5966;
   letter-spacing: 0.6px;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
 }
 .gi-service-desc p {
   margin: 0;
@@ -7037,7 +6991,7 @@ i.gicon.gi-star.fill {
   position: relative;
   display: block;
   color: #4b5966;
-  font-family: "Montserrat";
+  font-family: "Nunito";
   line-height: 1;
 }
 .gi-checkout-wrap .gi-check-login h3 {
@@ -7373,12 +7327,12 @@ i.gicon.gi-star.fill {
   font-size: 16px;
   font-weight: 600;
   color: #4b5966;
-  font-family: "Manrope Variable", sans-serif;
+  font-family: "Nunito Variable", sans-serif;
 }
 .gi-checkout-summary .gi-checkout-summary-total .text-right {
   font-size: 16px;
   font-weight: 600;
-  font-family: "Manrope Variable", sans-serif;
+  font-family: "Nunito Variable", sans-serif;
 }
 
 /*-----  Sidebar Page CSS  ------*/
@@ -7905,7 +7859,7 @@ i.gicon.gi-star.fill {
   line-height: 28px;
   font-weight: 500;
   position: relative;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   border: 1px solid #eee;
   border-radius: 5px;
 }
@@ -8987,7 +8941,7 @@ ul.gi li.gi-todo::before {
   margin: 0 0 20px 0;
   text-decoration: none;
   display: block;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   font-weight: 500;
   line-height: 35px;
   letter-spacing: 0.02rem;
@@ -9046,7 +9000,7 @@ ul.gi li.gi-todo::before {
   letter-spacing: 0;
   word-break: break-all;
   line-height: 26px;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
 }
 .gi-single-product .single-pro-content .gi-single-list ul {
   margin-bottom: 30px;
@@ -9100,7 +9054,7 @@ ul.gi li.gi-todo::before {
   font-weight: 600;
   font-size: 22px;
   line-height: 32px;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   letter-spacing: 0;
 }
 .gi-single-product .single-pro-content .gi-single-price .final-price .price-des {
@@ -9141,7 +9095,7 @@ ul.gi li.gi-todo::before {
   line-height: 1.1;
   letter-spacing: 0.04rem;
   text-transform: uppercase;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
 }
 .gi-single-product .single-pro-content .gi-pro-variation .gi-pro-variation-inner .gi-pro-variation-content li {
   -webkit-transition: all 0.3s ease-in-out;
@@ -9352,7 +9306,7 @@ ul.gi li.gi-todo::before {
   font-weight: 500;
   letter-spacing: 0.85px;
   text-transform: capitalize;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
 }
 .gi-single-product .single-add-more .add-more-item .add-more-info .gi-pro-rating {
   margin-bottom: 5px;
@@ -9444,7 +9398,7 @@ ul.gi li.gi-todo::before {
 }
 .gi-single-product .tab-pane p {
   color: #777;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   font-size: 14px;
   font-weight: 500;
 }
@@ -9495,7 +9449,7 @@ ul.gi li.gi-todo::before {
 }
 .gi-single-product .gi-single-pro-tab-content .gi-single-pro-tab-moreinfo p {
   color: #777;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   font-size: 14px;
   font-weight: 400;
 }
@@ -9587,7 +9541,7 @@ ul.gi li.gi-todo::before {
   font-size: 20px;
   font-weight: 600;
   line-height: 1;
-  font-family: "Poppins";
+  font-family: "Nunito Variable";
   color: #4b5966;
 }
 .gi-single-product .gi-single-pro-tab-content .gi-ratting-content .gi-ratting-star {

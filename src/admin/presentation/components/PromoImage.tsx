@@ -1,12 +1,13 @@
-import { TipoImagen } from "@/interfaces/TipoImagenEnum";
-import { getImage } from "@/utils/checkImage";
-import { useEffect, useState } from "preact/hooks";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+import { Component, createEffect, createSignal } from "solid-js";
+import { getImage } from "../../../shared/utils/checkImage";
+import { TipoImagen } from "../../domain/entities/TipoImagenEnum";
+import { UnLazyImage } from "@unlazy/solid";
 
-const PromoImage: preact.FunctionalComponent<{ image: string }> = ({ image }) => {
-    const [imageSrc, setImageSrc] = useState('');
 
-    useEffect(() => {
+const PromoImage: Component<{ image: string }> = ({ image }) => {
+    const [imageSrc, setImageSrc] = createSignal('');
+
+    createEffect(() => {
         const fetchImage = async () => {
             try {
                 const imagePath = await getImage(image, TipoImagen.PROMO);
@@ -17,18 +18,13 @@ const PromoImage: preact.FunctionalComponent<{ image: string }> = ({ image }) =>
         };
 
         fetchImage();
-    }, [image]);
+    });
 
     return (
-        <LazyLoadImage
+        <UnLazyImage
             alt={image || 'Product Image'}
-            className='w-75 h-75 img-fluid'
-            src={imageSrc}
-            effect="opacity"
-            wrapperProps={{
-                // If you need to, you can tweak the effect transition using the wrapper style.
-                style: { transitionDelay: "1s" },
-            }}
+            class='w-75 h-75 img-fluid'
+            srcSet={imageSrc()}
         />
     );
 };

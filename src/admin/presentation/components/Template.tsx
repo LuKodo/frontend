@@ -1,20 +1,18 @@
-import { useAuth } from "@/contexts/AuthContext";
-import { Fragment } from "preact/jsx-runtime"
-import { Col, Container, Row } from "react-bootstrap"
-import '@/assets/css/admin.css';
+import { Col, Container, Row } from "solid-bootstrap"
+import '@/css/admin.css';
+import { useAuth } from "../contexts/AuthContext";
+import { lazy } from "solid-js";
 
-interface Props {
-    children: any;
-}
+const ProtectedRoute = lazy(() => import('../../../components/ProtectedRoute'));
 
-export const Template: preact.FunctionComponent<Props> = ({ children }) => {
+export const Template = (props: { children: any }) => {
     const { logout } = useAuth();
 
     return (
-        <Fragment>
+        <ProtectedRoute>
             <div class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark">
                 <div class="container">
-                    <a href="../" class="navbar-brand">Market Admin Panel</a>
+                    <a href="../../../pages" class="navbar-brand">Market Admin Panel</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -22,22 +20,22 @@ export const Template: preact.FunctionComponent<Props> = ({ children }) => {
                         <ul class="navbar-nav">
                             <li class="nav-item">
                                 <a class="nav-link" href="/market/admin/products">
-                                    <i className="bi bi-box ms-2" /> Productos
+                                    <i class="bi bi-box ms-2" /> Productos
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/market/admin/categories">
-                                    <i className="bi bi-list ms-2" /> Categorias
+                                    <i class="bi bi-list ms-2" /> Categorias
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/market/admin/promo">
-                                    <i className="bi bi-bag-fill ms-2" /> Promociones
+                                    <i class="bi bi-bag-fill ms-2" /> Promociones
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/market/admin/carousel">
-                                    <i className="bi bi-images ms-2" /> Carrusel
+                                    <i class="bi bi-images ms-2" /> Carrusel
                                 </a>
                             </li>
                         </ul>
@@ -51,14 +49,14 @@ export const Template: preact.FunctionComponent<Props> = ({ children }) => {
             </div>
 
             <Container>
-                <div className="bs-docs-section clearfix">
+                <div class="bs-docs-section clearfix">
                 <Row>
                     <Col md={12}>
-                        {children}
+                        {props.children}
                     </Col>
                 </Row>
                 </div>
             </Container>
-        </Fragment>
+        </ProtectedRoute>
     )
 }

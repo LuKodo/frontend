@@ -1,12 +1,12 @@
-import { useMemo, useState } from "preact/hooks"
+import { ChangeEvent, useMemo, createSignal } from "solidjs"
 import { Button, Card, Form } from "react-bootstrap"
-import { Template } from "@/pages/admin/Template"
-import { Carrusel } from "@/interfaces/Carrusel"
-import CarruselImage from "@/components/Admin/CarruselImage"
+import { Template } from "@/admin/presentation/components/Template.tsx"
+import { Carrusel } from "@/admin/domain/entities/Carrusel.ts"
+import CarruselImage from "@/admin/presentation/components/CarruselImage.tsx"
 
 const Carousel = () => {
-    const [items, setItems] = useState<Carrusel[]>([] as Carrusel[])
-    const [reload, setReload] = useState(false)
+    const [items, setItems] = createSignal<Carrusel[]>([] as Carrusel[])
+    const [reload, setReload] = createSignal(false)
 
     const fetchItems = async () => {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/carousel`)
@@ -38,11 +38,11 @@ const Carousel = () => {
         setReload(true)
     }
 
-    const handleSubmit = async (e: Event, filename: string, id: number) => {
+    const handleSubmit = async (e: ChangeEvent, filename: string, id: number) => {
         e.preventDefault()
         filename = filename.replace(/ /g, '-').replace(/[^a-zA-Z0-9\s]/g, '')
 
-        const categoria = items.filter((row) => row.id === id)[0]
+        const categoria = items.filter((row: { id: number }) => row.id === id)[0]
         const target = e.target as HTMLInputElement
 
         try {

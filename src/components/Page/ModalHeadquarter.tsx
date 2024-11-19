@@ -1,15 +1,15 @@
-import { useMemo, useState } from "preact/hooks"
+import { FC, useMemo, createSignal } from "solidjs"
 import { Col, Container, FormSelect, Modal, Row } from "react-bootstrap"
-import { Sede } from "@/interfaces/Sede"
-import { getHeadquarter, setHeadquarterLocal } from "@/utils/cart"
+import { Sede } from "@/admin/domain/entities/Sede.ts"
+import { getHeadquarter, setHeadquarterLocal } from "@/shared/utils/cart"
 
 interface Props {
     handleClose: Function
     setHeadquarter: Function
     show: boolean
 }
-export const ModalHeadquarter: preact.FunctionalComponent<Props> = ({ show, handleClose, setHeadquarter }) => {
-    const [categories, setCategories] = useState<Sede[]>([] as Sede[])
+export const ModalHeadquarter: FC<Props> = ({ show, handleClose, setHeadquarter }) => {
+    const [categories, setCategories] = createSignal<Sede[]>([] as Sede[])
 
     useMemo(() => {
         const fetchCategories = async () => {

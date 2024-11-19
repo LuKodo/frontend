@@ -1,13 +1,13 @@
-import { useState } from "preact/hooks";
-import { Product, Productofinal } from "@/interfaces/ProductoFinal";
-import { getCart, getHeadquarter, setCart } from "@/utils/cart";
-import { formatPrice } from "@/utils/formatPrice";
-import ImageCart from "@/components/Page/ImageCart";
-import { EstadoPedido } from "@/utils/estadosPedidos.enum";
+import { ChangeEvent, createSignal } from "solidjs";
+import { Product, Productofinal } from "@/admin/domain/entities/ProductoFinal.ts";
+import { getCart, getHeadquarter, setCart } from "@/shared/utils/cart.tsx";
+import { formatPrice } from "@/shared/utils/formatPrice.tsx";
+import ImageCart from "@/components/Page/ImageCart.tsx";
+import { EstadoPedido } from "@/shared/utils/estadosPedidos.enum.ts";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
-import Layout from "@/components/Layout";
+import Layout from "@/components/Layout.tsx";
 import { InputGroup } from "react-bootstrap";
 
 export interface iDelivery {
@@ -45,18 +45,18 @@ interface iDeliveryDetails {
 }
 
 const CheckBill = () => {
-    const [headquarter, setHeadquarter] = useState(getHeadquarter())
-    const [updateCart, setUpdateCart] = useState(false)
-    const [products, setProducts] = useState<Product[]>(getCart());
-    const [client, setClient] = useState<Client>({} as Client)
-    const [loading, setLoading] = useState(false)
+    const [headquarter, setHeadquarter] = createSignal(getHeadquarter())
+    const [updateCart, setUpdateCart] = createSignal(false)
+    const [products, setProducts] = createSignal<Product[]>(getCart());
+    const [client, setClient] = createSignal<Client>({} as Client)
+    const [loading, setLoading] = createSignal(false)
     const navigate = useNavigate()
 
-    const [buscar, setBuscar] = useState(true);
+    const [buscar, setBuscar] = createSignal(true);
 
-    const handleChangeClient = (event: Event) => {
+    const handleChangeClient = (event: ChangeEvent) => {
         event.preventDefault()
-        const field = event.target as HTMLInputElement | HTMLSelectElement
+        const field = event.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 
         if (field.name === 'forma_pago') {
             setClient({
@@ -234,20 +234,20 @@ const CheckBill = () => {
         <Layout headquarter={headquarter ?? 'SB'} setHeadquarter={setHeadquarter} updateCart={updateCart} setUpdateCart={setUpdateCart}>
             {
                 loading ?
-                    <div id="gi-overlay" className="text-center" style="display: block;">
-                        <div class="loader"></div>
+                    <div id="gi-overlay" className="text-center" style={{ display: "block;" }}>
+                        <div className="loader"></div>
                         <img src="/market/logo.png" alt="" />
                     </div> :
-                    <div class="container">
-                        <div class="row">
-                            <div class="gi-cart-rightside col-lg-4 col-md-12">
-                                <div class="gi-sidebar-wrap">
-                                    <div class="gi-sidebar-block">
-                                        <div class="gi-sb-title">
-                                            <h3 class="gi-sidebar-title">Detalles del Pedido<div class="gi-sidebar-res"><i class="gicon gi-angle-down"></i></div></h3>
+                    <div className="container">
+                        <div className="row">
+                            <div className="gi-cart-rightside col-lg-4 col-md-12">
+                                <div className="gi-sidebar-wrap">
+                                    <div className="gi-sidebar-block">
+                                        <div className="gi-sb-title">
+                                            <h3 className="gi-sidebar-title">Detalles del Pedido<div className="gi-sidebar-res"><i className="gicon gi-angle-down"></i></div></h3>
                                         </div>
-                                        <div class="gi-sb-block-content gi-sidebar-dropdown bg-white">
-                                            <div class="gi-cart-form p-3">
+                                        <div className="gi-sb-block-content gi-sidebar-dropdown bg-white">
+                                            <div className="gi-cart-form p-3">
                                                 <div>
                                                     <span className="gi-cart-wrap">
                                                         <label>Número de Documento</label>
@@ -266,15 +266,15 @@ const CheckBill = () => {
                                                     </span>
                                                     <span className="gi-cart-wrap">
                                                         <label>Dirección</label>
-                                                        <textarea type="text" name="direccion" disabled={buscar} onChange={handleChangeClient} className="form-control" value={client.direccion} />
+                                                        <textarea name="direccion" disabled={buscar} onChange={handleChangeClient} className="form-control" value={client.direccion} />
                                                     </span>
                                                     <span className="gi-cart-wrap">
                                                         <label>Teléfono</label>
                                                         <input type="text" name="telefono" disabled={buscar} onChange={handleChangeClient} className="form-control" value={client.telefono} />
                                                     </span>
-                                                    <span class="gi-cart-wrap">
+                                                    <span className="gi-cart-wrap">
                                                         <label>Forma de pago</label>
-                                                        <span class="gi-cart-select-inner">
+                                                        <span className="gi-cart-select-inner">
                                                             <select onChange={handleChangeClient} name="forma_pago" id="gi-cart-select-state" className="form-select">
                                                                 <option selected disabled>Seleccionar</option>
                                                                 <option value="EFECTIVO">Efectivo</option>
@@ -286,20 +286,20 @@ const CheckBill = () => {
                                             </div>
                                         </div>
 
-                                        <div class="gi-sb-block-content gi-sidebar-dropdown">
-                                            <div class="gi-cart-summary-bottom">
-                                                <div class="gi-cart-summary">
+                                        <div className="gi-sb-block-content gi-sidebar-dropdown">
+                                            <div className="gi-cart-summary-bottom">
+                                                <div className="gi-cart-summary">
                                                     <div>
-                                                        <span class="text-left">Sub-Total</span>
-                                                        <span class="text-right">{formatPrice(products.reduce((total: number, product: Product) => total + product.quantity * (product.product.precioventageneral ?? 0), 0))}</span>
+                                                        <span className="text-left">Sub-Total</span>
+                                                        <span className="text-right">{formatPrice(products.reduce((total: number, product: Product) => total + product.quantity * (product.product.precioventageneral ?? 0), 0))}</span>
                                                     </div>
                                                     <div>
-                                                        <span class="text-left">Valor del Domicilio</span>
-                                                        <span class="text-right">$1500</span>
+                                                        <span className="text-left">Valor del Domicilio</span>
+                                                        <span className="text-right">$1500</span>
                                                     </div>
-                                                    <div class="gi-cart-summary-total">
-                                                        <span class="text-left">Total</span>
-                                                        <span class="text-right">{formatPrice((products.reduce((total: number, product: Product) => total + product.quantity * (product.product.precioventageneral ?? 0), 0)) + 1500)}</span>
+                                                    <div className="gi-cart-summary-total">
+                                                        <span className="text-left">Total</span>
+                                                        <span className="text-right">{formatPrice((products.reduce((total: number, product: Product) => total + product.quantity * (product.product.precioventageneral ?? 0), 0)) + 1500)}</span>
                                                     </div>
                                                 </div>
 
@@ -308,18 +308,18 @@ const CheckBill = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div class="gi-cart-leftside col-lg-8 col-md-12 m-t-991">
-                                <div class="gi-cart-content">
-                                    <div class="gi-cart-inner">
-                                        <div class="row">
+                            <div className="gi-cart-leftside col-lg-8 col-md-12 m-t-991">
+                                <div className="gi-cart-content">
+                                    <div className="gi-cart-inner">
+                                        <div className="row">
                                             <div>
-                                                <div class="table-content cart-table-content">
+                                                <div className="table-content cart-table-content">
                                                     <table>
                                                         <thead>
                                                             <tr>
                                                                 <th>Producto</th>
                                                                 <th>Precio</th>
-                                                                <th style="text-align: center;">Cantidad</th>
+                                                                <th style={{ textAlign: "center" }}>Cantidad</th>
                                                                 <th>Total</th>
                                                                 <th></th>
                                                             </tr>
@@ -328,35 +328,35 @@ const CheckBill = () => {
                                                             {
                                                                 products.length === 0 ? (
                                                                     <tr>
-                                                                        <td colSpan={5} class="shoping__cart__item">
+                                                                        <td colSpan={5} className="shoping__cart__item">
                                                                             <h5>No hay productos en el carrito</h5>
                                                                         </td>
                                                                     </tr>
                                                                 ) : (
                                                                     products.map((product: Product) => (
                                                                         <tr key={product.product.codigo}>
-                                                                            <td data-label="Product" class="gi-cart-pro-name">
+                                                                            <td data-label="Product" className="gi-cart-pro-name">
                                                                                 <a href="javascript:void(0)">
                                                                                     <ImageCart imageName={product.product.codigo} /> {product.product.nombre}
                                                                                 </a>
                                                                             </td>
-                                                                            <td data-label="Price" class="gi-cart-pro-price">
-                                                                                <span class="amount">{formatPrice(product.product.precioventageneral ?? 0)}</span>
+                                                                            <td data-label="Price" className="gi-cart-pro-price">
+                                                                                <span className="amount">{formatPrice(product.product.precioventageneral ?? 0)}</span>
                                                                             </td>
-                                                                            <td data-label="Quantity" class="gi-cart-pro-qty" style="text-align: center;">
-                                                                                <div class="cart-qty-plus-minus">
-                                                                                    <input class="cart-plus-minus" type="text" name="cartqtybutton" value={product.quantity}/>
-                                                                                    <div class="ms_cart_qtybtn">
-                                                                                        <div class="inc ms_qtybtn" onClick={() => increase(product.quantity, 10, product.product)}>+</div>
-                                                                                        <div class="dec ms_qtybtn" onClick={() => decrease(product.quantity, 1, product.product)}>-</div>
+                                                                            <td data-label="Quantity" className="gi-cart-pro-qty" style={{ textAlign: "center" }}>
+                                                                                <div className="cart-qty-plus-minus">
+                                                                                    <input className="cart-plus-minus" type="text" name="cartqtybutton" value={product.quantity} />
+                                                                                    <div className="ms_cart_qtybtn">
+                                                                                        <div className="inc ms_qtybtn" onClick={() => increase(product.quantity, 10, product.product)}>+</div>
+                                                                                        <div className="dec ms_qtybtn" onClick={() => decrease(product.quantity, 1, product.product)}>-</div>
                                                                                     </div>
                                                                                 </div>
                                                                             </td>
-                                                                            <td class="shoping__cart__total">
+                                                                            <td className="shoping__cart__total">
                                                                                 {formatPrice((product.product.precioventageneral ?? 0) * product.quantity)}
                                                                             </td>
-                                                                            <td data-label="Remove" class="gi-cart-pro-remove">
-                                                                                <a href="#" onClick={() => deleteProduct(product)}><i class="gicon bi bi-trash"></i></a>
+                                                                            <td data-label="Remove" className="gi-cart-pro-remove">
+                                                                                <a href="#" onClick={() => deleteProduct(product)}><i className="gicon bi bi-trash"></i></a>
                                                                             </td>
                                                                         </tr>
                                                                     ))
@@ -365,11 +365,11 @@ const CheckBill = () => {
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="gi-cart-update-bottom">
+                                                <div className="row">
+                                                    <div className="col-lg-12">
+                                                        <div className="gi-cart-update-bottom">
                                                             <a href="/market/shop/all">Seguir Comprando</a>
-                                                            <button class="gi-btn-2" onClick={createDelivery}>Realizar pedido</button>
+                                                            <button className="gi-btn-2" onClick={createDelivery}>Realizar pedido</button>
                                                         </div>
                                                     </div>
                                                 </div>
