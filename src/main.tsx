@@ -1,7 +1,7 @@
 import { AuthProvider } from './admin/presentation/contexts/AuthContext';
-import { Loading } from './components/Loading';
-
+import { Loading } from './modules/store/presentation/components/Loading.tsx';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import '@fontsource-variable/nunito';
 import { render } from 'solid-js/web';
 import { lazy, Suspense } from 'solid-js';
 import { Route, Router } from '@solidjs/router';
@@ -13,15 +13,15 @@ const App = () => (
                 <Route path="/">
                     <Route
                         path="/market/"
-                        component={lazy(() => import('./pages/Home'))}
+                        component={lazy(() => import('./modules/store/presentation/pages/Home.tsx'))}
                     />
                     <Route
                         path="/market/shop/:category"
-                        component={lazy(() => import('./pages/Shop'))}
+                        component={lazy(() => import('./modules/store/presentation/pages/Shop.tsx'))}
                     />
                     <Route
                         path="/market/bill"
-                        component={lazy(() => import('./pages/CheckBill'))}
+                        component={lazy(() => import('./modules/store/presentation/pages/CheckBill.tsx'))}
                     />
                     <Route
                         path="/market/login"

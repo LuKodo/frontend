@@ -1,14 +1,14 @@
-import { ChangeEvent, createSignal } from "solidjs";
-import { Product, Productofinal } from "@/admin/domain/entities/ProductoFinal.ts";
-import { getCart, getHeadquarter, setCart } from "@/shared/utils/cart.tsx";
-import { formatPrice } from "@/shared/utils/formatPrice.tsx";
-import ImageCart from "@/components/Page/ImageCart.tsx";
-import { EstadoPedido } from "@/shared/utils/estadosPedidos.enum.ts";
+import { createSignal } from "solid-js";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
-import Layout from "@/components/Layout.tsx";
-import { InputGroup } from "react-bootstrap";
+import { InputGroup } from "solid-bootstrap";
+import { getCart, getHeadquarter, setCart } from "../../../../shared/utils/cart.tsx";
+import { Product, Productofinal } from "../../../../admin/domain/entities/ProductoFinal.ts";
+import { EstadoPedido } from "../../../../shared/utils/estadosPedidos.enum.ts";
+import Layout from "../components/StoreLayout.tsx";
+import { formatPrice } from "../../../../shared/utils/formatPrice.tsx";
+import ImageCart from "../../../../components/Page/ImageCart.tsx";
 
 export interface iDelivery {
     fecha_pedido: string
@@ -54,31 +54,31 @@ const CheckBill = () => {
 
     const [buscar, setBuscar] = createSignal(true);
 
-    const handleChangeClient = (event: ChangeEvent) => {
+    const handleChangeClient = (event: { preventDefault: () => void; target: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement; }) => {
         event.preventDefault()
         const field = event.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 
         if (field.name === 'forma_pago') {
             setClient({
-                ...client,
+                ...client(),
                 [field.name]: field.value
             })
             return
         }
 
         setClient({
-            ...client,
+            ...client(),
             [field.name]: field.value
         })
     }
 
     const deleteProduct = (product: Product) => {
-        setProducts(products.filter((p: Product) => p.product.codigo !== product.product.codigo));
-        setCart(products.filter((p: Product) => p.product.codigo !== product.product.codigo));
+        setProducts(products().filter((p: Product) => p.product.codigo !== product.product.codigo));
+        setCart(products().filter((p: Product) => p.product.codigo !== product.product.codigo));
     }
 
     const createDelivery = async () => {
-        if (!client.nombres) {
+        if (!client().nombres) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -87,7 +87,7 @@ const CheckBill = () => {
             return
         }
 
-        if (!client.apellidos) {
+        if (!client().apellidos) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -96,7 +96,7 @@ const CheckBill = () => {
             return
         }
 
-        if (!client.direccion) {
+        if (!client().direccion) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -105,7 +105,7 @@ const CheckBill = () => {
             return
         }
 
-        if (!client.telefono) {
+        if (!client().telefono) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -114,7 +114,7 @@ const CheckBill = () => {
             return
         }
 
-        if (!client.forma_pago) {
+        if (!client().forma_pago) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -127,15 +127,15 @@ const CheckBill = () => {
         const newDelivery: iDelivery = {
             fecha_pedido: dayjs().format('YYYY-MM-DD HH:mm:ss'),
             id_estado: EstadoPedido.PENDIENTE,
-            prefijo: headquarter ?? 'SB',
-            total: products.reduce((total: number, product: Product) => total + product.quantity * (product.product.precioventageneral ?? 0), 0),
-            tipodoc: client.tipodoc,
-            documento: client.documento,
-            nombres: client.nombres,
-            apellidos: client.apellidos,
-            direccion: client.direccion,
-            telefono: client.telefono,
-            forma_pago: client.forma_pago,
+            prefijo: headquarter() ?? 'SB',
+            total: products().reduce((total: number, product: Product) => total + product.quantity * (product.product.precioventageneral ?? 0), 0),
+            tipodoc: client().tipodoc,
+            documento: client().documento,
+            nombres: client().nombres,
+            apellidos: client().apellidos,
+            direccion: client().direccion,
+            telefono: client().telefono,
+            forma_pago: client().forma_pago,
         }
 
         const response = await fetch(`${import.meta.env.VITE_API_URL}/delivery`, {
@@ -146,7 +146,7 @@ const CheckBill = () => {
         const data = await response.json()
 
         if (data) {
-            const deliveryDetails = products.map((product: Product) => {
+            const deliveryDetails = products().map((product: Product) => {
                 return {
                     id_detalle: 0,
                     id_pedido: data,
@@ -175,7 +175,7 @@ const CheckBill = () => {
     }
 
     const handleSearch = async () => {
-        if (client.documento === '' || client.documento === undefined) {
+        if (client().documento === '' || client().documento === undefined) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -184,7 +184,7 @@ const CheckBill = () => {
             return
         }
 
-        await fetch(`${import.meta.env.VITE_API_URL}/client/${client.documento}`).then((res) => {
+        await fetch(`${import.meta.env.VITE_API_URL}/client/${client().documento}`).then((res) => {
             if (res.status !== 404) {
                 res.json().then((data) => {
                     setClient({
@@ -204,14 +204,14 @@ const CheckBill = () => {
     }
 
     const addProduct = (product: Productofinal, quantity: number) => {
-        const existingProduct = products.find((p: Product) => p.product.codigo === product.codigo);
+        const existingProduct = products().find((p: Product) => p.product.codigo === product.codigo);
         let newProducts = [];
 
         if (existingProduct) {
-            newProducts = products.map((p: Product) => p.product.codigo === product.codigo ? { ...p, quantity: quantity } : p)
+            newProducts = products().map((p: Product) => p.product.codigo === product.codigo ? { ...p, quantity: quantity } : p)
         } else {
-            products.push({ product, quantity });
-            newProducts = [...products, { product, quantity }];
+            products().push({ product, quantity });
+            newProducts = [...products(), { product, quantity }];
         }
 
         setProducts(newProducts);
@@ -231,51 +231,51 @@ const CheckBill = () => {
     }
 
     return (
-        <Layout headquarter={headquarter ?? 'SB'} setHeadquarter={setHeadquarter} updateCart={updateCart} setUpdateCart={setUpdateCart}>
+        <Layout headquarter={headquarter() ?? 'SB'} setHeadquarter={setHeadquarter} updateCart={updateCart()} setUpdateCart={setUpdateCart}>
             {
-                loading ?
-                    <div id="gi-overlay" className="text-center" style={{ display: "block;" }}>
-                        <div className="loader"></div>
+                loading() ?
+                    <div id="gi-overlay" class="text-center" style={{ display: "block;" }}>
+                        <div class="loader"></div>
                         <img src="/market/logo.png" alt="" />
                     </div> :
-                    <div className="container">
-                        <div className="row">
-                            <div className="gi-cart-rightside col-lg-4 col-md-12">
-                                <div className="gi-sidebar-wrap">
-                                    <div className="gi-sidebar-block">
-                                        <div className="gi-sb-title">
-                                            <h3 className="gi-sidebar-title">Detalles del Pedido<div className="gi-sidebar-res"><i className="gicon gi-angle-down"></i></div></h3>
+                    <div class="container">
+                        <div class="row">
+                            <div class="gi-cart-rightside col-lg-4 col-md-12">
+                                <div class="gi-sidebar-wrap">
+                                    <div class="gi-sidebar-block">
+                                        <div class="gi-sb-title">
+                                            <h3 class="gi-sidebar-title">Detalles del Pedido<div class="gi-sidebar-res"><i class="gicon gi-angle-down"></i></div></h3>
                                         </div>
-                                        <div className="gi-sb-block-content gi-sidebar-dropdown bg-white">
-                                            <div className="gi-cart-form p-3">
+                                        <div class="gi-sb-block-content gi-sidebar-dropdown bg-white">
+                                            <div class="gi-cart-form p-3">
                                                 <div>
-                                                    <span className="gi-cart-wrap">
+                                                    <span class="gi-cart-wrap">
                                                         <label>Número de Documento</label>
-                                                        <InputGroup className={"mb-3"}>
-                                                            <input type="text" name="documento" disabled={!buscar} onKeyDown={(e) => e.key === 'Enter' && handleSearch()} onChange={handleChangeClient} className="form-control mb-0" value={client.documento} />
-                                                            <button type="button" className="btn btn-primary" onClick={handleSearch}> {buscar ? <i className="bi bi-search" /> : <i className="bi bi-check" />} </button>
+                                                        <InputGroup class={"mb-3"}>
+                                                            <input type="text" name="documento" disabled={!buscar()} onKeyDown={(e) => e.key === 'Enter' && handleSearch()} onChange={handleChangeClient} class="form-control mb-0" value={client().documento} />
+                                                            <button type="button" class="btn btn-primary" onClick={handleSearch}> {buscar() ? <i class="bi bi-search" /> : <i class="bi bi-check" />} </button>
                                                         </InputGroup>
                                                     </span>
-                                                    <span className="gi-cart-wrap">
+                                                    <span class="gi-cart-wrap">
                                                         <label>Nombres</label>
-                                                        <input type="text" name="nombres" disabled={buscar} onChange={handleChangeClient} className="form-control" value={client.nombres} />
+                                                        <input type="text" name="nombres" disabled={buscar()} onChange={handleChangeClient} class="form-control" value={client().nombres} />
                                                     </span>
-                                                    <span className="gi-cart-wrap">
+                                                    <span class="gi-cart-wrap">
                                                         <label>Apellidos</label>
-                                                        <input type="text" name="apellidos" disabled={buscar} onChange={handleChangeClient} className="form-control" value={client.apellidos} />
+                                                        <input type="text" name="apellidos" disabled={buscar()} onChange={handleChangeClient} class="form-control" value={client().apellidos} />
                                                     </span>
-                                                    <span className="gi-cart-wrap">
+                                                    <span class="gi-cart-wrap">
                                                         <label>Dirección</label>
-                                                        <textarea name="direccion" disabled={buscar} onChange={handleChangeClient} className="form-control" value={client.direccion} />
+                                                        <textarea name="direccion" disabled={buscar()} onChange={handleChangeClient} class="form-control" value={client().direccion} />
                                                     </span>
-                                                    <span className="gi-cart-wrap">
+                                                    <span class="gi-cart-wrap">
                                                         <label>Teléfono</label>
-                                                        <input type="text" name="telefono" disabled={buscar} onChange={handleChangeClient} className="form-control" value={client.telefono} />
+                                                        <input type="text" name="telefono" disabled={buscar()} onChange={handleChangeClient} class="form-control" value={client().telefono} />
                                                     </span>
-                                                    <span className="gi-cart-wrap">
+                                                    <span class="gi-cart-wrap">
                                                         <label>Forma de pago</label>
-                                                        <span className="gi-cart-select-inner">
-                                                            <select onChange={handleChangeClient} name="forma_pago" id="gi-cart-select-state" className="form-select">
+                                                        <span class="gi-cart-select-inner">
+                                                            <select onChange={handleChangeClient} name="forma_pago" id="gi-cart-select-state" class="form-select">
                                                                 <option selected disabled>Seleccionar</option>
                                                                 <option value="EFECTIVO">Efectivo</option>
                                                                 <option value="TRANSFERENCIA">Transferencia / Datafono</option>
@@ -286,20 +286,20 @@ const CheckBill = () => {
                                             </div>
                                         </div>
 
-                                        <div className="gi-sb-block-content gi-sidebar-dropdown">
-                                            <div className="gi-cart-summary-bottom">
-                                                <div className="gi-cart-summary">
+                                        <div class="gi-sb-block-content gi-sidebar-dropdown">
+                                            <div class="gi-cart-summary-bottom">
+                                                <div class="gi-cart-summary">
                                                     <div>
-                                                        <span className="text-left">Sub-Total</span>
-                                                        <span className="text-right">{formatPrice(products.reduce((total: number, product: Product) => total + product.quantity * (product.product.precioventageneral ?? 0), 0))}</span>
+                                                        <span class="text-left">Sub-Total</span>
+                                                        <span class="text-right">{formatPrice(products().reduce((total: number, product: Product) => total + product.quantity * (product.product.precioventageneral ?? 0), 0))}</span>
                                                     </div>
                                                     <div>
-                                                        <span className="text-left">Valor del Domicilio</span>
-                                                        <span className="text-right">$1500</span>
+                                                        <span class="text-left">Valor del Domicilio</span>
+                                                        <span class="text-right">$1500</span>
                                                     </div>
-                                                    <div className="gi-cart-summary-total">
-                                                        <span className="text-left">Total</span>
-                                                        <span className="text-right">{formatPrice((products.reduce((total: number, product: Product) => total + product.quantity * (product.product.precioventageneral ?? 0), 0)) + 1500)}</span>
+                                                    <div class="gi-cart-summary-total">
+                                                        <span class="text-left">Total</span>
+                                                        <span class="text-right">{formatPrice((products().reduce((total: number, product: Product) => total + product.quantity * (product.product.precioventageneral ?? 0), 0)) + 1500)}</span>
                                                     </div>
                                                 </div>
 
@@ -308,18 +308,18 @@ const CheckBill = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="gi-cart-leftside col-lg-8 col-md-12 m-t-991">
-                                <div className="gi-cart-content">
-                                    <div className="gi-cart-inner">
-                                        <div className="row">
+                            <div class="gi-cart-leftside col-lg-8 col-md-12 m-t-991">
+                                <div class="gi-cart-content">
+                                    <div class="gi-cart-inner">
+                                        <div class="row">
                                             <div>
-                                                <div className="table-content cart-table-content">
+                                                <div class="table-content cart-table-content">
                                                     <table>
                                                         <thead>
                                                             <tr>
                                                                 <th>Producto</th>
                                                                 <th>Precio</th>
-                                                                <th style={{ textAlign: "center" }}>Cantidad</th>
+                                                                <th style={{ "text-align": "center" }}>Cantidad</th>
                                                                 <th>Total</th>
                                                                 <th></th>
                                                             </tr>
@@ -328,35 +328,35 @@ const CheckBill = () => {
                                                             {
                                                                 products.length === 0 ? (
                                                                     <tr>
-                                                                        <td colSpan={5} className="shoping__cart__item">
+                                                                        <td colSpan={5} class="shoping__cart__item">
                                                                             <h5>No hay productos en el carrito</h5>
                                                                         </td>
                                                                     </tr>
                                                                 ) : (
-                                                                    products.map((product: Product) => (
-                                                                        <tr key={product.product.codigo}>
-                                                                            <td data-label="Product" className="gi-cart-pro-name">
+                                                                    products().map((product: Product) => (
+                                                                        <tr>
+                                                                            <td data-label="Product" class="gi-cart-pro-name">
                                                                                 <a href="javascript:void(0)">
                                                                                     <ImageCart imageName={product.product.codigo} /> {product.product.nombre}
                                                                                 </a>
                                                                             </td>
-                                                                            <td data-label="Price" className="gi-cart-pro-price">
-                                                                                <span className="amount">{formatPrice(product.product.precioventageneral ?? 0)}</span>
+                                                                            <td data-label="Price" class="gi-cart-pro-price">
+                                                                                <span class="amount">{formatPrice(product.product.precioventageneral ?? 0)}</span>
                                                                             </td>
-                                                                            <td data-label="Quantity" className="gi-cart-pro-qty" style={{ textAlign: "center" }}>
-                                                                                <div className="cart-qty-plus-minus">
-                                                                                    <input className="cart-plus-minus" type="text" name="cartqtybutton" value={product.quantity} />
-                                                                                    <div className="ms_cart_qtybtn">
-                                                                                        <div className="inc ms_qtybtn" onClick={() => increase(product.quantity, 10, product.product)}>+</div>
-                                                                                        <div className="dec ms_qtybtn" onClick={() => decrease(product.quantity, 1, product.product)}>-</div>
+                                                                            <td data-label="Quantity" class="gi-cart-pro-qty" style={{ 'text-align': "center" }}>
+                                                                                <div class="cart-qty-plus-minus">
+                                                                                    <input class="cart-plus-minus" type="text" name="cartqtybutton" value={product.quantity} />
+                                                                                    <div class="ms_cart_qtybtn">
+                                                                                        <div class="inc ms_qtybtn" onClick={() => increase(product.quantity, 10, product.product)}>+</div>
+                                                                                        <div class="dec ms_qtybtn" onClick={() => decrease(product.quantity, 1, product.product)}>-</div>
                                                                                     </div>
                                                                                 </div>
                                                                             </td>
-                                                                            <td className="shoping__cart__total">
+                                                                            <td class="shoping__cart__total">
                                                                                 {formatPrice((product.product.precioventageneral ?? 0) * product.quantity)}
                                                                             </td>
-                                                                            <td data-label="Remove" className="gi-cart-pro-remove">
-                                                                                <a href="#" onClick={() => deleteProduct(product)}><i className="gicon bi bi-trash"></i></a>
+                                                                            <td data-label="Remove" class="gi-cart-pro-remove">
+                                                                                <a href="#" onClick={() => deleteProduct(product)}><i class="gicon bi bi-trash"></i></a>
                                                                             </td>
                                                                         </tr>
                                                                     ))
@@ -365,11 +365,11 @@ const CheckBill = () => {
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <div className="row">
-                                                    <div className="col-lg-12">
-                                                        <div className="gi-cart-update-bottom">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="gi-cart-update-bottom">
                                                             <a href="/market/shop/all">Seguir Comprando</a>
-                                                            <button className="gi-btn-2" onClick={createDelivery}>Realizar pedido</button>
+                                                            <button class="gi-btn-2" onClick={createDelivery}>Realizar pedido</button>
                                                         </div>
                                                     </div>
                                                 </div>

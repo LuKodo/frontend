@@ -1,10 +1,9 @@
-import { TipoImagen } from '@/admin/domain/entities/TipoImagenEnum.ts';
-import { getImage } from '@/shared/utils/checkImage.tsx';
-import { createEffect, createSignal } from 'react';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { FC } from "solidjs";
+import { Component, createEffect, createSignal } from 'solid-js';
+import { getImage } from '../../../shared/utils/checkImage';
+import { TipoImagen } from '../../domain/entities/TipoImagenEnum';
+import { getDefaultImage } from './PromoImage';
 
-const CarruselImage: FC<{ nombre: string, reload?: boolean }> = ({ nombre, reload }) => {
+const CarruselImage: Component<{ nombre: string, reload?: boolean }> = ({ nombre, reload }) => {
     const [imageSrc, setImageSrc] = createSignal('');
 
     createEffect(() => {
@@ -21,16 +20,13 @@ const CarruselImage: FC<{ nombre: string, reload?: boolean }> = ({ nombre, reloa
     }, [nombre, reload]);
 
     return (
-        <LazyLoadImage
+        <img
+            loading="lazy"
             alt={nombre || 'Product Image'}
-            height="250px"
-            src={imageSrc}
-            effect="opacity"
-            wrapperProps={{
-                // If you need to, you can tweak the effect transition using the wrapper style.
-                style: { transitionDelay: "1s" },
-            }}
-            className={"img-fluid rounded shadow-sm"}
+            height="400px"
+            src={imageSrc()}
+            data-srcset={getDefaultImage(1)}
+            class={"d-block w-100 rounded shadow-sm"}
         />
     );
 };

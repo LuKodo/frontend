@@ -1,5 +1,7 @@
 import { createEffect, createSignal } from "solid-js"
 import { Sede } from "../../admin/domain/entities/Sede"
+import { IconMoped } from "@tabler/icons-solidjs"
+import { getHeadquarter, setHeadquarterLocal } from "../../shared/utils/cart"
 
 export const Sedes = ({ headquarter, setHeadquarter }: { headquarter: string, setHeadquarter: Function }) => {
     const [data, setData] = createSignal([] as Sede[])
@@ -48,7 +50,8 @@ export const Sedes = ({ headquarter, setHeadquarter }: { headquarter: string, se
     )
 }
 
-export const SedesSM = ({ headquarter, setHeadquarter }: { headquarter: string, setHeadquarter: Function }) => {
+export const SedesSM = () => {
+    const [headquarter, setHeadquarter] = createSignal(getHeadquarter() ?? 'SB')
     const [data, setData] = createSignal([] as Sede[])
 
     createEffect(() => {
@@ -65,11 +68,14 @@ export const SedesSM = ({ headquarter, setHeadquarter }: { headquarter: string, 
         fetchSedes()
     })
 
+    createEffect(() => {
+        setHeadquarterLocal(headquarter())
+    })
 
     return (
-        <div class="dropdown" >
+        <div class="dropdown">
             <div class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-geo-alt-fill text-warning me-2" /><b>Sede:</b> {data().find((sede: Sede) => sede.prefijo === headquarter)?.nombre}
+                <IconMoped size={20} class="text-warning me-2" /><b>Sede:</b> {data().find((sede: Sede) => sede.prefijo === headquarter())?.nombre}
             </div>
             <ul class="dropdown-menu">
                 {data().map((sede: Sede) => {

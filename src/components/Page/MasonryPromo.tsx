@@ -59,9 +59,9 @@ export const MasonryPromo: Component = () => {
                                 col === 'default' ? (
                                     <UnLazyImage
                                         blurhash="LKO2:N%2Tw=w]~RBVZRi};RPxuwH"
-                                        width="100%"
-                                        srcSet={getDefaultImage(row.length)}
+                                        src={`${getDefaultImage(row.length)} 320w`}
                                         autoSizes
+                                        class="w-100 img-fluid rounded-4"
                                     />
                                 ) : (
                                     <PromoImage image={col} />
@@ -91,12 +91,12 @@ const PromoImage: Component<{ image: string }> = ({ image }) => {
     });
 
     return (
-        <UnLazyImage
-            blurhash="LKO2:N%2Tw=w]~RBVZRi};RPxuwH"
-            srcSet={imageSrc()}
-            autoSizes
+        <img
+            loading="lazy"
+            src={imageSrc()}
+            data-srcset={getDefaultImage(1)}
             alt={image || 'Product Image'}
-            class='w-100 img-fluid rounded border-dark'
+            class='w-100 img-fluid rounded-4'
         />
     );
 };

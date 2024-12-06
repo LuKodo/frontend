@@ -1,4 +1,5 @@
-import { Product, Productofinal } from "@/admin/domain/entities/ProductoFinal.ts";
+import { Product, Productofinal } from "../../admin/domain/entities/ProductoFinal";
+
 
 const cart: Product[] = [];
 

@@ -1,8 +1,8 @@
-import { createSignal } from 'react';
-import { useAuth } from '@/admin/presentation/contexts/AuthContext.tsx';
-import { Container, Form } from 'react-bootstrap';
+import { createSignal } from 'solid-js';
+import { Container, Form } from 'solid-bootstrap';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from '@solidjs/router';
 
 const Login = () => {
     const { login } = useAuth();
@@ -20,7 +20,7 @@ const Login = () => {
             return
         }
 
-        const logged = await login(username, password);
+        const logged = await login(username(), password());
 
         if (!logged) {
             Swal.fire({
@@ -42,19 +42,19 @@ const Login = () => {
 
     return (
         <Container>
-            <div className="position-relative overflow-hidden radial-gradient min-vh-100 w-100 d-flex align-items-center justify-content-center">
-                <div className="d-flex align-items-center justify-content-center w-100">
-                    <div className="row justify-content-center w-100">
-                        <div className="col-md-8 col-lg-6 col-xxl-3">
-                            <div className="card mb-0 bg-body">
-                                <div className="card-body">
-                                    <h2 className="text-center mb-4">Iniciar sesión</h2>
+            <div class="position-relative overflow-hidden radial-gradient min-vh-100 w-100 d-flex align-items-center justify-content-center">
+                <div class="d-flex align-items-center justify-content-center w-100">
+                    <div class="row justify-content-center w-100">
+                        <div class="col-md-8 col-lg-6 col-xxl-3">
+                            <div class="card mb-0 bg-body">
+                                <div class="card-body">
+                                    <h2 class="text-center mb-4">Iniciar sesión</h2>
                                     <div>
-                                        <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1" className="form-label">Usuario</label>
+                                        <div class="mb-3">
+                                            <label for="exampleInputEmail1" class="form-label">Usuario</label>
                                             <Form.Control
                                                 type="text"
-                                                value={username}
+                                                value={username()}
                                                 onChange={(e) => {
                                                     const { value } = e.target as HTMLInputElement
                                                     setUsername(value)
@@ -66,11 +66,11 @@ const Login = () => {
                                                 }}
                                             />
                                         </div>
-                                        <div className="mb-4">
-                                            <label htmlFor="exampleInputPassword1" className="form-label">Contraseña</label>
+                                        <div class="mb-4">
+                                            <label for="exampleInputPassword1" class="form-label">Contraseña</label>
                                             <Form.Control
                                                 type="password"
-                                                value={password}
+                                                value={password()}
                                                 onChange={(e) => {
                                                     const { value } = e.target as HTMLInputElement
                                                     setPassword(value)
@@ -82,7 +82,7 @@ const Login = () => {
                                                 }}
                                             />
                                         </div>
-                                        <button onClick={handleSubmit} className="btn btn-primary w-100 py-8 mb-1 rounded-2">Acceder</button>
+                                        <button onClick={handleSubmit} class="btn btn-primary w-100 py-8 mb-1 rounded-2">Acceder</button>
                                     </div>
                                 </div>
                             </div>

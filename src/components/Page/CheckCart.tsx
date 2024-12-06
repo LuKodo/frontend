@@ -3,6 +3,7 @@ import ImageCart from "./ImageCart";
 import { getCart, setCart } from "../../shared/utils/cart";
 import { Product, Productofinal } from "../../admin/domain/entities/ProductoFinal";
 import { formatPrice } from "../../shared/utils/formatPrice";
+import { IconBackground } from "@tabler/icons-solidjs";
 
 export const CheckCart = ({ setReload, setProducts, products }: { setReload: Function, setProducts: Function, products: Product[] }) => {
     createEffect(() => {
@@ -50,35 +51,36 @@ export const CheckCart = ({ setReload, setProducts, products }: { setReload: Fun
 
     return (
         <>
-            <ul class="gi-cart-pro-items">
+            <div class="h-75 d-flex flex-column">
                 {
                     products.length === 0 ? (
-                        <tr>
-                            <td colSpan={5} class="shoping__cart__item">
-                                <h5>No hay productos en el carrito</h5>
-                            </td>
-                        </tr>
+                        <span class="text-center">
+                            <h6>No has agregado productos a tu carrito.</h6>
+                            <IconBackground size={150} />
+                        </span>
                     ) : (
-                        products.map((product: Product) => (
-                            <li>
-                                <a href="product-left-sidebar.html" class="gi-pro-img">
-                                    <ImageCart imageName={product.product.codigo} />
-                                </a>
-                                <div class="gi-pro-content">
-                                    <a href="product-left-sidebar.html" class="cart-pro-title">{product.product.nombre}</a>
-                                    <span class="cart-price"><span>{formatPrice((product.product.precioventageneral ?? 0))}</span> x {product.quantity}</span>
-                                    <div class="qty-plus-minus">
-                                        <div class="dec gi-qtybtn" onClick={() => decrease(product.quantity, 0, product.product)}>-</div>
-                                        <input class="qty-input" type="text" name="gi-qtybtn" value={product.quantity} />
-                                        <div class="inc gi-qtybtn" onClick={() => increase(product.quantity, (product.product.nuevo ?? 0), product.product)}>+</div>
+                        <ul>
+                            {products.map((product: Product) => (
+                                <li>
+                                    <a href="product-left-sidebar.html" class="gi-pro-img">
+                                        <ImageCart imageName={product.product.codigo} />
+                                    </a>
+                                    <div class="gi-pro-content">
+                                        <a href="product-left-sidebar.html" class="cart-pro-title">{product.product.nombre}</a>
+                                        <span class="cart-price"><span>{formatPrice((product.product.precioventageneral ?? 0))}</span> x {product.quantity}</span>
+                                        <div class="qty-plus-minus">
+                                            <div class="dec gi-qtybtn" onClick={() => decrease(product.quantity, 0, product.product)}>-</div>
+                                            <input class="qty-input" type="text" name="gi-qtybtn" value={product.quantity} />
+                                            <div class="inc gi-qtybtn" onClick={() => increase(product.quantity, (product.product.nuevo ?? 0), product.product)}>+</div>
+                                        </div>
+                                        <a href="javascript:void(0)" class="remove" onClick={() => deleteProduct(product)}>×</a>
                                     </div>
-                                    <a href="javascript:void(0)" class="remove" onClick={() => deleteProduct(product)}>×</a>
-                                </div>
-                            </li>
-                        ))
+                                </li>
+                            ))}
+                        </ul>
                     )
                 }
-            </ul>
+            </div>
         </>
     )
 }
