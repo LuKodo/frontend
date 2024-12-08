@@ -1,8 +1,6 @@
-import { Component, createResource, createSignal } from "solid-js";
+import { Component, createSignal } from "solid-js";
 import { IconCategory, IconMapSearch, IconSearch, IconShoppingCart } from "@tabler/icons-solidjs";
 import { SedesSM } from "../../../../components/Page/Headquarter.tsx";
-import {useNavigate, useParams, useSearchParams} from "@solidjs/router";
-import { useCart } from "../hooks/useCart.tsx";
 
 interface NavBarProProps {
     openCart: Function,
@@ -11,6 +9,7 @@ interface NavBarProProps {
 }
 
 const NavBarPro: Component<NavBarProProps> = ({ openCart, openCategories, open }) => {
+    const [search, setSearch] = createSignal('')
     return (
         <nav class="navbar navbar-expand-md navbar-dark sticky-top p-0">
             <div class="w-100 d-flex flex-column">
@@ -28,7 +27,7 @@ const NavBarPro: Component<NavBarProProps> = ({ openCart, openCategories, open }
                     </div>
 
                     <div class="w-50 d-md-flex flex-row gap-3 align-items-center justify-content-center bg-white rounded-pill d-none">
-                        <input class="rounded-pill border-0 w-100 p-3" id="search" value={search()} onInput={(e) => setSearch(e.currentTarget.value)} onKeyDown={(e) => { if (e.key === 'Enter') onSearch(search()) }} type="search" placeholder="Buscar" />
+                        <input class="rounded-pill border-0 w-100 p-3" id="search" value={search()} onInput={(e) => setSearch(e.currentTarget.value)} type="search" placeholder="Buscar" />
                         <IconSearch class="text-warning me-3" />
                     </div>
 
