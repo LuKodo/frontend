@@ -1,16 +1,15 @@
 
-import { Component, createSignal } from "solid-js"
-import StoreLayout from "../components/StoreLayout.tsx"
+import { Component } from "solid-js"
+import StoreLayout from "../components/layout/StoreLayout.tsx"
 import { MasonryPromo } from "../../../../components/Page/MasonryPromo.tsx"
+import { Container } from "solid-bootstrap";
 
 const Home: Component = () => {
-  const [updateCart, setUpdateCart] = createSignal(false)
-
   return (
-    <StoreLayout updateCart={updateCart()} setUpdateCart={setUpdateCart}>
-      <section class="mx-3 my-3">
+    <StoreLayout>
+      <Container class='mt-4'>
         <MasonryPromo />
-      </section>
+      </Container>
     </StoreLayout>
   )
 }

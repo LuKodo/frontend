@@ -205,7 +205,7 @@ const Products = () => {
                                     <td>{product.codigo}</td>
                                     <td>{product.nombre}</td>
                                     <td>{product.prefijo}</td>
-                                    <td><ProductImage nombre={product.codigo} reload={reload()} /></td>
+                                    <td><ProductImage nombre={product.codigo} /></td>
                                     <td>
                                         <div class="row">
                                             <div class="col">

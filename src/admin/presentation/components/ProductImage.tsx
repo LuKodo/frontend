@@ -3,8 +3,7 @@ import { TipoImagen } from '../../domain/entities/TipoImagenEnum';
 import { getImage } from '../../../shared/utils/checkImage';
 import { UnLazyImage } from '@unlazy/solid';
 
-
-const ProductImage: Component<{ nombre: string, reload?: boolean }> = ({ nombre, reload }) => {
+const ProductImage: Component<{ nombre: string }> = ({ nombre }) => {
     const [imageSrc, setImageSrc] = createSignal('');
 
     createEffect(() => {

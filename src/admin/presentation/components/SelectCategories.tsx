@@ -1,11 +1,11 @@
-import { Category } from "@/admin/domain/entities/Categoria.ts"
-import { useMemo, createSignal } from "solidjs"
-import { FormSelect } from "react-bootstrap"
+import { createMemo, createSignal } from "solid-js"
+import { FormSelect } from "solid-bootstrap"
+import {Category} from "../../domain/entities/Categoria.ts";
 
 export const SelectCategories = () => {
     const [categories, setCategories] = createSignal<Category[]>([] as Category[])
 
-    useMemo(() => {
+    createMemo(() => {
         const fetchCategories = async () => {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/category`)
             const data = await response.json()
@@ -18,7 +18,7 @@ export const SelectCategories = () => {
     return (
         <FormSelect>
             <option value="" disabled selected>Seleccione una categoría</option>
-            {categories.map((category) => (
+            {categories().map((category) => (
                 <option value={category.id}>{category.descripcion}</option>
             ))}
         </FormSelect>

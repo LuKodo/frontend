@@ -1,17 +1,17 @@
-import { FC, useMemo, createSignal } from "solidjs"
-import { Col, Container, FormSelect, Modal, Row } from "react-bootstrap"
-import { Sede } from "@/admin/domain/entities/Sede.ts"
-import { getHeadquarter, setHeadquarterLocal } from "@/shared/utils/cart"
+import {Component, createMemo, createSignal} from "solid-js"
+import { Col, Container, FormSelect, Modal, Row } from "solid-bootstrap"
+import {Sede} from "../../admin/domain/entities/Sede.ts";
+import {getHeadquarter, setHeadquarterLocal} from "../../shared/utils/cart.tsx";
 
 interface Props {
     handleClose: Function
     setHeadquarter: Function
     show: boolean
 }
-export const ModalHeadquarter: FC<Props> = ({ show, handleClose, setHeadquarter }) => {
+export const ModalHeadquarter: Component<Props> = ({ show, handleClose, setHeadquarter }) => {
     const [categories, setCategories] = createSignal<Sede[]>([] as Sede[])
 
-    useMemo(() => {
+    createMemo(() => {
         const fetchCategories = async () => {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/headquarters`)
             const data = await response.json()
@@ -34,19 +34,19 @@ export const ModalHeadquarter: FC<Props> = ({ show, handleClose, setHeadquarter 
 
     return (
         <Modal show={show} onHide={() => handleClose()}>
-            <Modal.Body className="pt-4">
+            <Modal.Body class="pt-4">
                 <Container>
                     <Row>
                         <Col xs={12}>
-                            <div className="d-flex">
-                                <div className="d-flex flex-column">
+                            <div class="d-flex">
+                                <div class="d-flex flex-column">
                                     <h5>¿Deseas cambiar de sede?</h5>
                                     <p>Te mostraremos sólo los productos disponibles para la zona que selecciones.</p>
                                 </div>
-                                <button type="button" className="btn-close ms-auto" aria-label="Close" onClick={() => handleClose()}></button>
+                                <button type="button" class="btn-close ms-auto" aria-label="Close" onClick={() => handleClose()}></button>
                             </div>
                         </Col>
-                        <Col xs={12} className="mt-3">
+                        <Col xs={12} class="mt-3">
                             <FormSelect onChange={(e) => {
                                 const target = e.target as HTMLSelectElement
                                 setHeadquarterL(target.value ?? 'SB')
@@ -54,8 +54,8 @@ export const ModalHeadquarter: FC<Props> = ({ show, handleClose, setHeadquarter 
                             }}>
                                 <option disabled selected>Seleccionar</option>
                                 {
-                                    categories.map((category) => (
-                                        <option key={category.nombre} value={category.prefijo}>{category.nombre}</option>
+                                    categories().map((category) => (
+                                        <option value={category.prefijo}>{category.nombre}</option>
                                     ))
                                 }
                             </FormSelect>

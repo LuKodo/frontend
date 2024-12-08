@@ -6,7 +6,7 @@ const ProtectedRoute = (props: { children: any}) => {
 
   return (
     <>
-      {isAuthenticated ? props.children : <Redirect to="/market/login" />}
+      {isAuthenticated ? props.children : <Redirect to="/login" />}
     </>
   );
 };

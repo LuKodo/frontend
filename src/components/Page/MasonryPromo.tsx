@@ -1,10 +1,9 @@
-import { Container, Row } from "solid-bootstrap"
+import { Row } from "solid-bootstrap"
 import { Component, createEffect, createMemo, createSignal } from "solid-js"
 import { getColSize } from "../../shared/utils/getColSize"
 import { getDefaultImage } from "../../admin/presentation/components/PromoImage"
 import { getImage } from "../../shared/utils/checkImage"
 import { TipoImagen } from "../../admin/domain/entities/TipoImagenEnum"
-import { UnLazyImage } from "@unlazy/solid"
 
 interface Item {
     id: number
@@ -50,17 +49,16 @@ export const MasonryPromo: Component = () => {
     })
 
     return (
-        <Container>
+        <>
             {images()?.map((row) => (
                 <Row class="gap-0 p-0">
                     {row.map((col) => (
                         <div class={`mb-4 col-md-${getColSize(row.length, 'auto')} col-sm-${getColSize(row.length, 'sm')}`}>
                             {
                                 col === 'default' ? (
-                                    <UnLazyImage
-                                        blurhash="LKO2:N%2Tw=w]~RBVZRi};RPxuwH"
-                                        src={`${getDefaultImage(row.length)} 320w`}
-                                        autoSizes
+                                    <img
+                                        loading='lazy'
+                                        src={`${getDefaultImage(row.length)}`}
                                         class="w-100 img-fluid rounded-4"
                                     />
                                 ) : (
@@ -71,7 +69,7 @@ export const MasonryPromo: Component = () => {
                     ))}
                 </Row>
             ))}
-        </Container>
+        </>
     )
 }
 

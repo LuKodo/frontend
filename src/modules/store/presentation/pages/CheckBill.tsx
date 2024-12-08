@@ -1,14 +1,14 @@
 import { createSignal } from "solid-js";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
 import { InputGroup } from "solid-bootstrap";
 import { getCart, getHeadquarter, setCart } from "../../../../shared/utils/cart.tsx";
 import { Product, Productofinal } from "../../../../admin/domain/entities/ProductoFinal.ts";
 import { EstadoPedido } from "../../../../shared/utils/estadosPedidos.enum.ts";
-import Layout from "../components/StoreLayout.tsx";
 import { formatPrice } from "../../../../shared/utils/formatPrice.tsx";
 import ImageCart from "../../../../components/Page/ImageCart.tsx";
+import {useNavigate} from "@solidjs/router";
+import StoreLayout from "../components/layout/StoreLayout.tsx";
 
 export interface iDelivery {
     fecha_pedido: string
@@ -45,7 +45,7 @@ interface iDeliveryDetails {
 }
 
 const CheckBill = () => {
-    const [headquarter, setHeadquarter] = createSignal(getHeadquarter())
+    const [headquarter, _setHeadquarter] = createSignal(getHeadquarter())
     const [updateCart, setUpdateCart] = createSignal(false)
     const [products, setProducts] = createSignal<Product[]>(getCart());
     const [client, setClient] = createSignal<Client>({} as Client)
@@ -169,7 +169,7 @@ const CheckBill = () => {
                 setProducts([])
                 setCart([])
                 setClient({} as Client)
-                navigate('/market/')
+                navigate('/')
             })
         }
     }
@@ -231,12 +231,12 @@ const CheckBill = () => {
     }
 
     return (
-        <Layout headquarter={headquarter() ?? 'SB'} setHeadquarter={setHeadquarter} updateCart={updateCart()} setUpdateCart={setUpdateCart}>
+        <StoreLayout updateCart={updateCart()} setUpdateCart={setUpdateCart}>
             {
                 loading() ?
                     <div id="gi-overlay" class="text-center" style={{ display: "block;" }}>
                         <div class="loader"></div>
-                        <img src="/market/logo.png" alt="" />
+                        <img src="/logo.png" alt="" />
                     </div> :
                     <div class="container">
                         <div class="row">
@@ -368,7 +368,7 @@ const CheckBill = () => {
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <div class="gi-cart-update-bottom">
-                                                            <a href="/market/shop/all">Seguir Comprando</a>
+                                                            <a href="/search/all">Seguir Comprando</a>
                                                             <button class="gi-btn-2" onClick={createDelivery}>Realizar pedido</button>
                                                         </div>
                                                     </div>
@@ -383,7 +383,7 @@ const CheckBill = () => {
             }
 
 
-        </Layout>
+        </StoreLayout>
     )
 }
 

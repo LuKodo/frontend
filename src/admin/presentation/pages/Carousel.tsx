@@ -1,8 +1,8 @@
-import { ChangeEvent, useMemo, createSignal } from "solidjs"
-import { Button, Card, Form } from "react-bootstrap"
-import { Template } from "@/admin/presentation/components/Template.tsx"
-import { Carrusel } from "@/admin/domain/entities/Carrusel.ts"
-import CarruselImage from "@/admin/presentation/components/CarruselImage.tsx"
+import { createMemo, createSignal } from "solid-js"
+import { Button, Card, Form } from "solid-bootstrap"
+import {Carrusel} from "../../domain/entities/Carrusel.ts";
+import {Template} from "../components/Template.tsx";
+import CarruselImage from "../components/CarruselImage.tsx";
 
 const Carousel = () => {
     const [items, setItems] = createSignal<Carrusel[]>([] as Carrusel[])
@@ -15,9 +15,9 @@ const Carousel = () => {
         setItems(data)
     }
 
-    useMemo(() => {
+    createMemo(() => {
         fetchItems()
-        if (reload) {
+        if (reload()) {
             setReload(false)
         }
     }, [reload])
@@ -25,7 +25,7 @@ const Carousel = () => {
     const addSlide = async () => {
         const newSlide = {
             id: 0,
-            order: items?.length ? items[items.length - 1].order + 1 : 1,
+            order: items()?.length ? items()[items().length - 1].order + 1 : 1,
             imageName: 'default'
         }
 
@@ -34,15 +34,15 @@ const Carousel = () => {
             body: JSON.stringify(newSlide)
         })
 
-        setItems([...items, newSlide])
+        setItems([...items(), newSlide])
         setReload(true)
     }
 
-    const handleSubmit = async (e: ChangeEvent, filename: string, id: number) => {
+    const handleSubmit = async (e: Event & { currentTarget: HTMLInputElement | HTMLTextAreaElement; target: HTMLInputElement | HTMLTextAreaElement; }, filename: string, id: number) => {
         e.preventDefault()
         filename = filename.replace(/ /g, '-').replace(/[^a-zA-Z0-9\s]/g, '')
 
-        const categoria = items.filter((row: { id: number }) => row.id === id)[0]
+        const categoria = items().filter((row: { id: number }) => row.id === id)[0]
         const target = e.target as HTMLInputElement
 
         try {
@@ -78,7 +78,7 @@ const Carousel = () => {
         } catch (error) {
             console.error(error)
         } finally {
-            const newData = items.filter((row) => !(row.id === id))
+            const newData = items().filter((row) => !(row.id === id))
             setItems(newData);
             setReload(true);
         }
@@ -87,25 +87,25 @@ const Carousel = () => {
     return (
         <Template>
             {
-                items.length > 0 ? items?.map((item, index) => {
+                items().length > 0 ? items()?.map((item, index) => {
                     return (
-                        <Card key={item.id} className={'mb-3'}>
+                        <Card class={'mb-3'}>
                             <Card.Body>
-                                <CarruselImage nombre={item.imageName} reload={reload} />
+                                <CarruselImage nombre={item.imageName} reload={reload()} />
                             </Card.Body>
-                            <Card.Footer className="d-flex justify-content-center gap-2">
+                            <Card.Footer class="d-flex justify-content-center gap-2">
                                 <Button onClick={addSlide} size="sm" variant="warning">
-                                    <i className="bi bi-plus" /> Agregar slide
+                                    <i class="bi bi-plus" /> Agregar slide
                                 </Button>
                                 <Button onClick={() => removeSlide(item.id)} size="sm" variant="warning">
-                                    <i className="bi bi-trash" /> Eliminar slide
+                                    <i class="bi bi-trash" /> Eliminar slide
                                 </Button>
 
                                 <Form.Control
                                     type="file"
                                     onChange={(e) => handleSubmit(e, `${item.imageName}-${index}`, item.id)}
                                     size="sm"
-                                    className="w-25"
+                                    class="w-25"
                                     accept={'.png, .jpg, .jpeg'}
                                 />
                             </Card.Footer>
@@ -113,7 +113,7 @@ const Carousel = () => {
                     )
                 }) : (
                     <Button onClick={addSlide} size="sm" variant="warning">
-                        <i className="bi bi-plus" /> Agregar slide
+                        <i class="bi bi-plus" /> Agregar slide
                     </Button>
                 )
             }

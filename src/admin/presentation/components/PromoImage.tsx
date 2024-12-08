@@ -32,17 +32,17 @@ const PromoImage: Component<{ image: string }> = ({ image }) => {
 export const getDefaultImage = (relation: number) => {
     switch (relation) {
         case 1:
-            return 'https://placehold.co/1416x431/png'
+            return 'https://placehold.co/1416x431/FFF/000000/png?text=Sin+Imagen'
         case 2:
-            return 'https://placehold.co/595x370/png'
+            return 'https://placehold.co/595x370/FFF/000000/png?text=Sin+Imagen'
         case 3:
-            return 'https://placehold.co/370x310/png'
+            return 'https://placehold.co/370x310/FFF/000000/png?text=Sin+Imagen'
         case 4:
-            return 'https://placehold.co/290x370/png'
+            return 'https://placehold.co/290x370/FFF/000000/png?text=Sin+Imagen'
         case 281:
-            return 'https://placehold.co/281x281/png'
+            return 'https://placehold.co/281x281/FFF/000000/png?text=Sin+Imagen'
         default:
-            return 'https://placehold.co/595x370/png';
+            return 'https://placehold.co/595x370/FFF/000000/png?text=Sin+Imagen';
     }
 }
 

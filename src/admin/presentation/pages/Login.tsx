@@ -34,7 +34,7 @@ const Login = () => {
                 title: 'Sesión iniciada',
                 text: 'Sesión iniciada correctamente',
             }).then(() => {
-                navigate('/market/admin/products');
+                navigate('/admin/products');
             })
         }
 

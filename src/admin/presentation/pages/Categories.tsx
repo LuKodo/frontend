@@ -1,7 +1,7 @@
 import { Button, Card, Pagination } from "solid-bootstrap"
 import { Template } from "../components/Template.tsx"
 import { Category } from "../../domain/entities/Categoria.ts"
-import { Component, createEffect, createMemo, createSignal, JSX } from "solid-js"
+import { Component, createMemo, createSignal } from "solid-js"
 import CategoryImage from "../components/CategoryImage.tsx"
 
 interface response {

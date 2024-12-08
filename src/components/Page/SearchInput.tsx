@@ -13,7 +13,7 @@ export const SearchInput = () => {
 
     const handleKey = (e: { key: string }) => {
         if (e.key === 'Enter') {
-            navigate(`/market/shop/all?q=${query()}`, { replace: true })
+            navigate(`/search/all?q=${query()}`, { replace: true })
         }
     }
 
@@ -21,7 +21,7 @@ export const SearchInput = () => {
         <div class="header-search">
             <span class="gi-search-group-form bg-white rounded-pill">
                 <input class="form-control" placeholder="¿Qué quieres buscar?" type="text" value={query()} onChange={handleChange} onKeyDown={handleKey} />
-                <span class="search_submit" onClick={() => navigate(`/market/shop/all?q=${query()}`)}><i class="bi bi-search"></i></span>
+                <span class="search_submit" onClick={() => navigate(`/search/all?q=${query()}`)}><i class="bi bi-search"></i></span>
             </span>
         </div>
     )
@@ -38,14 +38,14 @@ export const SearchInputAdmin = () => {
 
     const handleKey = (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
-            navigate(`/market/admin/products?q=${query}`)
+            navigate(`/admin/products?q=${query}`)
         }
     }
 
     return (
         <InputGroup>
             <FormControl type="text" placeholder="¿Qué quieres buscar?" value={query()} onChange={handleChange} onKeyDown={handleKey} />
-            <InputGroup.Text id="basic-addon1" class="bg-white" onClick={() => navigate(`/market/admin/products?q=${query}`)}>
+            <InputGroup.Text id="basic-addon1" class="bg-white" onClick={() => navigate(`/admin/products?q=${query}`)}>
                 <i class="bi bi-search text-dark"></i>
             </InputGroup.Text>
         </InputGroup>

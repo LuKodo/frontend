@@ -19,22 +19,22 @@ export const Template = (props: { children: any }) => {
                     <div class="collapse navbar-collapse" id="navbarResponsive">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link" href="/market/admin/products">
+                                <a class="nav-link" href="/admin/products">
                                     <i class="bi bi-box ms-2" /> Productos
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/market/admin/categories">
+                                <a class="nav-link" href="/admin/categories">
                                     <i class="bi bi-list ms-2" /> Categorias
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/market/admin/promo">
+                                <a class="nav-link" href="/admin/promo">
                                     <i class="bi bi-bag-fill ms-2" /> Promociones
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/market/admin/carousel">
+                                <a class="nav-link" href="/admin/carousel">
                                     <i class="bi bi-images ms-2" /> Carrusel
                                 </a>
                             </li>

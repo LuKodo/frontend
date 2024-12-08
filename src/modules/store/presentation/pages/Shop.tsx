@@ -1,21 +1,33 @@
 import { createMemo, createSignal } from "solid-js"
-import { Col, Container, Pagination, Row } from "solid-bootstrap"
-import { useParams, useSearchParams } from "@solidjs/router"
+import {Breadcrumb, Col, Container, Pagination, Row} from "solid-bootstrap"
+import {A, useParams, useSearchParams} from "@solidjs/router"
 import { getHeadquarter } from "../../../../shared/utils/cart.tsx";
 import { Productofinal } from "../../../../admin/domain/entities/ProductoFinal.ts";
-import StoreLayout from "../components/StoreLayout.tsx";
-import { CarouselComponent } from "../components/product/Carousel.tsx";
+import StoreLayout from "../components/layout/StoreLayout.tsx";
 import { ProductCard } from "../../../../components/Page/Product.tsx";
+import {Category} from "../../../../admin/domain/entities/Categoria.ts";
 
 const Shop = () => {
   const params = useParams();
   let [searchParams, _setSearchParams] = useSearchParams();
-  const [search, setSearch] = createSignal(searchParams.q);
-  const [headquarter, setHeadquarter] = createSignal(getHeadquarter())
+  const [search, _setSearch] = createSignal(searchParams.q);
+  const [headquarter, _setHeadquarter] = createSignal(getHeadquarter())
 
   const [page, setPage] = createSignal(1)
   const [products, setProducts] = createSignal<{ result: Productofinal[], count: number }>({} as { result: Productofinal[], count: number })
+    const [categories, setCategories] = createSignal([] as Category[])
 
+    createMemo(() => {
+        const fetchCategories = async () => {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/categories_admin/1`)
+
+            return await response.json()
+        }
+        fetchCategories()
+            .then(response =>
+                setCategories(response)
+            )
+    })
   createMemo(() => {
     const fetchProductos = async () => {
       let response
@@ -58,28 +70,42 @@ const Shop = () => {
     fetchProductos()
   })
 
-  const [updateCart, setUpdateCart] = createSignal(false)
-
   return (
-    <StoreLayout setUpdateCart={setUpdateCart} updateCart={updateCart()}>
-        <Container>
+    <StoreLayout>
+        <Breadcrumb class="mt-1">
+            <Breadcrumb.Item>Inicio</Breadcrumb.Item>
+            <Breadcrumb.Item active>{}</Breadcrumb.Item>
+        </Breadcrumb>
+        <hr/>
+
+      <Container class='mt-4'>
           <Row>
             <Col md={2}>
-              columna
+                {categories().map((slide) => (
+                    <div
+                        class="position-relative d-flex flex-nowrap align-items-start p-1 m-1 rounded" role="button"
+                    >
+                        <A
+                            href={`/search/${slide.descripcion}${(search() !== '' && search()) && '?q=' + search()}`}
+                            class="fw-bold text-decoration-none"
+                            style={{ color: 'rgb(157, 157, 157)' }}
+                        >
+                            {slide.descripcion}
+                        </A>
+                    </div>
+                ))}
             </Col>
 
-            <Col>
-              <div class="shop-pro-content">
-                <div class="shop-pro-inner">
-                  <div class="row">
-                    {
-                      products().result && products().result.length === 0 ? <div class="text-center">No hay resultados</div>
+              <Col md={10}>
+                  <Row>
+                      {
+                          products().result && products().result.length === 0 ? <div class="text-center">No hay resultados</div>
                         :
                         products().result && products().result.map((
                           product: Productofinal) =>
                         (
                           <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-xs-6 mb-6">
-                            <ProductCard product={product} setUpdateCart={setUpdateCart} />
+                            <ProductCard product={product} />
                           </div>
                         ))
                     }
@@ -97,9 +123,7 @@ const Shop = () => {
                         </li>
                       </ul>
                     </div>
-                  </div>
-                </div>
-              </div>
+                  </Row>
             </Col>
           </Row>
         </Container>
